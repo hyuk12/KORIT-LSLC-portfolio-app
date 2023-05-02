@@ -1,13 +1,13 @@
-package com.trip.korea;
+package com.korea.triplocation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KoreaApplication {
+public class TripLocationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KoreaApplication.class, args);
+		SpringApplication.run(TripLocationApplication.class, args);
 	}
 
 }

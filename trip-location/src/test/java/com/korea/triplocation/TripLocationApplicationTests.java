@@ -1,10 +1,10 @@
-package com.trip.korea;
+package com.korea.triplocation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class KoreaApplicationTests {
+class TripLocationApplicationTests {
 
 	@Test
 	void contextLoads() {
