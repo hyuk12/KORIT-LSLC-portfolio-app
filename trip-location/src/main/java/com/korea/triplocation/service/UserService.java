@@ -3,12 +3,12 @@ package com.korea.triplocation.service;
 import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
-import com.korea.triplocation.repository.UserRepository;
 
 import com.korea.triplocation.api.dto.request.UserReqDto;
 import com.korea.triplocation.entity.User;
 import com.korea.triplocation.exception.CustomException;
 import com.korea.triplocation.exception.ErrorMap;
+import com.korea.triplocation.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,7 +43,21 @@ public class UserService {
 					.createDate(LocalDate.now())
 					.build());
 	}
+
 	
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//		// authenticationManager가 하는 일이다. 여기서는 username은 email이다.
+//		User userEntity = userRepository.findUserByEmail(username);
+//		
+//		if(userEntity == null) {
+//			throw new CustomException("로그인 실패",
+//					ErrorMap.builder()
+//					.put("email", "사용자 정보를 확인하세요.")
+//					.build());
+//		}
+//		
+//		return userEntity.;
+//	}
 	
 	
 }
