@@ -2,8 +2,12 @@ package com.korea.triplocation.service;
 
 import java.time.LocalDate;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.UserReqDto;
 import com.korea.triplocation.entity.User;
 import com.korea.triplocation.exception.CustomException;
@@ -17,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserRepository userRepository;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
+	private final JwtTokenProvider jwtTokenProvider;
 	
 	public void checkDuplicatedByEmail(String email) {
 		User userEntity = userRepository.findUserByEmail(email);
@@ -44,20 +50,17 @@ public class UserService {
 					.build());
 	}
 
+	public JwtRespDto signin(LoginReqDto loginReqDto) {
+		
+		UsernamePasswordAuthenticationToken authenticationToken = 
+				new UsernamePasswordAuthenticationToken(loginReqDto.getEmail(), loginReqDto.getPassword());
+		Authentication authentication = 
+				authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+		
+		return jwtTokenProvider.generateToken(authentication);
+		
+	}
 	
-//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//		// authenticationManager가 하는 일이다. 여기서는 username은 email이다.
-//		User userEntity = userRepository.findUserByEmail(username);
-//		
-//		if(userEntity == null) {
-//			throw new CustomException("로그인 실패",
-//					ErrorMap.builder()
-//					.put("email", "사용자 정보를 확인하세요.")
-//					.build());
-//		}
-//		
-//		return userEntity.;
-//	}
 	
 	
 }
