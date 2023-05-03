@@ -1,9 +1,11 @@
 package com.korea.triplocation.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.korea.triplocation.entity.Authority;
@@ -15,6 +17,10 @@ import lombok.Data;
 @Data
 public class PrincipalUser implements UserDetails {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6984381303716862634L;
 	private int userId;
 	private String email;
 	private String password;
@@ -23,7 +29,13 @@ public class PrincipalUser implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		
+		this.authorities.forEach(authority -> {
+			authorities.add(new SimpleGrantedAuthority(authority.getRole().getRoleName()));
+		});
+		
+		return authorities;
 	}
 
 	@Override
