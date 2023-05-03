@@ -3,11 +3,12 @@ package com.korea.triplocation.service;
 import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
+import com.korea.triplocation.repository.UserRepository;
 
-import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.UserReqDto;
-import com.korea.triplocation.api.dto.response.DataRespDto;
 import com.korea.triplocation.entity.User;
+import com.korea.triplocation.exception.CustomException;
+import com.korea.triplocation.exception.ErrorMap;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 	
-	private final UserReposiotory userRepository;
+	private final UserRepository userRepository;
 	
 	public void checkDuplicatedByEmail(String email) {
 		User userEntity = userRepository.findUserByEmail(email);
@@ -23,7 +24,7 @@ public class UserService {
 		if(userEntity != null) {
 			throw new CustomException("Duplicated Email", 
 					ErrorMap.builder()
-					.put("email","이미 사용중인 이메일입니다.").bulid());
+					.put("email","이미 사용중인 이메일입니다.").build());
 		}
 	}
 	
