@@ -14,7 +14,7 @@ public class UserReqDto {
     private String name;
     private String phone;
     private String address;
-    private String profileImage;
+    private String profileImg;
 
     public User toEntity() {
         return User.builder()
@@ -23,7 +23,7 @@ public class UserReqDto {
                 .name(name)
                 .phone(phone)
                 .address(address)
-                .profileImage(profileImage)
+                .profileImg(profileImg)
                 .build();
 
     }

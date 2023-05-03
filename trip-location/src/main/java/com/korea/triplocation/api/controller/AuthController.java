@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 	
 	private final UserService userService;
+
     @PostMapping("/user")
     public ResponseEntity<?> signup(@RequestBody UserReqDto userReqDto) {
     	System.out.println(userReqDto.getEmail() + "\t" + userReqDto.getPassword());
-    	userService.checkDuplicatedByEmail(userReqDto.getEmail());
     	userService.signup(userReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
