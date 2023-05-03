@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.korea.triplocation.repository.UserRepository;
 
 import com.korea.triplocation.api.dto.request.UserReqDto;
+import com.korea.triplocation.entity.Authority;
 import com.korea.triplocation.entity.User;
 import com.korea.triplocation.exception.CustomException;
 import com.korea.triplocation.exception.ErrorMap;
@@ -30,18 +31,21 @@ public class UserService {
 	
 	public void signup(UserReqDto userReqDto) {
 		User userEntity = userReqDto.toEntity();
+		userRepository.saveUser(userEntity);
 		
-		userRepository.saveUser(User.builder()
-					.userId(userEntity.getUserId())
-					.roleId(1)
-					.email(userEntity.getEmail())
-					.password(userEntity.getPassword())
-					.name(userEntity.getName())
-					.phone(userEntity.getPhone())
-					.address(userEntity.getAddress())
-					.profileImage(userEntity.getProfileImage())
-					.createDate(LocalDate.now())
-					.build());
+		userRepository.saveAuthority(
+				Authority.builder().userId(userEntity.getUserId()).roleId(1).build());
+		
+//		userRepository.saveUser(User.builder()
+//					.userId(userEntity.getUserId())
+//					.email(userEntity.getEmail())
+//					.password(userEntity.getPassword())
+//					.name(userEntity.getName())
+//					.phone(userEntity.getPhone())
+//					.address(userEntity.getAddress())
+//					.profileImage(userEntity.getProfileImage())
+//					.createDate(LocalDate.now())
+//					.build());
 	}
 	
 	
