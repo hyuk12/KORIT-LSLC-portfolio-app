@@ -1,9 +1,9 @@
 spring:
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: admin
     password: 1q2w3e4r
     url: jdbc:mysql://portfolio.cobrokkm0djp.ap-northeast-2.rds.amazonaws.com:3306/travel
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis:
   mapper-locations: -/mappers/*.xml
