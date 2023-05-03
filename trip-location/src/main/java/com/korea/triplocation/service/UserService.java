@@ -30,7 +30,7 @@ public class UserService {
 	
 	public void signup(UserReqDto userReqDto) {
 		User userEntity = userReqDto.toEntity();
-		
+		checkDuplicatedByEmail(userEntity.getEmail());
 		userRepository.saveUser(User.builder()
 					.userId(userEntity.getUserId())
 					.roleId(1)
@@ -39,7 +39,7 @@ public class UserService {
 					.name(userEntity.getName())
 					.phone(userEntity.getPhone())
 					.address(userEntity.getAddress())
-					.profileImage(userEntity.getProfileImage())
+					.profileImg(userEntity.getProfileImg())
 					.createDate(LocalDate.now())
 					.build());
 	}
