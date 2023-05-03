@@ -1,11 +1,15 @@
 package com.korea.triplocation.api.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.korea.triplocation.aop.annotation.ValidAspect;
 import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.UserReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
@@ -19,18 +23,22 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 	
 	private final UserService userService;
-
+	
+	@ValidAspect
     @PostMapping("/user")
-    public ResponseEntity<?> signup(@RequestBody UserReqDto userReqDto) {
+    public ResponseEntity<?> signup(@Valid @RequestBody UserReqDto userReqDto, BindingResult bindingResult) {
 //    	System.out.println(userReqDto.getEmail() + "\t" + userReqDto.getPassword());
     	userService.checkDuplicatedByEmail(userReqDto.getEmail());
     	userService.signup(userReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
-
+	
+	@ValidAspect
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginReqDto loginReqDto) {
-    	userService.signin(loginReqDto);
-        return ResponseEntity.ok(DataRespDto.ofDefault());
+    public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult) {
+		System.out.println(loginReqDto.getEmail() + "\t" + loginReqDto.getPassword());
+		System.out.println(bindingResult.toString());
+//		userService.signin(loginReqDto);
+        return ResponseEntity.ok(userService.signin(loginReqDto));
     }
 }

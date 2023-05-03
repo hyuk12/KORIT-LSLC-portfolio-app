@@ -4,6 +4,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService{
 	
 	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -60,10 +61,11 @@ public class UserService {
 		
 	}
 	
+	@Override
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException{
 		User userEntity = userRepository.findUserByEmail(username);
 		
-		if(userEntity != null) {
+		if(userEntity == null) {
 			throw new CustomException("로그인 실패",
 					ErrorMap.builder()
 					.put("email", "사용자 정보를 확인하세요.")
