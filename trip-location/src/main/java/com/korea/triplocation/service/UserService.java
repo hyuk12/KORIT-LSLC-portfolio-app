@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.UserReqDto;
+import com.korea.triplocation.api.dto.response.JwtRespDto;
 import com.korea.triplocation.entity.User;
 import com.korea.triplocation.exception.CustomException;
 import com.korea.triplocation.exception.ErrorMap;
 import com.korea.triplocation.repository.UserRepository;
+import com.korea.triplocation.security.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
