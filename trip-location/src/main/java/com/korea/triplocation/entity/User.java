@@ -21,7 +21,7 @@ public class User {
 	private String phone;
 	private String address;
 	private String profileImg;
-	
+
 	private LocalDate createDate;	// 계정 생성 일자
 	
 	private List<Authority> authorities;
