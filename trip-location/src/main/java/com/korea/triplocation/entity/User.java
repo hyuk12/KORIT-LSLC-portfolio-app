@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-
 	private int userId;
 	private int role_id;
 	private String email;
@@ -23,4 +22,7 @@ public class User {
 	
 	private LocalDate createDate;	// 계정 생성 일자
 	private Role role;
+	
+	
+	
 }
