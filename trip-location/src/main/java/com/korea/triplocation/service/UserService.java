@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.UserReqDto;
+import com.korea.triplocation.entity.Authority;
 import com.korea.triplocation.api.dto.response.JwtRespDto;
 import com.korea.triplocation.entity.User;
 import com.korea.triplocation.exception.CustomException;
@@ -38,18 +39,14 @@ public class UserService {
 	
 	public void signup(UserReqDto userReqDto) {
 		User userEntity = userReqDto.toEntity();
+
+		userRepository.saveUser(userEntity);
+		
+		userRepository.saveAuthority(
+				Authority.builder().userId(userEntity.getUserId()).roleId(1).build());
+		
 		checkDuplicatedByEmail(userEntity.getEmail());
-		userRepository.saveUser(User.builder()
-					.userId(userEntity.getUserId())
-					.roleId(1)
-					.email(userEntity.getEmail())
-					.password(userEntity.getPassword())
-					.name(userEntity.getName())
-					.phone(userEntity.getPhone())
-					.address(userEntity.getAddress())
-					.profileImg(userEntity.getProfileImg())
-					.createDate(LocalDate.now())
-					.build());
+
 	}
 
 	public JwtRespDto signin(LoginReqDto loginReqDto) {
