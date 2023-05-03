@@ -19,7 +19,8 @@ public class User {
 	private String name;
 	private String phone;
 	private String address;
-	
+	private String profileImage;
+
 	private LocalDate createDate;	// 계정 생성 일자
 	private Role role;
 	
