@@ -3,6 +3,8 @@ package com.korea.triplocation.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.korea.triplocation.security.PrincipalUser;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +28,14 @@ public class User {
 	
 	private List<Authority> authorities;
 	
+	public PrincipalUser toPrincipal() {
+		return PrincipalUser.builder()
+				.userId(userId)
+				.email(email)
+				.password(password)
+				.authorities(authorities)
+				.build();
+	}
 	
 	
 }
