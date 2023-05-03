@@ -6,7 +6,7 @@
 - Jdk 11 
 - Spring Boot 2.6.6
 - Spring Security
-- 
+- Spring Aop
 - MySQL 8 
 - Mybatis 2.2.2 
 - Lombok
