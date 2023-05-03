@@ -2,10 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korea.triplocation.repository.UserRepository">
 
-	<resultMap type="com.korea.triplocation.entity.Role" id="roleMap">
-		<id property="roleId" column="role_id"/>
-		<result property="roleName" column="role_name"/>
-	</resultMap>
 
 	<resultMap type="com.korea.triplocation.entity.User" id="userMap">
 		<id property="userId" column="user_id"/>
@@ -19,7 +15,6 @@
 		<collection property="authorities"  javaType="list" resultMap="authorityMap" />
 	</resultMap>
 	
-
 	<resultMap type="com.korea.triplocation.entity.Role" id="roleMap">
 		<id property="roleId" column="role_id"/>
 		<result property="roleName" column="role_name"/>
@@ -31,14 +26,6 @@
 		<result property="roleId" column="role_id"/>
 		<association property="role" resultMap="roleMap" />
 	</resultMap>
-
-
-	<insert id="saveUser" parameterType="com.korea.triplocation.entity.User"
-			useGeneratedKeys="true"
-			keyProperty="userId">
-		insert into user_tb
-		values (0, #{roleId}, #{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImg}, #{createDate})
-	</insert>
 
 	<select id="findUserByEmail" resultMap="userMap">
 		select
