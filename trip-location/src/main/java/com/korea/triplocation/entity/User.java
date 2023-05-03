@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 	private int userId;
-	private int role_id;
+//	role_id => roleId 수정
+	private int roleId;
 	private String email;
 	private String password;
 	private String name;
