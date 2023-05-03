@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.UserMapper">
+	<resultMap type="com.korea.triplocation.entity.User" id="userMap">
+		<id property="userId" column="user_id"/>
+		<result property="roleId" column="role_id"/>
+		<result property="email" column="email"/>
+		<result property="password" column="password"/>
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="address" column="address"/>
+		<result property="profileImg" column="profile_img"/>
+		<result property="createDate" column="create_date"/>
+		<association property="role" resultMap="roleMap" />
+	</resultMap>
+	
+	<resultMap type="com.korea.triplocation.entity.Role" id="roleMap">
+		<id property="roleId" column="role_id"/>
+		<result property="roleName" column="role_name"/>
+	</resultMap>
+	
+	
+	<select id="findUserByEmail" resultMap="userMap">
+		select
+			ut.user_id,
+			ut.role_id,
+			ut.email,
+			ut.password,
+			ut.name,
+			ut.phone,
+			ut.address,
+			ut.profile_img,
+			ut.create_date,
+			
+			rt.role_id,
+			rt.role_name
+		from
+			user_tb ut
+			left outer join role_tb rt on(rt.role_id = ut.role_id)
+		where
+			ut.email = #{email}
+			
+			
+	</select>
+	
+	<insert id="saveUser" parameterType="com.korea.triplocation.entity.User"
+	useGeneratedKeys="true"
+	keyProperty="userId">
+		insert into user_tb
+		values (0, #{roleId}, #{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImg}, #{createDate})
+	</insert>
+</mapper>
