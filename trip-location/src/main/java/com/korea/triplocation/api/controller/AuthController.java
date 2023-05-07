@@ -2,12 +2,10 @@ package com.korea.triplocation.api.controller;
 
 import javax.validation.Valid;
 
+import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.korea.triplocation.aop.annotation.ValidAspect;
 import com.korea.triplocation.api.dto.request.LoginReqDto;
@@ -40,5 +38,15 @@ public class AuthController {
 		System.out.println(bindingResult.toString());
 //		userService.signin(loginReqDto);
         return ResponseEntity.ok(userService.signin(loginReqDto));
+    }
+
+    @GetMapping("/authenticated")
+    public ResponseEntity<?> authenticated(String accessToken) {
+        return ResponseEntity.ok(userService.authenticated(accessToken));
+    }
+
+    @GetMapping("/principal")
+    public ResponseEntity<?> principal(String accessToken) {
+        return ResponseEntity.ok(userService.getPrincipal(accessToken));
     }
 }
