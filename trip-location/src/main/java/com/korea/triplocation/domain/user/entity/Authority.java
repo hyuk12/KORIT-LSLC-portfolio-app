@@ -1,4 +1,4 @@
-package com.korea.triplocation.entity;
+package com.korea.triplocation.domain.user.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class Authority {
+	
+	private int authorityId;
+	private int userId;
 	private int roleId;
-	private String roleName;
+	
+	private Role role;
 
 }

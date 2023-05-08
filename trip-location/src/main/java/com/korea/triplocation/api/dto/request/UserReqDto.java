@@ -1,6 +1,6 @@
 package com.korea.triplocation.api.dto.request;
 
-import com.korea.triplocation.entity.User;
+import com.korea.triplocation.domain.user.entity.User;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

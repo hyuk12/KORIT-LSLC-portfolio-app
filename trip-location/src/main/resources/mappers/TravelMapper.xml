@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.korea.triplocation.repository.TravelRepository">
+
+    <resultMap id="Participant" type="com.korea.triplocation.domain.travel.entity.Participant">
+        <id column="id" property="participantId"/>
+        <result column="travel_id" property="travelId"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+
+    <resultMap id="TravelRoutes" type="com.korea.triplocation.domain.travel.entity.TravelRoutes">
+        <id column="id" property="routeId"/>
+        <result column="travel_id" property="travelId"/>
+        <result column="destinationName" property="destinationName"/>
+        <result column="locationX" property="locationX"/>
+        <result column="locationY" property="locationY"/>
+        <result column="visitDate" property="visitDate"/>
+    </resultMap>
+
+    <resultMap id="Travel" type="com.korea.triplocation.domain.travel.entity.Travels">
+        <id column="id" property="travelId"/>
+        <result column="travelName" property="travelName"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+
+        <collection property="participants" javaType="list" resultMap="Participant"/>
+        <collection property="travelRoutes" javaType="list" resultMap="TravelRoutes"/>
+    </resultMap>
+
+    <insert id="saveTravel"
+            parameterType="com.korea.triplocation.domain.travel.entity.Travels"
+            useGeneratedKeys="true"
+            keyProperty="travelId">
+        INSERT INTO travel_tb
+        VALUES (0, #{travelName}, #{startDate}, #{endDate})
+    </insert>
+
+    <insert id="saveTravelRoutes"
+            parameterType="com.korea.triplocation.domain.travel.entity.TravelRoutes"
+            useGeneratedKeys="true"
+            keyProperty="routeId">
+        INSERT INTO travel_routes_tb
+        VALUES (0, #{travelId}, #{destinationName}, #{locationX}, #{locationY}, #{visitDate})
+    </insert>
+
+    <insert id="saveParticipant"
+            parameterType="com.korea.triplocation.domain.travel.entity.Participant"
+            useGeneratedKeys="true"
+            keyProperty="participantId">
+        INSERT INTO participant_tb
+        VALUES (0, #{travelId}, #{userId})
+    </insert>
+
+    <select id="findTravelById" resultMap="Travel">
+        SELECT
+            t.travel_id,
+            t.travel_name,
+            t.start_date,
+            t.end_date,
+
+            p.participant_id,
+            p.travel_id,
+            p.user_id,
+
+            r.route_id,
+            r.travel_id,
+            r.destination_name,
+            r.location_x,
+            r.location_y,
+            r.visit_date
+        FROM
+            travel_tb t
+            LEFT OUTER JOIN travel_participant_tb p ON (p.travel_id = t.travel_id)
+            LEFT OUTER JOIN travel_routes_tb r ON (r.travel_id = t.travel_id)
+        WHERE
+            t.travel_id = #{travelId}
+</mapper>

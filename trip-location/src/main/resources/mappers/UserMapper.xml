@@ -3,7 +3,7 @@
 <mapper namespace="com.korea.triplocation.repository.UserRepository">
 
 
-	<resultMap type="com.korea.triplocation.entity.User" id="userMap">
+	<resultMap type="com.korea.triplocation.domain.user.entity.User" id="userMap">
 		<id property="userId" column="user_id"/>
 		<result property="email" column="email"/>
 		<result property="password" column="password"/>
@@ -15,12 +15,12 @@
 		<collection property="authorities"  javaType="list" resultMap="authorityMap" />
 	</resultMap>
 	
-	<resultMap type="com.korea.triplocation.entity.Role" id="roleMap">
+	<resultMap type="com.korea.triplocation.domain.user.entity.Role" id="roleMap">
 		<id property="roleId" column="role_id"/>
 		<result property="roleName" column="role_name"/>
 	</resultMap>
 	
-	<resultMap type="com.korea.triplocation.entity.Authority" id="authorityMap">
+	<resultMap type="com.korea.triplocation.domain.user.entity.Authority" id="authorityMap">
 		<id property="authorityId" column="authority_id"/>
 		<result property="userId" column="user_id"/>
 		<result property="roleId" column="role_id"/>
@@ -55,14 +55,14 @@
 	</select>
 	
 
-	<insert id="saveUser" parameterType="com.korea.triplocation.entity.User"
+	<insert id="saveUser" parameterType="com.korea.triplocation.domain.user.entity.User"
 	useGeneratedKeys="true"
 	keyProperty="userId">
 		insert into user_tb
 		values (0, #{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImg}, now())
 	</insert>
 	
-	<insert id="saveAuthority" parameterType="com.korea.triplocation.entity.Authority">
+	<insert id="saveAuthority" parameterType="com.korea.triplocation.domain.user.entity.Authority">
 		insert into authority_tb
 		values (0, #{userId}, #{roleId})
 	</insert>
