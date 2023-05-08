@@ -2,8 +2,8 @@ package com.korea.triplocation.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.korea.triplocation.entity.Authority;
-import com.korea.triplocation.entity.User;
+import com.korea.triplocation.domain.user.entity.Authority;
+import com.korea.triplocation.domain.user.entity.User;
 
 @Mapper
 public interface UserRepository {

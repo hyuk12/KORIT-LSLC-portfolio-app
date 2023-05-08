@@ -1,4 +1,4 @@
-package com.korea.triplocation.entity;
+package com.korea.triplocation.domain.user.entity;
 
 import java.time.LocalDate;
 import java.util.List;
