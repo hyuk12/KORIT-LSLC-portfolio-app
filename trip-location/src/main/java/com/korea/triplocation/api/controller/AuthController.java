@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
+
 	
 	private final AuthService authService;
 	
@@ -33,23 +34,27 @@ public class AuthController {
 		authService.signup(userReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
-	
-	@ValidAspect
+
+    @ValidAspect
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult) {
-		System.out.println(loginReqDto.getEmail() + "\t" + loginReqDto.getPassword());
-		System.out.println(bindingResult.toString());
+        System.out.println(loginReqDto.getEmail() + "\t" + loginReqDto.getPassword());
+        System.out.println(bindingResult.toString());
 //		userService.signin(loginReqDto);
         return ResponseEntity.ok(authService.signin(loginReqDto));
     }
 
     @GetMapping("/authenticated")
     public ResponseEntity<?> authenticated(String accessToken) {
+
         return ResponseEntity.ok(authService.authenticated(accessToken));
+
     }
 
     @GetMapping("/principal")
     public ResponseEntity<?> principal(String accessToken) {
+
         return ResponseEntity.ok(authService.getPrincipal(accessToken));
+
     }
 }
