@@ -10,6 +10,8 @@ import com.korea.triplocation.domain.user.entity.User;
 public interface UserRepository {
 	
 	public List<User> getUserAll();
+	public User searchUserByEmail(String email);
+	public User searchUserByPhone(String phone);
 
 
 }

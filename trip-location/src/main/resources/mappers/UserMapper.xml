@@ -12,6 +12,7 @@
 	</resultMap>
 	
 	<select id="getUserAll" resultMap="userMap">
+	
 		select
 			user_id,
 			email,
@@ -21,9 +22,39 @@
 			profile_img
 		from
 			user_tb
-
 			
+	</select>
 	
+	<select id="searchUserByEmail" resultMap="userMap">
+	
+		select
+			user_id,
+			email,
+			name,
+			phone,
+			address,
+			profile_img
+		from
+			user_tb
+		where
+			email = #{email}
+			
+	</select>
+	
+	<select id="searchUserByPhone" resultMap="userMap">
+	
+		select
+			user_id,
+			email,
+			name,
+			phone,
+			address,
+			profile_img
+		from
+			user_tb
+		where
+			phone = #{phone}
+			
 	</select>
 	
 </mapper>
