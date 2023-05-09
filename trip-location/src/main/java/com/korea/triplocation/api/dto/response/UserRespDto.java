@@ -1,16 +1,17 @@
 package com.korea.triplocation.api.dto.response;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 @Builder
-@Data
-public class PrincipalRespDto {
+@Getter
+public class UserRespDto {
+	
 	private int userId;
 	private String email;
 	private String name;
 	private String phone;
 	private String address;
-	private String profileImg;
-	private String authorities;
+	private String profileImg; 
+
 }
