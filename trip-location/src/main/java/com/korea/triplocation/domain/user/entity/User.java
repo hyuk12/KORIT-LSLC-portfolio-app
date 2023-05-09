@@ -3,6 +3,7 @@ package com.korea.triplocation.domain.user.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.korea.triplocation.api.dto.response.UserRespDto;
 import com.korea.triplocation.security.PrincipalUser;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +35,17 @@ public class User {
 				.email(email)
 				.password(password)
 				.authorities(authorities)
+				.build();
+	}
+	
+	public UserRespDto toDto() {
+		return UserRespDto.builder()
+				.userId(userId)
+				.email(email)
+				.name(name)
+				.phone(phone)
+				.address(address)
+				.profileImg(profileImg)
 				.build();
 	}
 	

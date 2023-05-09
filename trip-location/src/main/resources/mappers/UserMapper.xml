@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korea.triplocation.repository.UserRepository">
+	
+	<resultMap type="com.korea.triplocation.domain.user.entity.User" id="userMap">
+		<id property="userId" column="user_id"/>
+		<result property="email" column="email"/>
+		<result property="password" column="password"/>
+		<result property="phone" column="phone"/>
+		<result property="address" column="address"/>
+		<result property="profileImg" column="profile_img"/>
+	</resultMap>
+	
+	<select id="getUserAll" resultMap="userMap">
+		select
+			user_id,
+			email,
+			name,
+			phone,
+			address,
+			profile_img
+		from
+			user_tb
 
-
+			
+	
+	</select>
+	
 </mapper>

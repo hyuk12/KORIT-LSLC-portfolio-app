@@ -87,6 +87,9 @@ public class AuthService implements UserDetailsService{
 				.userId(userEntity.getUserId())
 				.email(userEntity.getEmail())
 				.name(userEntity.getName())
+				.phone(userEntity.getPhone())
+				.address(userEntity.getAddress())
+				.profileImg(userEntity.getProfileImg())
 				.authorities((String) claims.get("auth"))
 				.build();
 		
