@@ -25,71 +25,72 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService{
-	
+
 	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
-	
+
 	public void checkDuplicatedByEmail(String email) {
 		User userEntity = userRepository.findUserByEmail(email);
-		
+
 		if(userEntity != null) {
-			throw new CustomException("Duplicated Email", 
+			throw new CustomException("Duplicated Email",
 					ErrorMap.builder()
-					.put("email","이미 사용중인 이메일입니다.").build());
+							.put("email","이미 사용중인 이메일입니다.").build());
 		}
 	}
-	
+
 	public void signup(UserReqDto userReqDto) {
 		User userEntity = userReqDto.toEntity();
 
 		userRepository.saveUser(userEntity);
-		
+
 		userRepository.saveAuthority(
 				Authority.builder().userId(userEntity.getUserId()).roleId(1).build());
 
 	}
 
 	public JwtRespDto signin(LoginReqDto loginReqDto) {
-		
-		UsernamePasswordAuthenticationToken authenticationToken = 
+
+		UsernamePasswordAuthenticationToken authenticationToken =
 				new UsernamePasswordAuthenticationToken(loginReqDto.getEmail(), loginReqDto.getPassword());
-		Authentication authentication = 
+		Authentication authentication =
 				authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-		
+
 		return jwtTokenProvider.generateToken(authentication);
-		
+
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException{
 		User userEntity = userRepository.findUserByEmail(username);
-		
+
 		if(userEntity == null) {
 			throw new CustomException("로그인 실패",
 					ErrorMap.builder()
-					.put("email", "사용자 정보를 확인하세요.")
-					.build());
+							.put("email", "사용자 정보를 확인하세요.")
+							.build());
 		}
-		
+
 		return userEntity.toPrincipal();
 	}
-	
+
 	public boolean authenticated(String accessToken) {
+		System.out.println(jwtTokenProvider.getToken(accessToken));
 		return jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken));
 	}
-	
+
 	public PrincipalRespDto getPrincipal(String accessToken) {
 		Claims claims = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken));
 		User userEntity = userRepository.findUserByEmail(claims.getSubject());
-		
+
 		return PrincipalRespDto.builder()
 				.userId(userEntity.getUserId())
 				.email(userEntity.getEmail())
 				.name(userEntity.getName())
 				.authorities((String) claims.get("auth"))
 				.build();
-		
+
 	}
-	
+
 }

@@ -87,10 +87,10 @@ public class JwtTokenProvider {
 		
 		return false;
 					
-		}
+	}
 	
 	public String getToken(String token) {
-		String type = "bearer";
+		String type = "Bearer";
 		if(StringUtils.hasText(token) && token.startsWith(type)) {
 			return token.substring(type.length() + 1);
 		}

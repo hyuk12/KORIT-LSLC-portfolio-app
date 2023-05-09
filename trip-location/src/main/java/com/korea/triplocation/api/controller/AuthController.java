@@ -19,34 +19,36 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-	
-	private final UserService userService;
-	
-	@ValidAspect
+
+    private final UserService userService;
+
+    @ValidAspect
     @PostMapping("/user")
     public ResponseEntity<?> signup(@Valid @RequestBody UserReqDto userReqDto, BindingResult bindingResult) {
 //    	System.out.println(userReqDto.getEmail() + "\t" + userReqDto.getPassword());
-    	userService.checkDuplicatedByEmail(userReqDto.getEmail());
-    	userService.signup(userReqDto);
+        userService.checkDuplicatedByEmail(userReqDto.getEmail());
+        userService.signup(userReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
-	
-	@ValidAspect
+
+    @ValidAspect
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult) {
-		System.out.println(loginReqDto.getEmail() + "\t" + loginReqDto.getPassword());
-		System.out.println(bindingResult.toString());
+        System.out.println(loginReqDto.getEmail() + "\t" + loginReqDto.getPassword());
+        System.out.println(bindingResult.toString());
 //		userService.signin(loginReqDto);
         return ResponseEntity.ok(userService.signin(loginReqDto));
     }
 
     @GetMapping("/authenticated")
     public ResponseEntity<?> authenticated(String accessToken) {
+
         return ResponseEntity.ok(userService.authenticated(accessToken));
     }
 
     @GetMapping("/principal")
     public ResponseEntity<?> principal(String accessToken) {
+
         return ResponseEntity.ok(userService.getPrincipal(accessToken));
     }
 }
