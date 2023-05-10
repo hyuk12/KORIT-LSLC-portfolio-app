@@ -75,7 +75,8 @@
 	
 	<update id="modifyUser">
 		
-		update user_tb
+		update 
+			user_tb
 		set
 			email = #{email},
 			name = #{name},
@@ -86,5 +87,15 @@
 			user_id = #{userId}
 	
 	</update>
+	
+	<delete id="deleteUser" parameterType="int">
+	
+		delete
+		from 
+			user_tb
+		where
+			user_id = #{user_id}
+			
+	</delete>
 	
 </mapper>
