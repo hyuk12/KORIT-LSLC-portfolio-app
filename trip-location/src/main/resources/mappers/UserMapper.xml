@@ -11,6 +11,22 @@
 		<result property="profileImg" column="profile_img"/>
 	</resultMap>
 	
+	<select id="getUserById" resultMap="userMap">
+	
+		select
+			user_id,
+			email,
+			name,
+			phone,
+			address,
+			profile_img
+		from
+			user_tb
+		where
+			user_id = #{userId}
+	
+	</select>
+	
 	<select id="getUserAll" resultMap="userMap">
 	
 		select
@@ -56,5 +72,19 @@
 			phone = #{phone}
 			
 	</select>
+	
+	<update id="modifyUser">
+		
+		update user_tb
+		set
+			email = #{email},
+			name = #{name},
+			phone = #{phone},
+			address = #{address},
+			profile_img = #{profileImg}
+		where
+			user_id = #{userId}
+	
+	</update>
 	
 </mapper>

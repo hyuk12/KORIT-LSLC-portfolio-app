@@ -5,11 +5,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
+import com.korea.triplocation.api.dto.response.UserRespDto;
 import com.korea.triplocation.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -45,8 +48,9 @@ public class UserController {
     
     // user 정보 수정
     @PutMapping("/{userId}")
-    public ResponseEntity<?> modifyUser(@PathVariable int userId) {
-    	return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> modifyUser(@PathVariable int userId, @RequestBody UserModifyReqDto userModifyReqDto) {
+    	UserRespDto modifyUser = userService.modifyUser(userId, userModifyReqDto);
+    	return ResponseEntity.ok(DataRespDto.of(modifyUser));
     }
     
     // user 정보 삭제
