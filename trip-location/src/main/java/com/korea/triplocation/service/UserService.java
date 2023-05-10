@@ -77,7 +77,10 @@ public class UserService {
                 .address(user.getAddress())
                 .profileImg(user.getProfileImg())
                 .build();
-        
+	}
+	
+	public void deleteUser(int userId) {
+		userRepository.deleteUser(userId);
 	}
 	
 	

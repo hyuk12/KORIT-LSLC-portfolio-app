@@ -56,6 +56,7 @@ public class UserController {
     // user 정보 삭제
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable int userId) {
-    	return ResponseEntity.ok().body(null);
+    	userService.deleteUser(userId);
+    	return ResponseEntity.ok(DataRespDto.ofDefault());
     }
 }
