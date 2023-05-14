@@ -3,6 +3,10 @@ package com.korea.triplocation.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.korea.triplocation.api.dto.response.JwtRespDto;
+import com.korea.triplocation.security.JwtTokenProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserRepository userRepository;
+	private final AuthService authService;
+	private final JwtTokenProvider jwtTokenProvider;
 	
 //	public UserRespDto getUser(int userId) {
 //		return userRepository.getUser(userId).toDto();
@@ -44,9 +50,14 @@ public class UserService {
 		
 	}
 	
-	public UserRespDto modifyUser(int userId, UserModifyReqDto userModifyReqDto) {
+	public JwtRespDto modifyUser(int userId, UserModifyReqDto userModifyReqDto, String token) {
 		User user = userRepository.getUserById(userId);
-		
+		boolean authenticatedFlag = authService.authenticated(token);
+
+		if(!authenticatedFlag) {
+			throw new IllegalArgumentException("Invalid user Token");
+		}
+
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
@@ -68,15 +79,11 @@ public class UserService {
         }
         
         userRepository.modifyUser(user);
-        
-        return UserRespDto.builder()
-                .userId(user.getUserId())
-                .email(user.getEmail())
-                .name(user.getName())
-                .phone(user.getPhone())
-                .address(user.getAddress())
-                .profileImg(user.getProfileImg())
-                .build();
+
+		Authentication authentication = (Authentication) user.toPrincipal();
+
+		return jwtTokenProvider.generateToken(authentication);
+
 	}
 	
 	public void deleteUser(int userId) {
