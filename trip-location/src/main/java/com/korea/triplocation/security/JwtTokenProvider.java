@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,7 @@ import io.jsonwebtoken.security.SecurityException;
 
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 	
 	private final Key key;
@@ -70,19 +72,19 @@ public class JwtTokenProvider {
 			
 			return true;
 		} catch (SecurityException | MalformedJwtException e) {	
-			//log.info("Invalid JWT Token", e);
+			log.info("Invalid JWT Token", e);
 			
 		} catch (ExpiredJwtException e) {
-			//log.info("Expired JWT Token", e);
+			log.info("Expired JWT Token", e);
 			
 		} catch (UnsupportedJwtException e) {
-			//log.info("Unsupported JWT Token", e);
+			log.info("Unsupported JWT Token", e);
 			
 		} catch (IllegalArgumentException e) {
-			//log.info("IllegalArgument JWT Token", e);
+			log.info("IllegalArgument JWT Token", e);
 			
 		} catch (Exception e) {
-			//log.info("JWT Token Error", e);
+			log.info("JWT Token Error", e);
 		}
 		
 		return false;
@@ -90,9 +92,9 @@ public class JwtTokenProvider {
 	}
 	
 	public String getToken(String token) {
-		String type = "Bearer";
+		String type = "Bearer ";
 		if(StringUtils.hasText(token) && token.startsWith(type)) {
-			return token.substring(type.length() + 1);
+			return token.substring(type.length());
 		}
 		return null;	
 	}
