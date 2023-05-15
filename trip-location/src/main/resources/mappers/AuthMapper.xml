@@ -66,6 +66,14 @@
 		insert into authority_tb
 		values (0, #{userId}, #{roleId})
 	</insert>
+
+	<update id="updateProvider" parameterType="com.korea.triplocation.domain.user.entity.User">
+		UPDATE user_tb
+		SET
+			provider = #{provider}
+		WHERE
+			user_id = #{userId}
+	</update>
 	
 
 </mapper>

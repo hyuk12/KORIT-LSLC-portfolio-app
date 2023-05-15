@@ -3,13 +3,9 @@ package com.korea.triplocation.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.korea.triplocation.api.dto.response.JwtRespDto;
-import com.korea.triplocation.security.JwtTokenProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.UserRespDto;

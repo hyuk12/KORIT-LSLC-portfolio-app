@@ -1,13 +1,11 @@
 package com.korea.triplocation.api.controller;
 
-import com.korea.triplocation.security.JwtTokenProvider;
-import com.korea.triplocation.service.AuthService;
+import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
-import com.korea.triplocation.api.dto.response.UserRespDto;
 import com.korea.triplocation.service.UserService;
 
 import lombok.RequiredArgsConstructor;

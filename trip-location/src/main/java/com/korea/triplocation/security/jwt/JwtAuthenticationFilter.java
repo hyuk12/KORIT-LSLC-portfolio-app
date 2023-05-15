@@ -1,4 +1,4 @@
-package com.korea.triplocation.security;
+package com.korea.triplocation.security.jwt;
 
 import java.io.IOException;
 
