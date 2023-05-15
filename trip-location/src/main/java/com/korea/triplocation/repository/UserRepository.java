@@ -13,8 +13,8 @@ public interface UserRepository {
 	public List<User> getUserAll();
 	public User searchUserByEmail(String email);
 	public User searchUserByPhone(String phone);
-	public void modifyUser(User user);
-	public void deleteUser(int userId);
+	public int modifyUser(User user);
+	public int deleteUser(int userId);
 
 
 }

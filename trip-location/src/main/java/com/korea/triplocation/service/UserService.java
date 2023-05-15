@@ -50,13 +50,8 @@ public class UserService {
 		
 	}
 	
-	public JwtRespDto modifyUser(int userId, UserModifyReqDto userModifyReqDto, String token) {
+	public boolean modifyUser(int userId, UserModifyReqDto userModifyReqDto) {
 		User user = userRepository.getUserById(userId);
-		boolean authenticatedFlag = authService.authenticated(token);
-
-		if(!authenticatedFlag) {
-			throw new IllegalArgumentException("Invalid user Token");
-		}
 
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
@@ -78,11 +73,7 @@ public class UserService {
             user.setProfileImg(userModifyReqDto.getProfileImg());
         }
         
-        userRepository.modifyUser(user);
-
-		Authentication authentication = (Authentication) user.toPrincipal();
-
-		return jwtTokenProvider.generateToken(authentication);
+		return userRepository.modifyUser(user) != 0;
 
 	}
 	
