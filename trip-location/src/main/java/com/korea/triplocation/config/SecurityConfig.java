@@ -1,8 +1,10 @@
 package com.korea.triplocation.config;
 
-import com.korea.triplocation.security.JwtAuthenticationEntryPoint;
-import com.korea.triplocation.security.JwtAuthenticationFilter;
-import com.korea.triplocation.security.JwtTokenProvider;
+import com.korea.triplocation.security.jwt.JwtAuthenticationEntryPoint;
+import com.korea.triplocation.security.jwt.JwtAuthenticationFilter;
+import com.korea.triplocation.security.jwt.JwtTokenProvider;
+import com.korea.triplocation.security.oauth2.OAuth2SuccessHandler;
+import com.korea.triplocation.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthService authService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
@@ -45,6 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint);
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .oauth2Login()
+                .loginPage("http://localhost:3000/auth/login")
+                .successHandler(oAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(authService);
+
     }
 }

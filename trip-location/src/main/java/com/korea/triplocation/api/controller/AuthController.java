@@ -2,13 +2,12 @@ package com.korea.triplocation.api.controller;
 
 import javax.validation.Valid;
 
+import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
+import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
+import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.korea.triplocation.aop.annotation.ValidAspect;
 import com.korea.triplocation.api.dto.request.LoginReqDto;
@@ -25,6 +24,7 @@ public class AuthController {
 
 	
 	private final AuthService authService;
+    private final JwtTokenProvider jwtTokenProvider;
 	
 	@ValidAspect
     @PostMapping("/user")
@@ -57,4 +57,29 @@ public class AuthController {
         return ResponseEntity.ok(authService.getPrincipal(accessToken));
 
     }
+
+    @PostMapping("/oauth2/register")
+    public ResponseEntity<?> oauth2Register(
+            @RequestHeader(value = "registerToken") String registerToken,
+            @RequestBody OAuth2RegisterReqDto oAuth2RegisterReqDto) {
+
+        System.out.println(oAuth2RegisterReqDto);
+        Boolean validatedToken = jwtTokenProvider.validateToken(jwtTokenProvider.getToken(registerToken));
+
+        if(!validatedToken) {
+            // token 이 유효하지 않음
+            return ResponseEntity.badRequest().body("회원가입 요청 시간이 초과되었습니다.");
+        }
+        System.out.println(oAuth2RegisterReqDto);
+        return ResponseEntity.ok(authService.oauth2Register(oAuth2RegisterReqDto));
+    }
+
+    @PutMapping("/oauth2/merge")
+    public ResponseEntity<?> providerMerge(@RequestBody OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto) {
+        if(!authService.checkPassword(oAuth2ProviderMergeReqDto.getEmail(), oAuth2ProviderMergeReqDto.getPassword())) {
+            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
+        }
+        return ResponseEntity.ok(authService.oAuth2ProviderMerge(oAuth2ProviderMergeReqDto));
+    }
+
 }

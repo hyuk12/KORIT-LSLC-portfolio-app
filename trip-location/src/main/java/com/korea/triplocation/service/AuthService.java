@@ -1,11 +1,22 @@
 package com.korea.triplocation.service;
 
+import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
+import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
+import com.korea.triplocation.security.oauth2.OAuth2Attribute;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.korea.triplocation.api.dto.request.LoginReqDto;
@@ -17,14 +28,18 @@ import com.korea.triplocation.domain.user.entity.User;
 import com.korea.triplocation.exception.CustomException;
 import com.korea.triplocation.exception.ErrorMap;
 import com.korea.triplocation.repository.AuthRepository;
-import com.korea.triplocation.security.JwtTokenProvider;
+import com.korea.triplocation.security.jwt.JwtTokenProvider;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
+
+import java.util.Collections;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService implements UserDetailsService{
+public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
 	private final AuthRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -94,5 +109,55 @@ public class AuthService implements UserDetailsService{
 				.build();
 		
 	}
-	
+
+	public int oauth2Register(OAuth2RegisterReqDto oAuth2RegisterReqDto) {
+		User userEntity = oAuth2RegisterReqDto.toEntity();
+
+		userRepository.saveUser(userEntity);
+		return userRepository.saveAuthority(
+				Authority.builder()
+						.userId(userEntity.getUserId())
+						.roleId(1)
+						.build());
+	}
+
+	public boolean checkPassword(String email, String password) {
+		User userEntity = userRepository.findUserByEmail(email);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+		return passwordEncoder.matches(password, userEntity.getPassword());
+	}
+
+	public int oAuth2ProviderMerge(OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto) {
+		User userEntity = userRepository.findUserByEmail(oAuth2ProviderMergeReqDto.getEmail());
+
+		String provider = oAuth2ProviderMergeReqDto.getProvider();
+
+		if(StringUtils.hasText(userEntity.getProvider())) {
+			userEntity.setProvider(userEntity.getProvider() + "," + provider);
+
+		}else {
+			userEntity.setProvider(provider);
+		}
+
+
+		return userRepository.updateProvider(userEntity);
+	}
+
+	@Override
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+
+		OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
+
+		OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
+		System.out.println(oAuth2User);
+		String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
+		OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, oAuth2User.getAttributes());
+
+		Map<String, Object> userAttribute = oAuth2Attribute.convertToMap();
+
+		System.out.println(oAuth2User);
+		return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), userAttribute, "email");
+	}
 }

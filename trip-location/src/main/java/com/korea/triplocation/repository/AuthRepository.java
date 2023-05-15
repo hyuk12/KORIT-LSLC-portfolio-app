@@ -11,4 +11,6 @@ public interface AuthRepository {
 	public int saveUser(User user);
 	public int saveAuthority(Authority authority);
 	public User findUserByEmail(String email);
+
+    int updateProvider(User userEntity);
 }
