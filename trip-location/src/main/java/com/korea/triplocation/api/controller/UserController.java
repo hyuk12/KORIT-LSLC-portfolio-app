@@ -45,10 +45,9 @@ public class UserController {
     
     // user 정보 수정
     @PutMapping("/{userId}")
-    public ResponseEntity<?> modifyUser(@PathVariable int userId, @RequestBody UserModifyReqDto userModifyReqDto, @RequestHeader(name = "Authorization") String authorization) {
+    public ResponseEntity<?> modifyUser(@PathVariable int userId, @RequestBody UserModifyReqDto userModifyReqDto) {
 
-        System.out.println(authorization);
-        return ResponseEntity.ok(DataRespDto.of(userService.modifyUser(userId, userModifyReqDto, authorization)));
+        return ResponseEntity.ok(DataRespDto.of(userService.modifyUser(userId, userModifyReqDto)));
     }
     
     // user 정보 삭제

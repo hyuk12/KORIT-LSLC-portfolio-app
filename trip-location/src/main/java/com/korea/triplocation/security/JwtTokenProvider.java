@@ -92,6 +92,7 @@ public class JwtTokenProvider {
 	}
 	
 	public String getToken(String token) {
+		System.out.println(token);
 		String type = "Bearer ";
 		if(StringUtils.hasText(token) && token.startsWith(type)) {
 			return token.substring(type.length());
