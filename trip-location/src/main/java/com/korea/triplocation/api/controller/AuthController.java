@@ -29,7 +29,7 @@ public class AuthController {
 	@ValidAspect
     @PostMapping("/user")
     public ResponseEntity<?> signup(@Valid @RequestBody UserReqDto userReqDto, BindingResult bindingResult) {
-//    	System.out.println(userReqDto.getEmail() + "\t" + userReqDto.getPassword());
+
 		authService.checkDuplicatedByEmail(userReqDto.getEmail());
 		authService.signup(userReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
@@ -38,14 +38,12 @@ public class AuthController {
     @ValidAspect
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult) {
-        System.out.println(loginReqDto.getEmail() + "\t" + loginReqDto.getPassword());
-        System.out.println(bindingResult.toString());
-//		userService.signin(loginReqDto);
+
         return ResponseEntity.ok(authService.signin(loginReqDto));
     }
 
     @GetMapping("/authenticated")
-    public ResponseEntity<?> authenticated(String accessToken) {
+    public ResponseEntity<?> authenticated(@RequestHeader(name = "Authorization") String accessToken) {
 
         return ResponseEntity.ok(authService.authenticated(accessToken));
 
@@ -63,14 +61,14 @@ public class AuthController {
             @RequestHeader(value = "registerToken") String registerToken,
             @RequestBody OAuth2RegisterReqDto oAuth2RegisterReqDto) {
 
-        System.out.println(oAuth2RegisterReqDto);
+
         Boolean validatedToken = jwtTokenProvider.validateToken(jwtTokenProvider.getToken(registerToken));
 
         if(!validatedToken) {
             // token 이 유효하지 않음
             return ResponseEntity.badRequest().body("회원가입 요청 시간이 초과되었습니다.");
         }
-        System.out.println(oAuth2RegisterReqDto);
+
         return ResponseEntity.ok(authService.oauth2Register(oAuth2RegisterReqDto));
     }
 

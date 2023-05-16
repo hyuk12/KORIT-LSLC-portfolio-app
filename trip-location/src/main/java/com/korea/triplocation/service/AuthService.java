@@ -150,14 +150,14 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
 
 		OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
-		System.out.println(oAuth2User);
+
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
 		OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, oAuth2User.getAttributes());
 
 		Map<String, Object> userAttribute = oAuth2Attribute.convertToMap();
 
-		System.out.println(oAuth2User);
+
 		return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), userAttribute, "email");
 	}
 }

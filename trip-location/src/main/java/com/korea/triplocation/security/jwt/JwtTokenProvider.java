@@ -94,7 +94,6 @@ public class JwtTokenProvider {
 	}
 	
 	public String getToken(String token) {
-		System.out.println(token);
 		String type = "Bearer ";
 		if(StringUtils.hasText(token) && token.startsWith(type)) {
 			return token.substring(type.length());
@@ -137,8 +136,6 @@ public class JwtTokenProvider {
 
 		OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 		String email = oAuth2User.getAttribute("email");
-
-
 
 		return Jwts.builder()
 				.setSubject("OAuth2Register")
