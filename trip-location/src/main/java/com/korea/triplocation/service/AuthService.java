@@ -66,12 +66,12 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	}
 
 	public JwtRespDto signin(LoginReqDto loginReqDto) {
-		
-		UsernamePasswordAuthenticationToken authenticationToken = 
+
+		UsernamePasswordAuthenticationToken authenticationToken =
 				new UsernamePasswordAuthenticationToken(loginReqDto.getEmail(), loginReqDto.getPassword());
 		Authentication authentication = 
 				authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-		
+
 		return jwtTokenProvider.generateToken(authentication);
 		
 	}
@@ -104,7 +104,7 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 				.name(userEntity.getName())
 				.phone(userEntity.getPhone())
 				.address(userEntity.getAddress())
-				.profileImg(userEntity.getProfileImg())
+				.profileImg(userEntity.getProfileImgPath())
 				.authorities((String) claims.get("auth"))
 				.build();
 		

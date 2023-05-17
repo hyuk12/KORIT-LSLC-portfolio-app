@@ -60,6 +60,8 @@ public class JwtTokenProvider {
 				.setExpiration(tokenExpireDate)
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
+
+		System.out.println(accessToken);
 		
 		return	JwtRespDto.builder().grantType("Bearer").accessToken(accessToken).build(); 
 	}
@@ -94,6 +96,7 @@ public class JwtTokenProvider {
 	}
 	
 	public String getToken(String token) {
+		System.out.println(token);
 		String type = "Bearer ";
 		if(StringUtils.hasText(token) && token.startsWith(type)) {
 			return token.substring(type.length());

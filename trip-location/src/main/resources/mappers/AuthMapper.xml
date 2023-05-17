@@ -10,7 +10,7 @@
 		<result property="name" column="name"/>
 		<result property="phone" column="phone"/>
 		<result property="address" column="address"/>
-		<result property="profileImg" column="profile_img"/>
+		<result property="profileImgPath" column="profile_img"/>
 		<result property="createDate" column="create_date"/>
 		<collection property="authorities"  javaType="list" resultMap="authorityMap" />
 	</resultMap>
@@ -53,13 +53,20 @@
 			
 			
 	</select>
-	
 
-	<insert id="saveUser" parameterType="com.korea.triplocation.domain.user.entity.User"
-	useGeneratedKeys="true"
-	keyProperty="userId">
-		insert into user_tb
-		values (0, #{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImg}, now())
+
+	<insert id="saveUser" parameterType="com.korea.triplocation.domain.user.entity.User" useGeneratedKeys="true" keyProperty="userId">
+		<choose>
+			<when test="provider != null">
+-- 조건에 따라 회원가입 진행 하는 로직입니다 provider가 null 값이 아니면 oauth2의 회원가입에 대한 쿼리
+				insert into user_tb (email, password, name, phone, address, profile_img, create_date, provider)
+				values (#{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImgPath}, now(), #{provider})
+			</when>
+			<otherwise>
+				insert into user_tb (email, password, name, phone, address, profile_img, create_date)
+				values (#{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImgPath}, now())
+			</otherwise>
+		</choose>
 	</insert>
 	
 	<insert id="saveAuthority" parameterType="com.korea.triplocation.domain.user.entity.Authority">

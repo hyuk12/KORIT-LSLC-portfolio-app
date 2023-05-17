@@ -85,7 +85,7 @@ cmake-build-*/
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
 
-# File-based project format
+# PostsImg-based project format
 *.iws
 
 # IntelliJ
@@ -180,7 +180,7 @@ fabric.properties
 
 # Mongo Explorer plugin
 
-# File-based project format
+# PostsImg-based project format
 
 # IntelliJ
 
@@ -238,7 +238,7 @@ fabric.properties
 
 # Mongo Explorer plugin
 
-# File-based project format
+# PostsImg-based project format
 
 # IntelliJ
 

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
@@ -23,7 +24,7 @@ public class User {
 	private String name;
 	private String phone;
 	private String address;
-	private String profileImg;
+	private String profileImgPath;
 	private String provider;
 
 	private LocalDate createDate;	// 계정 생성 일자
@@ -46,7 +47,7 @@ public class User {
 				.name(name)
 				.phone(phone)
 				.address(address)
-				.profileImg(profileImg)
+				.profileImgPath(profileImgPath)
 				.build();
 	}
 	
