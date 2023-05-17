@@ -1,9 +1,17 @@
 package com.korea.triplocation.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.korea.triplocation.domain.user.entity.PostsImg;
 import com.korea.triplocation.security.jwt.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +21,7 @@ import com.korea.triplocation.domain.user.entity.User;
 import com.korea.triplocation.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +30,8 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final AuthService authService;
 	private final JwtTokenProvider jwtTokenProvider;
+	@Value("${file.path}")
+	private String filePath;
 	
 //	public UserRespDto getUser(int userId) {
 //		return userRepository.getUser(userId).toDto();
@@ -47,6 +58,7 @@ public class UserService {
 	}
 	
 	public boolean modifyUser(int userId, UserModifyReqDto userModifyReqDto) {
+
 		User user = userRepository.getUserById(userId);
 
 		if (user == null) {
@@ -65,18 +77,44 @@ public class UserService {
         if (userModifyReqDto.getAddress() != null) {
             user.setAddress(userModifyReqDto.getAddress());
         }
-        if (userModifyReqDto.getProfileImg() != null) {
-            user.setProfileImg(userModifyReqDto.getProfileImg());
-        }
+		if (userModifyReqDto.getProfileImg() != null) {
+			String newProfileImgPath = uploadFile(userModifyReqDto.getProfileImg());
+			user.setProfileImgPath(newProfileImgPath);
+		}
         
 		return userRepository.modifyUser(user) != 0;
 
 	}
-	
-	public void deleteUser(int userId) {
-		userRepository.deleteUser(userId);
+
+	private String uploadFile(MultipartFile file) {
+		if(file == null) {
+			return null;
+		}
+
+		String originFileName = file.getOriginalFilename();
+		String extension = originFileName.substring(originFileName.lastIndexOf("."));
+		String tempFileName = UUID.randomUUID().toString().replaceAll("-", "") + extension;
+
+		Path uploadPath = Paths.get(filePath + "user/" + tempFileName);
+
+		File f = new File(filePath + "user");
+
+		if(!f.exists()) {
+			f.mkdirs();
+		}
+
+		try {
+			Files.write(uploadPath, file.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return uploadPath.toString();
 	}
 	
-	
+	public void deleteUser(int userId) {
+
+		userRepository.deleteUser(userId);
+	}
 
 }

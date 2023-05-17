@@ -4,8 +4,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.korea.triplocation.domain.user.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -13,6 +11,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,7 +34,7 @@ public class UserModifyReqDto {
             message = "전화번호를 형식에 맞게 입력해주세요.")
     private String phone;
     private String address;
-    private String profileImg;
+    private MultipartFile profileImg;
 
     public User toEntity() {
         return User.builder()
@@ -41,7 +42,6 @@ public class UserModifyReqDto {
                 .name(name)
                 .phone(phone)
                 .address(address)
-                .profileImg(profileImg)
                 .build();
 
     }

@@ -29,7 +29,7 @@ public class UserReqDto {
             message = "전화번호를 형식에 맞게 입력해주세요.")
     private String phone;
     private String address;
-    private String profileImg;
+    private String profileImgPath;
 
     public User toEntity() {
         return User.builder()
@@ -38,7 +38,7 @@ public class UserReqDto {
                 .name(name)
                 .phone(phone)
                 .address(address)
-                .profileImg(profileImg)
+                .profileImgPath(profileImgPath)
                 .build();
 
     }
