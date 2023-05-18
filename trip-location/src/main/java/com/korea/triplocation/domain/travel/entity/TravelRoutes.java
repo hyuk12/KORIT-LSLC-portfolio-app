@@ -11,8 +11,6 @@ import java.time.LocalDate;
 public class TravelRoutes {
     private int routeId;
     private int travelId;
-    private int destinationName;
-    private String locationX;
-    private String locationY;
-    private LocalDate visitDate;
+    private int scheduleId;
+
 }
