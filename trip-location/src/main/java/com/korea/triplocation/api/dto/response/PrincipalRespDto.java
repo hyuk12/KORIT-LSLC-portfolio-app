@@ -13,4 +13,5 @@ public class PrincipalRespDto {
 	private String address;
 	private String profileImg;
 	private String authorities;
+	private String provider;
 }

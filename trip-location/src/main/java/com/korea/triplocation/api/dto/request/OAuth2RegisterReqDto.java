@@ -12,7 +12,7 @@ public class OAuth2RegisterReqDto {
     private String checkPassword;
     private String phone;
     private String address;
-    private String profileImg;
+    private String profileImgPath;
     private String provider;
 
     public User toEntity() {
@@ -22,7 +22,7 @@ public class OAuth2RegisterReqDto {
                 .password(new BCryptPasswordEncoder().encode(password))
                 .phone(phone)
                 .address(address)
-                .profileImg(profileImg)
+                .profileImgPath(profileImgPath)
                 .provider(provider)
                 .build();
     }

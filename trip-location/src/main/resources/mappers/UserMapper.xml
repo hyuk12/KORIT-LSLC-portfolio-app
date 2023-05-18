@@ -8,7 +8,7 @@
 		<result property="password" column="password"/>
 		<result property="phone" column="phone"/>
 		<result property="address" column="address"/>
-		<result property="profileImg" column="profile_img"/>
+		<result property="profileImgPath" column="profile_img"/>
 	</resultMap>
 	
 	<select id="getUserById" resultMap="userMap">
@@ -49,7 +49,8 @@
 			name,
 			phone,
 			address,
-			profile_img
+			profile_img,
+			provider
 		from
 			user_tb
 		where
@@ -82,7 +83,7 @@
 			name = #{name},
 			phone = #{phone},
 			address = #{address},
-			profile_img = #{profileImg}
+			profile_img = #{profileImgPath}
 		where
 			user_id = #{userId}
 	

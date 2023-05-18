@@ -43,7 +43,7 @@ public class AuthController {
     }
 
     @GetMapping("/authenticated")
-    public ResponseEntity<?> authenticated(@RequestHeader(name = "Authorization") String accessToken) {
+    public ResponseEntity<?> authenticated(@RequestHeader(value = "Authorization") String accessToken) {
 
         return ResponseEntity.ok(authService.authenticated(accessToken));
 
