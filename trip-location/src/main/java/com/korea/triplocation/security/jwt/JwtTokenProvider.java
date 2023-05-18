@@ -61,7 +61,6 @@ public class JwtTokenProvider {
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 
-		System.out.println(accessToken);
 		
 		return	JwtRespDto.builder().grantType("Bearer").accessToken(accessToken).build(); 
 	}
@@ -76,19 +75,19 @@ public class JwtTokenProvider {
 			
 			return true;
 		} catch (SecurityException | MalformedJwtException e) {	
-			log.info("Invalid JWT Token", e);
+//			log.info("Invalid JWT Token", e);
 			
 		} catch (ExpiredJwtException e) {
-			log.info("Expired JWT Token", e);
+//			log.info("Expired JWT Token", e);
 			
 		} catch (UnsupportedJwtException e) {
-			log.info("Unsupported JWT Token", e);
+//			log.info("Unsupported JWT Token", e);
 			
 		} catch (IllegalArgumentException e) {
-			log.info("IllegalArgument JWT Token", e);
+//			log.info("IllegalArgument JWT Token", e);
 			
 		} catch (Exception e) {
-			log.info("JWT Token Error", e);
+//			log.info("JWT Token Error", e);
 		}
 		
 		return false;
@@ -175,12 +174,16 @@ public class JwtTokenProvider {
 		roles.delete(roles.length() - 1, roles.length());
 		Date tokenExpiresDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24));
 
-		return Jwts.builder()
-				.setSubject("AccessToken")
-				.claim("email", email)
-				.claim("auth", roles)
-				.setExpiration(tokenExpiresDate)
-				.signWith(key, SignatureAlgorithm.HS256)
-				.compact();
+
+
+		String accessToken = "Bearer "+ Jwts.builder()
+							.setSubject(authentication.getName())
+							.claim("auth", roles)
+							.setExpiration(tokenExpiresDate)
+							.signWith(key, SignatureAlgorithm.HS256)
+							.compact();
+
+		return accessToken;
+
 	}
 }
