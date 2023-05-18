@@ -4,6 +4,7 @@ import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
 import com.korea.triplocation.service.UserService;
@@ -46,6 +47,12 @@ public class UserController {
     public ResponseEntity<?> modifyUser(@PathVariable int userId, @RequestBody UserModifyReqDto userModifyReqDto) {
 
         return ResponseEntity.ok(DataRespDto.of(userService.modifyUser(userId, userModifyReqDto)));
+    }
+    
+    // user 비밀번호 수정
+    @PutMapping("/password/reset")
+    public ResponseEntity<?> passwordReset(@RequestBody ResetPasswordReqDto resetPasswordReqDto) {
+    	return ResponseEntity.ok(DataRespDto.of(userService.resetPassword(resetPasswordReqDto)));
     }
     
     // user 정보 삭제
