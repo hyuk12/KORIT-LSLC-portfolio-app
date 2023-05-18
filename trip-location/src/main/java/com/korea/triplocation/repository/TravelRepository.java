@@ -1,10 +1,12 @@
-package com.korea.triplocation.repository.contents;
+package com.korea.triplocation.repository;
 
 import com.korea.triplocation.domain.travel.entity.Location;
 import com.korea.triplocation.domain.travel.entity.Schedule;
 import com.korea.triplocation.domain.travel.entity.TravelRoutes;
 import com.korea.triplocation.domain.travel.entity.Travels;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.time.LocalDate;
 
 @Mapper
 public interface TravelRepository {
@@ -13,5 +15,5 @@ public interface TravelRepository {
     int insertLocationData(Location location);
     int insertRouteData(TravelRoutes travelRoutes);
 
-    void callInsertTravelData(String test, String addr, double lat, double lng, int id, String date);
+    int callInsertTravelData(String travelName, String addr, double lat, double lng, int dateId, LocalDate visitDate);
 }
