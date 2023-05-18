@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -13,9 +14,15 @@ import java.util.List;
 @Builder
 public class TravelPlanReqDto {
     private int id;
-    private String date;
-    private List<LocationReqDto> locations;
+    private LocalDate date;
+    private List<LocationReqDto> location;
 
-
+    public void forEachLocation(Consumer<LocationReqDto> action) {
+        for (LocationReqDto locationReqDto : location) {
+            if (locationReqDto != null) {
+                action.accept(locationReqDto);
+            }
+        }
+    }
 
 }

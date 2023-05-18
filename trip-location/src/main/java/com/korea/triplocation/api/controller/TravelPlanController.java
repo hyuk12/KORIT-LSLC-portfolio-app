@@ -19,6 +19,7 @@ public class TravelPlanController {
 
     @PostMapping("/plan")
     public ResponseEntity<?> plan(@RequestBody List<TravelPlanReqDto> travels) {
+
         travelService.travelSave(travels);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
