@@ -14,6 +14,7 @@ public interface UserRepository {
 	public User searchUserByEmail(String email);
 	public User searchUserByPhone(String phone);
 	public int modifyUser(User user);
+	public int resetPassword(User user);
 	public int deleteUser(int userId);
 
 

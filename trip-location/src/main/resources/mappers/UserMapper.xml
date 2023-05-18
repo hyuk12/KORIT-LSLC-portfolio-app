@@ -89,6 +89,17 @@
 	
 	</update>
 	
+	<update id="resetPassword">
+		
+		update
+			user_tb
+		set
+			password = #{password}
+		where
+			email = #{email}
+			
+	</update>
+	
 	<delete id="deleteUser" parameterType="int">
 	
 		delete

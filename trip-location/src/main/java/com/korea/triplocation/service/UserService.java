@@ -13,8 +13,10 @@ import com.korea.triplocation.domain.user.entity.PostsImg;
 import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.UserRespDto;
 import com.korea.triplocation.domain.user.entity.User;
@@ -110,6 +112,19 @@ public class UserService {
 		}
 
 		return uploadPath.toString();
+	}
+	
+	public boolean resetPassword(ResetPasswordReqDto resetPasswordReqDto) {
+		User user = userRepository.searchUserByEmail(resetPasswordReqDto.getEmail());
+		
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found");
+		}
+		if (resetPasswordReqDto.getPassword() != null) {
+			user.setPassword(new BCryptPasswordEncoder().encode(resetPasswordReqDto.getPassword()));
+		}
+		
+		return userRepository.resetPassword(user) != 0;
 	}
 	
 	public void deleteUser(int userId) {

@@ -41,12 +41,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
-	private final AuthRepository userRepository;
+	private final AuthRepository authRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
 	
 	public void checkDuplicatedByEmail(String email) {
-		User userEntity = userRepository.findUserByEmail(email);
+		User userEntity = authRepository.findUserByEmail(email);
 		
 		if(userEntity != null) {
 			throw new CustomException("Duplicated Email", 
@@ -58,9 +58,9 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	public void signup(UserReqDto userReqDto) {
 		User userEntity = userReqDto.toEntity();
 
-		userRepository.saveUser(userEntity);
+		authRepository.saveUser(userEntity);
 		
-		userRepository.saveAuthority(
+		authRepository.saveAuthority(
 				Authority.builder().userId(userEntity.getUserId()).roleId(1).build());
 
 	}
@@ -78,7 +78,7 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	
 	@Override
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException{
-		User userEntity = userRepository.findUserByEmail(username);
+		User userEntity = authRepository.findUserByEmail(username);
 		
 		if(userEntity == null) {
 			throw new CustomException("로그인 실패",
@@ -96,7 +96,7 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	
 	public PrincipalRespDto getPrincipal(String accessToken) {
 		Claims claims = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken));
-		User userEntity = userRepository.findUserByEmail(claims.getSubject());
+		User userEntity = authRepository.findUserByEmail(claims.getSubject());
 		
 		return PrincipalRespDto.builder()
 				.userId(userEntity.getUserId())
@@ -114,8 +114,8 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	public int oauth2Register(OAuth2RegisterReqDto oAuth2RegisterReqDto) {
 		User userEntity = oAuth2RegisterReqDto.toEntity();
 
-		userRepository.saveUser(userEntity);
-		return userRepository.saveAuthority(
+		authRepository.saveUser(userEntity);
+		return authRepository.saveAuthority(
 				Authority.builder()
 						.userId(userEntity.getUserId())
 						.roleId(1)
@@ -123,14 +123,14 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	}
 
 	public boolean checkPassword(String email, String password) {
-		User userEntity = userRepository.findUserByEmail(email);
+		User userEntity = authRepository.findUserByEmail(email);
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 		return passwordEncoder.matches(password, userEntity.getPassword());
 	}
 
 	public int oAuth2ProviderMerge(OAuth2ProviderMergeReqDto oAuth2ProviderMergeReqDto) {
-		User userEntity = userRepository.findUserByEmail(oAuth2ProviderMergeReqDto.getEmail());
+		User userEntity = authRepository.findUserByEmail(oAuth2ProviderMergeReqDto.getEmail());
 
 		String provider = oAuth2ProviderMergeReqDto.getProvider();
 
@@ -142,7 +142,7 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 		}
 
 
-		return userRepository.updateProvider(userEntity);
+		return authRepository.updateProvider(userEntity);
 	}
 
 	@Override
