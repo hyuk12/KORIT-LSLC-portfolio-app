@@ -12,10 +12,5 @@ import java.util.List;
 public class Travels {
     private int travelId;
     private String travelName;
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-    private List<TravelRoutes> travelRoutes;
-    private List<Participant> participants;
 
 }
