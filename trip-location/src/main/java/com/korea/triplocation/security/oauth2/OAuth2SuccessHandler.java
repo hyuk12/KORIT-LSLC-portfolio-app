@@ -31,6 +31,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String provider = oAuth2User.getAttribute("provider");
         User userEntity = userRepository.searchUserByEmail(email);
 
+        System.out.println(userEntity.getProvider());
+
         if(userEntity == null) {
             String registerToken = jwtTokenProvider.generateOAuth2RegisterToken(authentication);
             String name = oAuth2User.getAttribute("name");
@@ -44,6 +46,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }else {
             if(StringUtils.hasText(userEntity.getProvider())) {
                 // oauth2 로 회원가입을 진행하여 provider 가 있는 상태
+
                 if (!userEntity.getProvider().contains(provider)) {
                     // 로그인된 oauth2 의 provider 는 들고있지 않은 상태
                     response.sendRedirect(
