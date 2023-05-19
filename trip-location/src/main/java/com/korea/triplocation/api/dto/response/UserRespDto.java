@@ -17,6 +17,6 @@ public class UserRespDto {
 	private String name;
 	private String phone;
 	private String address;
-	private String profileImgPath;
+	private int postsImgId;
 
 }

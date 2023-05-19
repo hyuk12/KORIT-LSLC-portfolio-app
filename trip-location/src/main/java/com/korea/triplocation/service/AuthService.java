@@ -104,7 +104,7 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 				.name(userEntity.getName())
 				.phone(userEntity.getPhone())
 				.address(userEntity.getAddress())
-				.profileImg(userEntity.getProfileImgPath())
+				.postsImgId(userEntity.getPostsImgId())
 				.authorities((String) claims.get("auth"))
 				.provider(userEntity.getProvider())
 				.build();

@@ -80,15 +80,16 @@ public class UserService {
             user.setAddress(userModifyReqDto.getAddress());
         }
 		if (userModifyReqDto.getProfileImg() != null) {
-			String newProfileImgPath = uploadFile(userModifyReqDto.getProfileImg());
-			user.setProfileImgPath(newProfileImgPath);
+			PostsImg postsImg = uploadFile(userId, userModifyReqDto.getProfileImg());
+			userRepository.postsImg(postsImg);
+			user.setPostsImgId(postsImg.getPostsImgId());
 		}
         
 		return userRepository.modifyUser(user) != 0;
 
 	}
 
-	private String uploadFile(MultipartFile file) {
+	private PostsImg uploadFile(int userId, MultipartFile file) {
 		if(file == null) {
 			return null;
 		}
@@ -113,7 +114,12 @@ public class UserService {
 
 
 
-		return uploadPath.toString();
+		return PostsImg.builder()
+				.userId(userId)
+				.originName(originFileName)
+				.tempName(tempFileName)
+				.imgSize(Long.toString(file.getSize()))
+				.build();
 	}
 	
 	public boolean resetPassword(ResetPasswordReqDto resetPasswordReqDto) {

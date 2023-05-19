@@ -8,7 +8,7 @@
 		<result property="password" column="password"/>
 		<result property="phone" column="phone"/>
 		<result property="address" column="address"/>
-		<result property="profileImgPath" column="profile_img"/>
+		<result property="postsImgId" column="posts_img_id"/>
 	</resultMap>
 	
 	<select id="getUserById" resultMap="userMap">
@@ -19,7 +19,7 @@
 			name,
 			phone,
 			address,
-			profile_img
+			posts_img_id
 		from
 			user_tb
 		where
@@ -35,7 +35,7 @@
 			name,
 			phone,
 			address,
-			profile_img
+			posts_img_id
 		from
 			user_tb
 			
@@ -49,7 +49,7 @@
 			name,
 			phone,
 			address,
-			profile_img,
+			posts_img_id,
 			provider
 		from
 			user_tb
@@ -66,7 +66,7 @@
 			name,
 			phone,
 			address,
-			profile_img
+			posts_img_id
 		from
 			user_tb
 		where
@@ -83,11 +83,16 @@
 			name = #{name},
 			phone = #{phone},
 			address = #{address},
-			profile_img = #{profileImgPath}
+			posts_img_id = #{postsImgId}
 		where
 			user_id = #{userId}
 	
 	</update>
+
+	<insert id="postsImg" parameterType="com.korea.triplocation.domain.user.entity.PostsImg" useGeneratedKeys="true" keyProperty="postsImgId">
+		insert into posts_img_tb
+		values (0, #{userId}, #{originName}, #{tempName}, #{imgSize})
+	</insert>
 	
 	<update id="resetPassword">
 		
