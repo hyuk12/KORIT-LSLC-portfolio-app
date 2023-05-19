@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.korea.triplocation.repository.AdminRepository">
+
+    <resultMap id="regionMap" type="com.korea.triplocation.domain.travel.entity.Region">
+        <id property="regionId" column="region_id" />
+        <result property="regionName" column="region_name"/>
+        <result property="regionEngName" column="region_eng_name"/>
+        <result property="regionDescription" column="region_description"/>
+    </resultMap>
+
+<!--    <resultMap id="" type="com.korea.triplocation.domain.travel.entity.MainImage">-->
+
+<!--    </resultMap>-->
+
+    <insert id="saveRegion" parameterType="com.korea.triplocation.domain.travel.entity.Region" useGeneratedKeys="true" keyProperty="regionId">
+        insert into region_tb
+        values (0, #{regionName}, #{regionEngName}, #{regionDescription})
+    </insert>
+
+    <select id="selectedRegion" resultMap="regionMap">
+        select
+            *
+        from
+            region_tb
+        where
+            region_name = #{regionName}
+    </select>
+
+    <insert id="saveImage" parameterType="com.korea.triplocation.domain.travel.entity.MainImage" useGeneratedKeys="true" keyProperty="regionImgId">
+        insert into region_img_tb
+        values (0, #{regionId}, #{originName}, #{tempName}, #{imgSize})
+    </insert>
+
+
+</mapper>
