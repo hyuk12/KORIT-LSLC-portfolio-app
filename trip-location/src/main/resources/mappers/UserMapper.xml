@@ -10,7 +10,7 @@
 		<result property="address" column="address"/>
 		<result property="postsImgId" column="posts_img_id"/>
 	</resultMap>
-	
+
 	<select id="getUserById" resultMap="userMap">
 	
 		select
@@ -44,15 +44,20 @@
 	<select id="searchUserByEmail" resultMap="userMap">
 	
 		select
-			user_id,
-			email,
-			name,
-			phone,
-			address,
-			posts_img_id,
-			provider
+			ut.user_id,
+			ut.email,
+			ut.name,
+			ut.phone,
+			ut.address,
+			ut.provider,
+			
+			pit.posts_img_id,
+			pit.origin_name,
+    		pit.temp_name,
+    		pit.img_size
 		from
-			user_tb
+			user_tb ut 
+			left outer join posts_img_tb pit on (pit.posts_img_id = ut.posts_img_id)
 		where
 			email = #{email}
 			
@@ -61,14 +66,20 @@
 	<select id="searchUserByPhone" resultMap="userMap">
 	
 		select
-			user_id,
-			email,
-			name,
-			phone,
-			address,
-			posts_img_id
+			ut.user_id,
+			ut.email,
+			ut.name,
+			ut.phone,
+			ut.address,
+			ut.provider,
+			
+			pit.posts_img_id,
+			pit.origin_name,
+    		pit.temp_name,
+    		pit.img_size
 		from
-			user_tb
+			user_tb ut 
+			left outer join posts_img_tb pit on (pit.posts_img_id = ut.posts_img_id)
 		where
 			phone = #{phone}
 			
