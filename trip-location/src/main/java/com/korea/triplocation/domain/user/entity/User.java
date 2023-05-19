@@ -24,7 +24,7 @@ public class User {
 	private String name;
 	private String phone;
 	private String address;
-	private String profileImgPath;
+	private int postsImgId;
 	private String provider;
 
 	private LocalDate createDate;	// 계정 생성 일자
@@ -47,7 +47,7 @@ public class User {
 				.name(name)
 				.phone(phone)
 				.address(address)
-				.profileImgPath(profileImgPath)
+				.postsImgId(postsImgId)
 				.build();
 	}
 	

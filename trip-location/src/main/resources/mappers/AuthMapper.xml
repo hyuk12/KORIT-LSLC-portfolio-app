@@ -35,7 +35,7 @@
 			ut.name,
 			ut.phone,
 			ut.address,
-			ut.profile_img,
+			ut.posts_img_id,
 			ut.create_date,
 			
 			at.authority_id,
@@ -59,12 +59,12 @@
 		<choose>
 			<when test="provider != null">
 -- 조건에 따라 회원가입 진행 하는 로직입니다 provider가 null 값이 아니면 oauth2의 회원가입에 대한 쿼리
-				insert into user_tb (email, password, name, phone, address, profile_img, create_date, provider)
-				values (#{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImgPath}, now(), #{provider})
+				insert into user_tb (email, password, name, phone, address, posts_img_id, create_date, provider)
+				values (#{email}, #{password}, #{name}, #{phone}, #{address}, #{postsImgId}, now(), #{provider})
 			</when>
 			<otherwise>
-				insert into user_tb (email, password, name, phone, address, profile_img, create_date)
-				values (#{email}, #{password}, #{name}, #{phone}, #{address}, #{profileImgPath}, now())
+				insert into user_tb (email, password, name, phone, address, posts_img_id, create_date)
+				values (#{email}, #{password}, #{name}, #{phone}, #{address}, #{postsImgId}, now())
 			</otherwise>
 		</choose>
 	</insert>
