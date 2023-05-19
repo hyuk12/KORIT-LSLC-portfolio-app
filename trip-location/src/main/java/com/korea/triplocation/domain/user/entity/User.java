@@ -43,18 +43,14 @@ public class User {
 	}
 	
 	public UserRespDto toDto() {
-		PostsImg postsImg = new PostsImg();
-		
+		PostsImg postsImg = new PostsImg();	
 		return UserRespDto.builder()
 				.userId(userId)
 				.email(email)
 				.name(name)
 				.phone(phone)
 				.address(address)
-				.postsImgId(postsImgId)
-				.originName(postsImg.getOriginName())
-				.tempName(postsImg.getTempName())
-				.imgSize(postsImg.getImgSize())
+				.postsImgId(postsImg.getPostsImgId())
 				.build();
 	}
 	

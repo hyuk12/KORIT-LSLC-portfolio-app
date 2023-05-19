@@ -48,13 +48,21 @@ public class UserService {
 		return dtos;
 	}
 	
+	private String convertFilePathToUrl(String tempName) {
+		return "http://localhost:8080/image/user/" + tempName;
+	}
+	
 	public UserRespDto searchUser(int type, String value) {
+		
 		User user = null;
+		PostsImg postsImg = null;
 		
 		if (type == 1) {
 			user = userRepository.searchUserByEmail(value);
+			postsImg =userRepository.getPostsImgById(user.getPostsImgId());
 		} else if (type == 2) {
 			user = userRepository.searchUserByPhone(value);
+			postsImg =userRepository.getPostsImgById(user.getPostsImgId());
 		} else {
 			throw new IllegalArgumentException("Invalid type");
 		}
@@ -63,9 +71,22 @@ public class UserService {
 			return null;
 		}
 		
-		return user.toDto();
+		String imgUrl = null;
+		
+		if(postsImg != null) {
+			imgUrl = convertFilePathToUrl(postsImg.getTempName());
+		}
+		return UserRespDto.builder()
+				.userId(user.getUserId())
+				.postsImgId(user.getPostsImgId())
+				.email(user.getEmail())
+				.name(user.getName())
+				.phone(user.getPhone())
+				.postsImgUrl(imgUrl)
+				.build();
 		
 	}
+	
 	
 	public boolean modifyUser(int userId, UserModifyReqDto userModifyReqDto) {
 
@@ -96,6 +117,7 @@ public class UserService {
 		return userRepository.modifyUser(user) != 0;
 
 	}
+	
 
 	private PostsImg uploadFile(int userId, MultipartFile file) {
 		if(file == null) {

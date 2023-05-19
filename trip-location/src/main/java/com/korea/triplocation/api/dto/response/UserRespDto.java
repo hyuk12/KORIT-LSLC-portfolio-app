@@ -13,13 +13,11 @@ import java.util.List;
 public class UserRespDto {
 	
 	private int userId;
-	private String email;
+	private int postsImgId;
 	private String name;
+	private String email;
 	private String phone;
 	private String address;
-	private int postsImgId;
-	private String originName;
-	private String tempName;
-	private String imgSize;
+	private String postsImgUrl;
 
 }
