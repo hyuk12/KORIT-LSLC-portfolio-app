@@ -49,13 +49,21 @@ public class UserService {
 	}
 	
 	public UserRespDto searchUser(int type, String value) {
+		User user = null;
+		
 		if (type == 1) {
-			return userRepository.searchUserByEmail(value).toDto();
+			user = userRepository.searchUserByEmail(value);
 		} else if (type == 2) {
-			return userRepository.searchUserByPhone(value).toDto();
+			user = userRepository.searchUserByPhone(value);
 		} else {
 			throw new IllegalArgumentException("Invalid type");
 		}
+		
+		if(user == null) {
+			return null;
+		}
+		
+		return user.toDto();
 		
 	}
 	
