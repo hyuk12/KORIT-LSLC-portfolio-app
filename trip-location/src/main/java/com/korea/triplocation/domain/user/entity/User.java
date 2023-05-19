@@ -32,10 +32,12 @@ public class User {
 	private List<Authority> authorities;
 	
 	public PrincipalUser toPrincipal() {
+		PostsImg postsImg = new PostsImg();
 		return PrincipalUser.builder()
 				.userId(userId)
 				.email(email)
 				.password(password)
+				.postsImgId(postsImg.getPostsImgId())
 				.authorities(authorities)
 				.build();
 	}

@@ -20,4 +20,5 @@ public interface UserRepository {
 	public int deleteUser(int userId);
 
 
+	public PostsImg getPostsImgById(int postsImgId);
 }
