@@ -18,5 +18,8 @@ public class UserRespDto {
 	private String phone;
 	private String address;
 	private int postsImgId;
+	private String originName;
+	private String tempName;
+	private String imgSize;
 
 }

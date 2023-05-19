@@ -16,5 +16,4 @@ public class PostsImg {
     private String tempName;
     private String imgSize;
 
-
 }
