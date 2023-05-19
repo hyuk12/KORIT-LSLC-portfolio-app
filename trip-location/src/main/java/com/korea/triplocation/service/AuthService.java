@@ -2,6 +2,8 @@ package com.korea.triplocation.service;
 
 import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
 import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
+import com.korea.triplocation.domain.user.entity.PostsImg;
+import com.korea.triplocation.repository.UserRepository;
 import com.korea.triplocation.security.oauth2.OAuth2Attribute;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -42,6 +44,7 @@ import java.util.Map;
 public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
 	private final AuthRepository authRepository;
+	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
 	
@@ -96,8 +99,16 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	
 	public PrincipalRespDto getPrincipal(String accessToken) {
 		Claims claims = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken));
+		System.out.println(claims.getSubject());
 		User userEntity = authRepository.findUserByEmail(claims.getSubject());
-		
+		PostsImg postsImg = userRepository.getPostsImgById(userEntity.getPostsImgId());
+		System.out.println(userEntity.getPostsImgId());
+		String imageUrl = null;
+
+		if(postsImg != null) {
+			imageUrl = convertFilePathToUrl(postsImg.getTempName());
+		}
+
 		return PrincipalRespDto.builder()
 				.userId(userEntity.getUserId())
 				.email(userEntity.getEmail())
@@ -105,10 +116,15 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 				.phone(userEntity.getPhone())
 				.address(userEntity.getAddress())
 				.postsImgId(userEntity.getPostsImgId())
+				.postsImgUrl(imageUrl)
 				.authorities((String) claims.get("auth"))
 				.provider(userEntity.getProvider())
 				.build();
 		
+	}
+
+	private String convertFilePathToUrl(String tempName) {
+		return "http://localhost:8080/image/user/" + tempName;
 	}
 
 	public int oauth2Register(OAuth2RegisterReqDto oAuth2RegisterReqDto) {

@@ -10,7 +10,7 @@
 		<result property="name" column="name"/>
 		<result property="phone" column="phone"/>
 		<result property="address" column="address"/>
-		<result property="profileImgPath" column="profile_img"/>
+		<result property="postsImgId" column="posts_img_id"/>
 		<result property="createDate" column="create_date"/>
 		<collection property="authorities"  javaType="list" resultMap="authorityMap" />
 	</resultMap>

@@ -10,6 +10,14 @@
 		<result property="address" column="address"/>
 		<result property="postsImgId" column="posts_img_id"/>
 	</resultMap>
+
+	<resultMap id="postsImg" type="com.korea.triplocation.domain.user.entity.PostsImg">
+		<id property="postsImgId" column="posts_img_id" />
+		<result property="userId" column="user_id"/>
+		<result property="originName" column="origin_name"/>
+		<result property="tempName" column="temp_name" />
+		<result property="imgSize" column="img_size" />
+	</resultMap>
 	
 	<select id="getUserById" resultMap="userMap">
 	
@@ -93,6 +101,20 @@
 		insert into posts_img_tb
 		values (0, #{userId}, #{originName}, #{tempName}, #{imgSize})
 	</insert>
+
+	<select id="getPostsImgById" resultMap="postsImg">
+		select
+		    posts_img_id,
+			user_id,
+			origin_name,
+			temp_name,
+			img_size
+		from
+		    posts_img_tb
+		where
+		    posts_img_id = #{postsImgId}
+
+	</select>
 	
 	<update id="resetPassword">
 		

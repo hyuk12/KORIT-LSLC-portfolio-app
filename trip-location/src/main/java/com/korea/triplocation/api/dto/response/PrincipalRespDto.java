@@ -12,6 +12,7 @@ public class PrincipalRespDto {
 	private String phone;
 	private String address;
 	private int postsImgId;
+	private String postsImgUrl;
 	private String authorities;
 	private String provider;
 }
