@@ -109,6 +109,13 @@ public class UserService {
             user.setAddress(userModifyReqDto.getAddress());
         }
 		if (userModifyReqDto.getProfileImg() != null) {
+			PostsImg currentPostsImg = userRepository.getPostsImgByUserId(userId);
+			// If user has a profile image, delete it
+			if (currentPostsImg != null) {
+				deleteFile(currentPostsImg.getTempName());
+			}
+
+			// Upload new image
 			PostsImg postsImg = uploadFile(userId, userModifyReqDto.getProfileImg());
 			userRepository.postsImg(postsImg);
 			user.setPostsImgId(postsImg.getPostsImgId());
@@ -150,6 +157,16 @@ public class UserService {
 				.tempName(tempFileName)
 				.imgSize(Long.toString(file.getSize()))
 				.build();
+	}
+
+	private void deleteFile(String filename) {
+		Path uploadPath = Paths.get(filePath + "user/" + filename);
+
+		try {
+			Files.delete(uploadPath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean resetPassword(ResetPasswordReqDto resetPasswordReqDto) {

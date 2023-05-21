@@ -126,7 +126,20 @@
 		    posts_img_id = #{postsImgId}
 
 	</select>
-	
+	<select id="getPostsImgByUserId" resultType="com.korea.triplocation.domain.user.entity.PostsImg"
+			parameterType="int">
+		select
+		    posts_img_id,
+		    user_id,
+		    origin_name,
+		    temp_name,
+		    img_size
+		from
+		    posts_img_tb
+		where
+		    user_id = #{userId}
+	</select>
+
 	<update id="resetPassword">
 		
 		update
