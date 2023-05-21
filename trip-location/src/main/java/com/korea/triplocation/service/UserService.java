@@ -1,6 +1,7 @@
 package com.korea.triplocation.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -109,16 +110,33 @@ public class UserService {
             user.setAddress(userModifyReqDto.getAddress());
         }
 		if (userModifyReqDto.getProfileImg() != null) {
+			System.out.println(userId);
 			PostsImg currentPostsImg = userRepository.getPostsImgByUserId(userId);
 			// If user has a profile image, delete it
+
 			if (currentPostsImg != null) {
-				deleteFile(currentPostsImg.getTempName());
+				try {
+					deleteFile(currentPostsImg.getTempName());
+
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+
+				userRepository.deletePostsImg(currentPostsImg.getPostsImgId());
+
+				PostsImg postsImg = uploadFile(userId, userModifyReqDto.getProfileImg());
+				userRepository.postsImg(postsImg);
+				user.setPostsImgId(postsImg.getPostsImgId());
+			}
+
+			if (currentPostsImg == null && user.getPostsImgId() == -1) {
+				PostsImg postsImg = uploadFile(userId, userModifyReqDto.getProfileImg());
+				userRepository.postsImg(postsImg);
+				user.setPostsImgId(postsImg.getPostsImgId());
 			}
 
 			// Upload new image
-			PostsImg postsImg = uploadFile(userId, userModifyReqDto.getProfileImg());
-			userRepository.postsImg(postsImg);
-			user.setPostsImgId(postsImg.getPostsImgId());
+
 		}
         
 		return userRepository.modifyUser(user) != 0;
@@ -159,13 +177,18 @@ public class UserService {
 				.build();
 	}
 
-	private void deleteFile(String filename) {
+	private void deleteFile(String filename) throws IOException {
 		Path uploadPath = Paths.get(filePath + "user/" + filename);
 
-		try {
-			Files.delete(uploadPath);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (Files.exists(uploadPath)) {
+			try {
+				System.out.println(uploadPath);
+				Files.delete(uploadPath);
+			} catch (IOException e) {
+				throw new IOException("Failed to delete file: " + uploadPath, e);
+			}
+		} else {
+			throw new FileNotFoundException("File not found: " + uploadPath);
 		}
 	}
 	

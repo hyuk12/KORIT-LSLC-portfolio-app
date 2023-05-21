@@ -99,14 +99,15 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	
 	public PrincipalRespDto getPrincipal(String accessToken) {
 		Claims claims = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken));
-		System.out.println(claims.getSubject());
+
 		User userEntity = authRepository.findUserByEmail(claims.getSubject());
-		PostsImg postsImg = userRepository.getPostsImgById(userEntity.getPostsImgId());
-		System.out.println(userEntity.getPostsImgId());
 		String imageUrl = null;
 
-		if(postsImg != null) {
+		if(userEntity.getPostsImgId() != -1) {
+			PostsImg postsImg = userRepository.getPostsImgById(userEntity.getPostsImgId());
 			imageUrl = convertFilePathToUrl(postsImg.getTempName());
+		}else {
+			imageUrl = convertFilePathToUrl("default.png");
 		}
 
 		return PrincipalRespDto.builder()
