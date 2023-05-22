@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
+import com.korea.triplocation.api.dto.response.UserRespDto;
 import com.korea.triplocation.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,9 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<?> searchUser(@RequestParam("type") int type,
             							@RequestParam("value") String value) {
+    	
+    	UserRespDto userRespDto = userService.searchUser(type, value);
+    	System.out.println(userRespDto);
     	return ResponseEntity.ok().body(DataRespDto.of(userService.searchUser(type, value)));
     }
     
