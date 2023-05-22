@@ -57,13 +57,25 @@ public class UserService {
 		
 		User user = null;
 		PostsImg postsImg = null;
+		String imgUrl = null;
 		
 		if (type == 1) {
 			user = userRepository.searchUserByEmail(value);
-			postsImg =userRepository.getPostsImgById(user.getPostsImgId());
+			System.out.println(user.getPostsImgId());
+			if(user.getPostsImgId() != -1) {
+				postsImg = userRepository.getPostsImgById(user.getPostsImgId());
+				imgUrl = convertFilePathToUrl(postsImg.getTempName());
+			}else {
+				imgUrl = convertFilePathToUrl("default.png");
+			}
 		} else if (type == 2) {
 			user = userRepository.searchUserByPhone(value);
-			postsImg =userRepository.getPostsImgById(user.getPostsImgId());
+			if(user.getPostsImgId() != -1) {
+				postsImg = userRepository.getPostsImgById(user.getPostsImgId());
+				imgUrl = convertFilePathToUrl(postsImg.getTempName());
+			}else {
+				imgUrl = convertFilePathToUrl("default.png");
+			}
 		} else {
 			throw new IllegalArgumentException("Invalid type");
 		}
@@ -72,11 +84,6 @@ public class UserService {
 			return null;
 		}
 		
-		String imgUrl = null;
-		
-		if(postsImg != null) {
-			imgUrl = convertFilePathToUrl(postsImg.getTempName());
-		}
 		return UserRespDto.builder()
 				.userId(user.getUserId())
 				.postsImgId(user.getPostsImgId())
