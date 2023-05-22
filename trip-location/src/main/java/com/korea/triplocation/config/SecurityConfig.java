@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin().disable();
 
         http.authorizeRequests()
-                .antMatchers("/api/v1/auth/**", "/image/**")
+                .antMatchers("/api/v1/auth/**", "/image/**", "/post/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
