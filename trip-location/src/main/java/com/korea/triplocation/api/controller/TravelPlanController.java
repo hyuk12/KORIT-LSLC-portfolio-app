@@ -25,7 +25,6 @@ public class TravelPlanController {
 
     @PostMapping("/save")
     public ResponseEntity<?> plan(@RequestBody List<TravelPlanReqDto> travels) {
-
         travelService.travelSave(travels);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
@@ -35,11 +34,12 @@ public class TravelPlanController {
         return ResponseEntity.ok(travelService.findTravelByUserId(userId));
     }
     
+
     @GetMapping("/region")
     public ResponseEntity<?> findMainImage(@RequestParam("travelName") String travelName){
     	return ResponseEntity.ok(travelService.findMainImageByTravelName(travelName));
     }
-    
+
     @GetMapping("/info")
     public ResponseEntity<?> myTravelInfo(int travelId) {
         return ResponseEntity.ok(travelService.findTravelInfoByTravelId(travelId));
