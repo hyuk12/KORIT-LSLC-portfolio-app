@@ -16,13 +16,16 @@ public class Region {
     private String regionName;
     private String regionEngName;
     private String regionDescription;
+    private int regionImgId;
     
     public RegionRespDto toDto() {
+    	MainImage mainImage = new MainImage();
     	return RegionRespDto.builder()
     			.regionId(regionId)
     			.regionName(regionName)
     			.regionEngName(regionEngName)
     			.regionDescription(regionDescription)
+    			.regionImgId(mainImage.getRegionImgId())
     			.build();
     }
 }

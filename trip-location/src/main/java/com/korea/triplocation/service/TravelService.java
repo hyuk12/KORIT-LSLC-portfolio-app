@@ -3,8 +3,13 @@ package com.korea.triplocation.service;
 import com.korea.triplocation.api.dto.request.LocationReqDto;
 import com.korea.triplocation.api.dto.request.PartyDataReqDto;
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
+
+import com.korea.triplocation.domain.travel.entity.MainImage;
+import com.korea.triplocation.domain.travel.entity.Region;
+
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
 import com.korea.triplocation.domain.travel.entity.Location;
+
 import com.korea.triplocation.domain.travel.entity.Travels;
 import com.korea.triplocation.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +70,11 @@ public class TravelService {
         return travelRepository.findTravelAllByUser(userId);
     }
 
+
+    public MainImage findMainImageByTravelName(String travalName) {
+    	return travelRepository.findMainImageByTravelName(travalName);
+    }
+
     public MyTravelInfoRespDto findTravelInfoByTravelId(int travelId) {
         Travels travelByTravelId = travelRepository.findTravelByTravelId( travelId);
 
@@ -73,7 +83,6 @@ public class TravelService {
                 .schedules(travelByTravelId.getSchedules())
                 .build();
     }
-
 
 
 
