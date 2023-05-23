@@ -15,4 +15,6 @@ public class MainImage {
     private String originName;
     private String tempName;
     private String imgSize;
+
+
 }

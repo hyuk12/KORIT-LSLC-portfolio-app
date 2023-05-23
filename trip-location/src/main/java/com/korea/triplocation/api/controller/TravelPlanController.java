@@ -11,21 +11,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/travel")
+@RequestMapping("/api/v1/travel/plan")
 @RequiredArgsConstructor
 public class TravelPlanController {
 
     private final TravelService travelService;
 
-    @PostMapping("/plan")
+    @PostMapping("/")
     public ResponseEntity<?> plan(@RequestBody List<TravelPlanReqDto> travels) {
 
         travelService.travelSave(travels);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
 
-    @GetMapping("/plan/list")
+    @GetMapping("/list")
     public ResponseEntity<?> view() {
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<?> myTravelInfo(int travelId) {
+        return ResponseEntity.ok(travelService.findTravelInfoByTravelId(travelId));
     }
 }
