@@ -61,7 +61,6 @@ public class UserService {
 		
 		if (type == 1) {
 			user = userRepository.searchUserByEmail(value);
-			System.out.println(user.getPostsImgId());
 			if(user.getPostsImgId() != -1) {
 				postsImg = userRepository.getPostsImgById(user.getPostsImgId());
 				imgUrl = convertFilePathToUrl(postsImg.getTempName());

@@ -15,7 +15,7 @@ public class TravelPlanReqDto {
     private int id;
     private LocalDate date;
     private List<LocationReqDto> location;
-    private int userId;
+    private List<PartyDataReqDto> partyData;
 
     public void forEachLocation(Consumer<LocationReqDto> action) {
         for (LocationReqDto locationReqDto : location) {
