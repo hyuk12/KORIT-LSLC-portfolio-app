@@ -28,4 +28,9 @@ public class TravelPlanController {
     public ResponseEntity<?> view() {
         return ResponseEntity.ok(null);
     }
+    
+    @GetMapping("/plan/region")
+    public ResponseEntity<?> findMainImage(@RequestParam("travelName") String travelName){
+    	return ResponseEntity.ok(travelService.findMainImageByTravelName(travelName));
+    }
 }

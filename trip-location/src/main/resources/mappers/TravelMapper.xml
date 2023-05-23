@@ -40,7 +40,21 @@
         <id column="travel_id" property="travelId"/>
         <result column="travel_name" property="travelName"/>
     </resultMap>
-
+	<resultMap type="com.korea.triplocation.domain.travel.entity.Region" id="region">
+		<id property="regionId" column="region_id"/>
+		<result property="regionName" column="region_name"/>
+		<result property="regionEngName" column="region_eng_name"/>
+		<result property="regionDescription" column="region_description"/>
+	</resultMap>
+	
+	<resultMap type="com.korea.triplocation.domain.travel.entity.MainImage" id="mainImage">
+		<id property="regionImgId" column="region_img_id"/>
+		<id property="regionId" column="region_id"/>
+		<result property="originName" column="origin_name"/>
+		<result property="tempName" column="temp_name"/>
+		<result property="imgSize" column="img_size"/>
+	</resultMap>
+	
     <insert id="callInsertTravelData">
         {CALL InsertTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{userId}, #{scheduleDate})}
     </insert>
@@ -73,8 +87,24 @@
         WHERE
             tpt.user_id = #{userId}
     </select>
-
-
+    
+ 	<select id="findMainImageByTravelName" resultMap="mainImage">
+		select
+			rt.region_id,
+		    rt.region_name,
+		    rt.region_eng_name,
+		    rt.region_description,
+		    
+		    rit.region_img_id,
+		    rit.origin_name,
+		    rit.temp_name,
+		    rit.img_size
+		from
+			region_tb rt
+		    left outer join region_img_tb rit on(rit.region_id = rt.region_id)
+		where
+		    rt.region_name = #{travelName};
+	</select>
 
 <!--    <select id="findTravelById" resultMap="Travel">-->
 <!--        SELECT-->
