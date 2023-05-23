@@ -17,4 +17,6 @@ public class Schedule {
     private int travelId;
     private LocalDate scheduleDate;
 
+    private List<Location> locations;
+
 }

@@ -9,8 +9,15 @@ import com.korea.triplocation.domain.travel.entity.Travels;
 
 @Mapper
 public interface TravelRepository {
+
     public Travels findTravelAllByUser(int userId);
     public int callInsertTravelData(String travelName, String addr, double lat, double lng, int userId, LocalDate scheduleDate);
     
     public MainImage findMainImageByTravelName(String travelName);
+
+    Travels findTravelAllByUser(int userId);
+    Travels findTravelByTravelId(int travelId);
+    int callInsertTravelData(String travelName, String addr, double lat, double lng, int userId, LocalDate scheduleDate);
+
+
 }

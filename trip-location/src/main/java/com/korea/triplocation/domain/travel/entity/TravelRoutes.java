@@ -14,5 +14,4 @@ public class TravelRoutes {
     private int scheduleId;
     private int locationId;
 
-    private List<Location> locations;
 }
