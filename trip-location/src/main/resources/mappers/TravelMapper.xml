@@ -42,7 +42,7 @@
     </resultMap>
 
     <insert id="callInsertTravelData">
-        {CALL InsertTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{userId}, #{visitDate})}
+        {CALL InsertTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{userId}, #{scheduleDate})}
     </insert>
 
     <select id="findTravelAllByUser" resultMap="travel">
