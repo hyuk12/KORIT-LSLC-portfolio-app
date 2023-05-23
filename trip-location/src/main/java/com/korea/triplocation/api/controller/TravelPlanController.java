@@ -2,13 +2,9 @@ package com.korea.triplocation.api.controller;
 
 import java.util.List;
 
+import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
@@ -41,8 +37,14 @@ public class TravelPlanController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<?> myTravelInfo(int travelId) {
-        return ResponseEntity.ok(travelService.findTravelInfoByTravelId(travelId));
+    public ResponseEntity<?> myTravelInfo(int userId, int travelId) {
+        return ResponseEntity.ok(travelService.findTravelInfoByTravelId(userId, travelId));
 
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateTravel(@RequestBody TravelUpdateReqDto travelUpdateReqDto) {
+        travelService.updateTravel(travelUpdateReqDto);
+        return ResponseEntity.ok(DataRespDto.ofDefault());
     }
 }

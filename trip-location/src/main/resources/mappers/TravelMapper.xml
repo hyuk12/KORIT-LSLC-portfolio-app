@@ -19,8 +19,6 @@
         <id column="route_id" property="routeId"/>
         <result column="schedule_id" property="scheduleId"/>
         <result column="location_id" property="locationId"/>
-        <collection property="schedules" javaType="list" resultMap="schedule" />
-        <collection property="locations" javaType="list" resultMap="location" />
     </resultMap>
 
     <resultMap id="schedule" type="com.korea.triplocation.domain.travel.entity.Schedule">
@@ -125,10 +123,14 @@
                 LEFT OUTER JOIN location_tb lt ON(lt.location_id = trt.location_id)
         WHERE
             tpt.travel_id = #{travelId}
+        and tpt.user_id = #{userId}
         ORDER By
             st.schedule_date ASC
    </select>
 
+    <update id="callUpdateTravelData">
+        {CALL UpdateTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{userId}, #{scheduleDate})}
+    </update>
 
 <!--    <select id="findTravelById" resultMap="Travel">-->
 <!--        SELECT-->

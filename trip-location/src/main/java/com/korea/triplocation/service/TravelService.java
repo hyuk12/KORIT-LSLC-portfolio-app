@@ -4,6 +4,7 @@ import com.korea.triplocation.api.dto.request.LocationReqDto;
 import com.korea.triplocation.api.dto.request.PartyDataReqDto;
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
 
+import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
 import com.korea.triplocation.domain.travel.entity.MainImage;
 import com.korea.triplocation.domain.travel.entity.Region;
 
@@ -75,8 +76,8 @@ public class TravelService {
     	return travelRepository.findMainImageByTravelName(travalName);
     }
 
-    public MyTravelInfoRespDto findTravelInfoByTravelId(int travelId) {
-        Travels travelByTravelId = travelRepository.findTravelByTravelId( travelId);
+    public MyTravelInfoRespDto findTravelInfoByTravelId(int userId, int travelId) {
+        Travels travelByTravelId = travelRepository.findTravelByTravelId(userId, travelId);
 
         return MyTravelInfoRespDto.builder()
                 .schedules(travelByTravelId.getSchedules())
@@ -84,7 +85,8 @@ public class TravelService {
     }
 
 
+    public void updateTravel(TravelUpdateReqDto travelUpdateReqDto) {
+        travelUpdateReqDto.getSchedules()
 
-
-
+    }
 }
