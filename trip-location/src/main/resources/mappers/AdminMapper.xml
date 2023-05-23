@@ -9,9 +9,13 @@
         <result property="regionDescription" column="region_description"/>
     </resultMap>
 
-<!--    <resultMap id="" type="com.korea.triplocation.domain.travel.entity.MainImage">-->
-
-<!--    </resultMap>-->
+    <resultMap id="regionImgMap" type="com.korea.triplocation.domain.travel.entity.MainImage">
+		<id property="regionImgId" column="region_img_id" />
+		<result property="regionId" column="region_id" />
+		<result property="originName" column="origin_name" />
+		<result property="tempName" column="temp_name" />
+		<result property="imgSize" column="img_size" />
+    </resultMap>
 
     <insert id="saveRegion" parameterType="com.korea.triplocation.domain.travel.entity.Region" useGeneratedKeys="true" keyProperty="regionId">
         insert into region_tb
@@ -31,6 +35,20 @@
         insert into region_img_tb
         values (0, #{regionId}, #{originName}, #{tempName}, #{imgSize})
     </insert>
+    
+    <select id="getRegions" resultMap="regionMap">
+    	select
+    		*
+    	from
+    		region_tb
+    </select>
+    
+    <select id="getMainImages" resultMap="regionImgMap">
+    	select
+    		*
+    	from
+    		region_img_tb
+    </select>
 
 
 </mapper>
