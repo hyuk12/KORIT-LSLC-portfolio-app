@@ -13,6 +13,6 @@ public class Travels {
     private int travelId;
     private String travelName;
 
-    private List<Schedule> schedules;
     private List<Participant> participants;
+    private List<Schedule> schedules;
 }

@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Mapper
 public interface TravelRepository {
     Travels findTravelAllByUser(int userId);
+    Travels findTravelByTravelId(int travelId);
     int callInsertTravelData(String travelName, String addr, double lat, double lng, int userId, LocalDate scheduleDate);
 
 }

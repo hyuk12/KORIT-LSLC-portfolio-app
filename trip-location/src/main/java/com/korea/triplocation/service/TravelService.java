@@ -3,13 +3,14 @@ package com.korea.triplocation.service;
 import com.korea.triplocation.api.dto.request.LocationReqDto;
 import com.korea.triplocation.api.dto.request.PartyDataReqDto;
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
+import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
+import com.korea.triplocation.domain.travel.entity.Location;
 import com.korea.triplocation.domain.travel.entity.Travels;
 import com.korea.triplocation.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,47 +21,57 @@ public class TravelService {
         if (travels != null && !travels.isEmpty()) {
             String travelName = UUID.randomUUID().toString();
             Integer travelId = null;
-            PartyDataReqDto partyDataReqDto = null;
 
             for (TravelPlanReqDto dto : travels) {
-                if (dto != null && dto.getLocation() != null) {
+                if (dto != null && dto.getLocation() != null && !dto.getPartyData().isEmpty()) {
                     List<LocationReqDto> locations = dto.getLocation();
                     List<PartyDataReqDto> partyData = dto.getPartyData();
 
-                    for (int i = 0; i < partyData.size(); i++) {
-                        partyDataReqDto = partyData.get(i);
-
-                    }
                     for (int i = 0; i < locations.size(); i++) {
                         LocationReqDto locationReqDto = locations.get(i);
-                        if (i == 0 && travelId == null) {
-                            travelId = travelRepository.callInsertTravelData(
-                                    travelName,
-                                    locationReqDto.getAddr(),
-                                    locationReqDto.getLat(),
-                                    locationReqDto.getLng(),
-                                    partyDataReqDto.getUserId(),
-                                    dto.getDate() // Visit date
-                            );
-                        } else {
-                            travelRepository.callInsertTravelData(
-                                    null,
-                                    locationReqDto.getAddr(),
-                                    locationReqDto.getLat(),
-                                    locationReqDto.getLng(),
-                                    partyDataReqDto.getUserId(),
-                                    dto.getDate() // Visit date
-                            );
+                        for (PartyDataReqDto partyDataReqDto : partyData) {
+                            System.out.println(partyDataReqDto.getUserId());
+
+                            if (i == 0 && travelId == null) {
+                                // Save the travel with the first location and first participant and get the travel ID
+                                travelId = travelRepository.callInsertTravelData(
+                                        travelName,
+                                        locationReqDto.getAddr(),
+                                        locationReqDto.getLat(),
+                                        locationReqDto.getLng(),
+                                        partyDataReqDto.getUserId(),
+                                        dto.getDate() // Visit date
+                                );
+                            } else {
+                                // Save the other locations with the same travel ID and all participants
+                                travelRepository.callInsertTravelData(
+                                        null,
+                                        locationReqDto.getAddr(),
+                                        locationReqDto.getLat(),
+                                        locationReqDto.getLng(),
+                                        partyDataReqDto.getUserId(),
+                                        dto.getDate() // Visit date
+                                );
+                            }
                         }
                     }
-
                 }
             }
+
         }
     }
 
     public Travels findTravelByUserId(int userId) {
         return travelRepository.findTravelAllByUser(userId);
+    }
+
+    public MyTravelInfoRespDto findTravelInfoByTravelId(int travelId) {
+        Travels travelByTravelId = travelRepository.findTravelByTravelId( travelId);
+
+
+        return MyTravelInfoRespDto.builder()
+                .schedules(travelByTravelId.getSchedules())
+                .build();
     }
 
 
