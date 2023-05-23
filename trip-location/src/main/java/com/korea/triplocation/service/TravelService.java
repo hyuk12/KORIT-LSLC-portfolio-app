@@ -2,6 +2,7 @@ package com.korea.triplocation.service;
 
 import com.korea.triplocation.api.dto.request.LocationReqDto;
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
+import com.korea.triplocation.domain.travel.entity.Travels;
 import com.korea.triplocation.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class TravelService {
                                     locationReqDto.getAddr(),
                                     locationReqDto.getLat(),
                                     locationReqDto.getLng(),
-                                    dto.getId(),
+                                    dto.getUserId(),
                                     dto.getDate() // Visit date
                             );
                         } else {
@@ -40,7 +41,7 @@ public class TravelService {
                                     locationReqDto.getAddr(),
                                     locationReqDto.getLat(),
                                     locationReqDto.getLng(),
-                                    dto.getId(),
+                                    dto.getUserId(),
                                     dto.getDate() // Visit date
                             );
                         }
@@ -49,6 +50,14 @@ public class TravelService {
             }
         }
     }
+
+    public Travels findTravelByUserId(int userId) {
+        return travelRepository.findTravelAllByUser(userId);
+    }
+
+
+
+
 
 
 }

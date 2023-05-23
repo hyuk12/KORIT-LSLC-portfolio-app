@@ -1,6 +1,5 @@
 package com.korea.triplocation.domain.travel.entity;
 
-import com.korea.triplocation.api.dto.request.LocationReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Schedule {
     private int scheduleId;
-    private LocalDate scheduleDate;
     private int travelId;
+    private LocalDate scheduleDate;
 
-    private List<Location> locations;
 }

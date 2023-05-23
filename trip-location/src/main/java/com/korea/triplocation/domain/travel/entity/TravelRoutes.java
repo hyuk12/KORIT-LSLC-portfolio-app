@@ -3,6 +3,7 @@ package com.korea.triplocation.domain.travel.entity;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -10,7 +11,8 @@ import java.time.LocalDate;
 @Builder
 public class TravelRoutes {
     private int routeId;
-    private int travelId;
     private int scheduleId;
+    private int locationId;
 
+    private List<Location> locations;
 }

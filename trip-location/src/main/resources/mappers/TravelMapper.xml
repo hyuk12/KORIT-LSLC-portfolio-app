@@ -2,61 +2,79 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korea.triplocation.repository.TravelRepository">
 
-<!--    <resultMap id="Participant" type="com.korea.triplocation.domain.travel.entity.Participant">-->
-<!--        <id column="id" property="participantId"/>-->
-<!--        <result column="travel_id" property="travelId"/>-->
-<!--        <result column="user_id" property="userId"/>-->
-<!--    </resultMap>-->
+    <resultMap id="Participant" type="com.korea.triplocation.domain.travel.entity.Participant">
+        <id column="id" property="participantId"/>
+        <result column="travel_id" property="travelId"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
 
-<!--    <resultMap id="TravelRoutes" type="com.korea.triplocation.domain.travel.entity.TravelRoutes">-->
-<!--        <id column="id" property="routeId"/>-->
-<!--        <result column="travel_id" property="travelId"/>-->
-<!--        <result column="destinationName" property="destinationName"/>-->
-<!--        <result column="locationX" property="locationX"/>-->
-<!--        <result column="locationY" property="locationY"/>-->
-<!--        <result column="visitDate" property="visitDate"/>-->
-<!--    </resultMap>-->
+    <resultMap type="com.korea.triplocation.domain.user.entity.User" id="userMap">
+        <id property="userId" column="user_id"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="postsImgId" column="posts_img_id"/>
+    </resultMap>
 
-<!--    <resultMap id="Travel" type="com.korea.triplocation.domain.travel.entity.Travels">-->
-<!--        <id column="id" property="travelId"/>-->
-<!--        <result column="travel_name" property="travelName"/>-->
-<!--    </resultMap>-->
+    <resultMap id="location" type="com.korea.triplocation.domain.travel.entity.Location">
+        <id column="location_id" property="locationId"/>
+        <result column="address" property="address"/>
+        <result column="location_x" property="lat"/>
+        <result column="location_y" property="lng"/>
+    </resultMap>
+
+    <resultMap id="travelRoutes" type="com.korea.triplocation.domain.travel.entity.TravelRoutes">
+        <id column="route_id" property="routeId"/>
+       <result column="travel_id" property="travelId"/>
+       <result column="schedule_id" property="scheduleId"/>
+    </resultMap>
+
+    <resultMap id="schedule" type="com.korea.triplocation.domain.travel.entity.Schedule">
+        <id column="schedule_id" property="scheduleId"/>
+       <result column="travel_id" property="travelId"/>
+       <result column="schedule_date" property="scheduleDate"/>
+    </resultMap>
+
+    <resultMap id="travel" type="com.korea.triplocation.domain.travel.entity.Travels">
+        <id column="travel_id" property="travelId"/>
+        <result column="travel_name" property="travelName"/>
+    </resultMap>
 
     <insert id="callInsertTravelData">
-        {CALL InsertTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{dateId}, #{visitDate})}
+        {CALL InsertTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{userId}, #{visitDate})}
     </insert>
 
-    <insert id="insertTravelData"
-            parameterType="com.korea.triplocation.domain.travel.entity.Travels"
-            useGeneratedKeys="true"
-            keyProperty="travelId">
-        INSERT INTO travels_tb
-        VALUES (0, #{travelName})
-    </insert>
+    <select id="findTravelAllByUser" resultMap="travel">
+        SELECT
+            tt.travel_id,
+            tt.travel_name,
 
-    <insert id="insertScheduleData"
-            parameterType="com.korea.triplocation.domain.travel.entity.Schedule"
-            useGeneratedKeys="true"
-            keyProperty="scheduleId">
-        INSERT INTO schedule_tb
-        VALUES (#{scheduleId}, #{locationId}, #{visitDate})
-    </insert>
+            tpt.participants_id,
+            tpt.user_id,
 
-    <insert id="insertLocationData"
-            parameterType="com.korea.triplocation.domain.travel.entity.Location"
-            useGeneratedKeys="true"
-            keyProperty="locationId">
-        INSERT INTO location_tb
-        VALUES (0, #{addr}, #{userId}, #{lat}, #{lng})
-    </insert>
+            st.schedule_id,
+            st.schedule_date,
 
-    <insert id="insertRouteData"
-            parameterType="com.korea.triplocation.domain.travel.entity.TravelRoutes"
-            useGeneratedKeys="true"
-            keyProperty="routeId">
-        INSERT INTO travel_routes_tb
-        VALUES (0, #{travelId}, #{scheduleId})
-    </insert>
+            trt.route_id,
+            trt.schedule_id,
+            trt.location_id,
+
+            lt.location_id,
+            lt.address,
+            lt.location_x,
+            lt.location_y
+        FROM
+            travels_tb tt
+            LEFT OUTER JOIN travel_participants_tb tpt ON(tpt.travel_id = tt.travel_id)
+            LEFT OUTER JOIN schedule_tb st ON(st.travel_id = tt.travel_id)
+            LEFT OUTER JOIN travel_routes_tb trt ON(trt.schedule_id = st.schedule_id)
+            LEFT OUTER JOIN location_tb lt ON(lt.location_id = trt.location_id)
+        WHERE
+            tpt.user_id = #{userId}
+    </select>
+
+
 
 <!--    <select id="findTravelById" resultMap="Travel">-->
 <!--        SELECT-->

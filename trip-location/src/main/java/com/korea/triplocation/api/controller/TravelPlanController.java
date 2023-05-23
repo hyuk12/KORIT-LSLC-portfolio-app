@@ -23,4 +23,9 @@ public class TravelPlanController {
         travelService.travelSave(travels);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
+
+    @GetMapping("/plan/list")
+    public ResponseEntity<?> view() {
+        return ResponseEntity.ok(null);
+    }
 }
