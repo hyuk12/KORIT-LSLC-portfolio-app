@@ -78,7 +78,6 @@ public class TravelService {
     public MyTravelInfoRespDto findTravelInfoByTravelId(int travelId) {
         Travels travelByTravelId = travelRepository.findTravelByTravelId( travelId);
 
-
         return MyTravelInfoRespDto.builder()
                 .schedules(travelByTravelId.getSchedules())
                 .build();
