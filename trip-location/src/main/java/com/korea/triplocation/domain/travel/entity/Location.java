@@ -14,5 +14,4 @@ public class Location {
     private String addr;
     private double lat;
     private double lng;
-    private int scheduleId;
 }

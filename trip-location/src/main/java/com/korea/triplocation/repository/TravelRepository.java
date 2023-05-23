@@ -10,10 +10,7 @@ import java.time.LocalDate;
 
 @Mapper
 public interface TravelRepository {
-    int insertTravelData(Travels travels);
-    int insertScheduleData(Schedule schedule);
-    int insertLocationData(Location location);
-    int insertRouteData(TravelRoutes travelRoutes);
+    Travels findTravelAllByUser(int userId);
+    int callInsertTravelData(String travelName, String addr, double lat, double lng, int userId, LocalDate scheduleDate);
 
-    int callInsertTravelData(String travelName, String addr, double lat, double lng, int dateId, LocalDate visitDate);
 }
