@@ -4,6 +4,7 @@ import com.korea.triplocation.api.dto.request.MainImageSaveDto;
 import com.korea.triplocation.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,5 +17,10 @@ public class AdminController {
     @PostMapping("/post/register")
     public ResponseEntity<?> mainImageSave(MainImageSaveDto mainImageSaveDto) {
         return ResponseEntity.ok(adminService.insertRegion(mainImageSaveDto));
+    }
+    
+    @GetMapping("/post")
+    public ResponseEntity<?> getRegions(){
+    	return ResponseEntity.ok(adminService.getRegions());
     }
 }
