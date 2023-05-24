@@ -86,7 +86,7 @@ public class TravelService {
 
 
     public void updateTravel(TravelUpdateReqDto travelUpdateReqDto) {
-        travelUpdateReqDto.getSchedules()
+        travelUpdateReqDto.getSchedules();
 
     }
 }
