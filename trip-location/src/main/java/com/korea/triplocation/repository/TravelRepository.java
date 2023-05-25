@@ -13,8 +13,9 @@ public interface TravelRepository {
 	
     MainImage findMainImageByTravelName(String travelName);
     Travels findTravelAllByUser(int userId);
-    Travels findTravelByTravelId(int userId, int travelId);
+    Travels findTravelByTravelIdAndUserId(int userId, int travelId);
     int callInsertTravelData(String travelName, String addr, double lat, double lng, int userId, LocalDate scheduleDate);
-    int callUpdateTravelData();
+    int callUpdateTravelData(int travelId, String travelName, String addr, double lat, double lng, int scheduleId, LocalDate scheduleDate);
 
+    Travels findTravelByTravelId(String travelId);
 }
