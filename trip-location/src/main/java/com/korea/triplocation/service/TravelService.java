@@ -1,24 +1,24 @@
 package com.korea.triplocation.service;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
 import com.korea.triplocation.api.dto.request.LocationReqDto;
 import com.korea.triplocation.api.dto.request.PartyDataReqDto;
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
-
 import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
-import com.korea.triplocation.domain.travel.entity.*;
-
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
-
 import com.korea.triplocation.api.dto.response.RegionRespDto;
-import com.korea.triplocation.api.dto.response.ScheduleRespDto;
 import com.korea.triplocation.domain.travel.entity.Location;
-
-
+import com.korea.triplocation.domain.travel.entity.MainImage;
+import com.korea.triplocation.domain.travel.entity.Region;
+import com.korea.triplocation.domain.travel.entity.Schedule;
+import com.korea.triplocation.domain.travel.entity.Travels;
 import com.korea.triplocation.repository.TravelRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.*;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -116,11 +116,6 @@ public class TravelService {
                 .regionDescription(region.getRegionDescription())
                 .regionImgUrl(imgUrl)
                 .build();
-    }
-    
-    public ScheduleRespDto getScheduleDateByUserId(int userId) {
-    	
-    	return travelRepository.getScheduleDateByUserId(userId);
     }
 
 

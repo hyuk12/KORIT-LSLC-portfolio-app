@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.korea.triplocation.api.dto.response.ScheduleRespDto;
 import com.korea.triplocation.domain.travel.entity.MainImage;
 import com.korea.triplocation.domain.travel.entity.Region;
 import com.korea.triplocation.domain.travel.entity.Travels;

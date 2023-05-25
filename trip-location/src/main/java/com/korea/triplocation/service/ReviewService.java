@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.korea.triplocation.api.dto.response.ReviewListRespDto;
 import com.korea.triplocation.domain.review.entity.Review;
 import com.korea.triplocation.domain.review.entity.ReviewImg;
-import com.korea.triplocation.domain.travel.entity.Region;
 import com.korea.triplocation.repository.ReviewRepository;
 import com.korea.triplocation.repository.TravelRepository;
 
