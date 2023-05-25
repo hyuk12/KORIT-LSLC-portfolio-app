@@ -10,6 +10,7 @@ import com.korea.triplocation.domain.travel.entity.Region;
 
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
 import com.korea.triplocation.api.dto.response.RegionRespDto;
+import com.korea.triplocation.api.dto.response.ScheduleRespDto;
 import com.korea.triplocation.domain.travel.entity.Location;
 
 import com.korea.triplocation.domain.travel.entity.Travels;
@@ -80,7 +81,7 @@ public class TravelService {
 		return "http://localhost:8080/image/user/" + tempName;
 	}
     
-    public RegionRespDto findMainImageByTravelName(String travelName) {
+    public RegionRespDto findRegionByTravelName(String travelName) {
     	Region region = null;
     	MainImage mainImage = null;
         String imgUrl = null;
@@ -88,7 +89,7 @@ public class TravelService {
     	String[] words = travelName.split(" ");
     	for (String word : words) {
     		String comparisonWord = word.substring(0,2);
-    		region = travelRepository.findMainImageByTravelName(comparisonWord);
+    		region = travelRepository.findRegionByTravelName(comparisonWord);
     		if(region != null) {
     			break;
     		}
@@ -115,6 +116,11 @@ public class TravelService {
                 .regionDescription(region.getRegionDescription())
                 .regionImgUrl(imgUrl)
                 .build();
+    }
+    
+    public ScheduleRespDto getScheduleDateByUserId(int userId) {
+    	
+    	return travelRepository.getScheduleDateByUserId(userId);
     }
 
 

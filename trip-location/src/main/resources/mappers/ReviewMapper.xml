@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mappers.ReviewMapper">
-
+<mapper namespace="com.korea.triplocation.repository.ReviewRepository">
+	
+	<resultMap type="com.korea.triplocation.domain.review.entity.Review" id="reviewMap">
+		<id property="reviewId" column="review_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="travelId" column="travel_id"/>
+		<result property="reviewContents" column="review_contents"/>
+		<result property="reviewRating" column="review_rating"/>
+		<result property="startDate" column="start_date"/>
+		<result property="endDate" column="end_date"/>
+		<collection property="reviewImgs" javaType="list" resultMap="reviewImgMap"/>
+	</resultMap>
+	
+	<resultMap type="com.korea.triplocation.domain.review.entity.ReviewImg" id="reviewImgMap">
+		<id property="reviewImgId" column="review_img_id"/>
+		<result property="reviewId" column="review_id"/>
+		<result property="originName" column="origin_name"/>
+		<result property="tempName" column="temp_name"/>
+		<result property="imgSize" column="img_size"/>
+	</resultMap>
+	
+	<select id="getReviewListByUserId" resultMap="reviewMap">
+		
+		SELECT
+			rt.review_id,
+		    rt.user_id,
+		    rt.travel_id,
+		    rt.review_contents,
+		    rt.review_rating,
+		    
+		    MIN(st.schedule_date) AS start_date,
+		    MAX(st.schedule_date) AS end_date
+		FROM
+		    travel_participants_tb tpt
+		    LEFT OUTER JOIN schedule_tb st ON (st.travel_id = tpt.travel_id)
+		    LEFT OUTER JOIN review_tb rt ON (rt.travel_id = tpt.travel_id)
+		    LEFT OUTER JOIN review_img_tb rit ON (rit.review_id = rt.review_id)
+		WHERE
+		    rt.user_id = #{userId}
+		GROUP BY
+		    tpt.travel_id;
+	
+	</select>
+	
+	<select id="getReviewImgListByReviewId" resultMap="reviewImgMap">
+	
+		SELECT
+			rit.review_img_id,
+		    rit.review_id,
+		    rit.origin_name,
+		    rit.temp_name,
+		    rit.img_size
+		FROM
+			review_img_tb rit
+			LEFT OUTER JOIN review_tb rt on (rt.review_id = rit.review_id)
+		WHERE
+			rt.review_id = #{reviewId};
+	
+	</select>
+	
+	<select id="getRegionByTravelId" resultType="String">
+	
+		SELECT 
+			lt.address
+		FROM 
+			schedule_tb st
+			INNER JOIN travel_routes_tb trt ON (trt.schedule_id = st.schedule_id)
+			INNER JOIN location_tb lt ON (lt.location_id = trt.location_id)
+		WHERE 
+			st.travel_id = #{travelId}
+		ORDER BY 
+			st.schedule_id, 
+		    trt.location_id
+		LIMIT 1;
+	
+	</select>
+	
 
 </mapper>
