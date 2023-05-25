@@ -8,12 +8,12 @@ import com.korea.triplocation.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("/")
-@RequiredArgsConstructor
+//@RestController
+//@RequestMapping("/")
+//@RequiredArgsConstructor
 public class ReviewController {
 
-	private final ReviewService reviewService;
+//	private final ReviewService reviewService;
 	
 
 }

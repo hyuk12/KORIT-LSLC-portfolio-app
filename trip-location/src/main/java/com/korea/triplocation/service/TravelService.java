@@ -129,13 +129,13 @@ public class TravelService {
 
 
 
-    public void updateTravel(String travelId, TravelUpdateReqDto travelUpdateReqDto) {
+    public void updateTravel(int travelId, TravelUpdateReqDto travelUpdateReqDto) {
         Travels travels = travelRepository.findTravelByTravelId(travelId);
-        if(travelRepository.findTravelByTravelId(travelId) != null) {
+        if(travels != null) {
             for(Schedule schedule : travelUpdateReqDto.getSchedules()) {
                 for (Location location: schedule.getLocations()) {
                     System.out.println(location.getAddr());
-                    travelRepository.callUpdateTravelData(travels.getTravelId(), travels.getTravelName(), location.getAddr(), location.getLat(), location.getLng(), schedule.getScheduleId(), schedule.getScheduleDate());
+                    travelRepository.updateTravelData(location.getLocationId(), location.getAddr(), location.getLat(), location.getLng());
                 }
             };
         };
