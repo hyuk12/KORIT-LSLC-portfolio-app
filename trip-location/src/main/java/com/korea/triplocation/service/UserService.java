@@ -173,8 +173,6 @@ public class UserService {
 			e.printStackTrace();
 		}
 
-
-
 		return PostsImg.builder()
 				.userId(userId)
 				.originName(originFileName)

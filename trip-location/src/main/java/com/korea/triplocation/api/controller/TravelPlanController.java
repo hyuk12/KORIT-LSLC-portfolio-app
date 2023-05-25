@@ -42,9 +42,9 @@ public class TravelPlanController {
 
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateTravel(@RequestBody TravelUpdateReqDto travelUpdateReqDto) {
-        travelService.updateTravel(travelUpdateReqDto);
+    @PutMapping("/update/{travelId}")
+    public ResponseEntity<?> updateTravel(@PathVariable String travelId, @RequestBody TravelUpdateReqDto travelUpdateReqDto) {
+        travelService.updateTravel(travelId, travelUpdateReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
 }

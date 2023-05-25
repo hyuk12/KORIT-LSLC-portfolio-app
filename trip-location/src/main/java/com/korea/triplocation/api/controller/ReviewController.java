@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewController {
 
-	private final ReviewService reviewService;
+//	private final ReviewService reviewService;
 	
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getUserReviewList(@PathVariable int userId) {
