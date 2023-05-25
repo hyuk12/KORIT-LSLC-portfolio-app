@@ -27,13 +27,13 @@ public class TravelPlanController {
 
     @GetMapping("/list")//principal에서 자신의 userId로 자신의 모든 여행일정을 가져옴.
     public ResponseEntity<?> view(@RequestParam("userId") int userId) {
-        return ResponseEntity.ok(travelService.findTravelByUserId(userId));
+        return ResponseEntity.ok(travelService.findTravelByUser(userId));
     }
     
 
     @GetMapping("/region")
     public ResponseEntity<?> findMainImage(@RequestParam("travelName") String travelName){
-    	return ResponseEntity.ok(travelService.findMainImageByTravelName(travelName));
+    	return ResponseEntity.ok().body(DataRespDto.of(travelService.findMainImageByTravelName(travelName)));
     }
 
     @GetMapping("/info")

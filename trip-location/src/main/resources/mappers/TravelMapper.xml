@@ -37,6 +37,7 @@
     </resultMap>
 	<resultMap type="com.korea.triplocation.domain.travel.entity.Region" id="region">
 		<id property="regionId" column="region_id"/>
+		<id property="regionImgId" column="region_img_id"/>
 		<result property="regionName" column="region_name"/>
 		<result property="regionEngName" column="region_eng_name"/>
 		<result property="regionDescription" column="region_description"/>
@@ -81,10 +82,22 @@
             LEFT OUTER JOIN location_tb lt ON(lt.location_id = trt.location_id)
         WHERE
             tpt.user_id = #{userId}
+        ORDER By
+        	 tt.travel_id ASC, st.schedule_date ASC, lt.location_id ASC;
     </select>
-
-    
- 	<select id="findMainImageByTravelName" resultMap="mainImage">
+	<select id="getMainImgById" resultMap="mainImage">
+		select
+		    region_img_id,
+			region_id,
+			origin_name,
+			temp_name,
+			img_size
+		from
+		    region_img_tb
+		where
+		    region_img_id = #{regionImgId}
+    </select>
+ 	<select id="findMainImageByTravelName" resultMap="region">
 		select
 			rt.region_id,
 		    rt.region_name,
@@ -99,7 +112,7 @@
 			region_tb rt
 		    left outer join region_img_tb rit on(rit.region_id = rt.region_id)
 		where
-		    rt.region_name = #{travelName};
+		    rt.region_name like CONCAT('%',#{travelName},'%');
 	</select>
 
   <select id="findTravelByTravelIdAndUserId" resultMap="travel">

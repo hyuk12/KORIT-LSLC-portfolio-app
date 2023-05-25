@@ -9,6 +9,10 @@ import com.korea.triplocation.domain.travel.entity.*;
 
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
 
+import com.korea.triplocation.api.dto.response.RegionRespDto;
+import com.korea.triplocation.domain.travel.entity.Location;
+
+
 import com.korea.triplocation.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,15 +68,57 @@ public class TravelService {
         }
     }
 
-    public Travels findTravelByUserId(int userId) {
+    public List<Travels> findTravelByUser(int userId) {
+    	if(userId == 0) {
+    		return null;
+    	}
+    	
         return travelRepository.findTravelAllByUser(userId);
     }
+    
+    private String convertFilePathToUrl(String tempName) {
+		return "http://localhost:8080/image/user/" + tempName;
+	}
+    
+    public RegionRespDto findMainImageByTravelName(String travelName) {
+    	Region region = null;
+    	MainImage mainImage = null;
+        String imgUrl = null;
+        
+    	String[] words = travelName.split(" ");
+    	for (String word : words) {
+    		String comparisonWord = word.substring(0,2);
+    		region = travelRepository.findMainImageByTravelName(comparisonWord);
+    		if(region != null) {
+    			break;
+    		}
+    	}
+    	
+        if (region == null) {
+            return null;
+        }
+        
+        if (region.getRegionImgId() != -1) {
+            mainImage = travelRepository.getMainImgById(region.getRegionImgId());
+            if (mainImage != null) {
+                imgUrl = convertFilePathToUrl(mainImage.getTempName());
+            }
+        } else {
+            imgUrl = convertFilePathToUrl("default.png");
+        }
 
-
-    public MainImage findMainImageByTravelName(String travalName) {
-    	return travelRepository.findMainImageByTravelName(travalName);
+        return RegionRespDto.builder()
+                .regionId(region.getRegionId())
+                .regionImgId(region.getRegionImgId())
+                .regionName(region.getRegionName())
+                .regionEngName(region.getRegionEngName())
+                .regionDescription(region.getRegionDescription())
+                .regionImgUrl(imgUrl)
+                .build();
     }
 
+
+    
     public MyTravelInfoRespDto findTravelInfoByTravelId(int userId, int travelId) {
         Travels travelByTravelId = travelRepository.findTravelByTravelIdAndUserId(userId, travelId);
 
@@ -80,6 +126,7 @@ public class TravelService {
                 .schedules(travelByTravelId.getSchedules())
                 .build();
     }
+
 
 
     public void updateTravel(String travelId, TravelUpdateReqDto travelUpdateReqDto) {
