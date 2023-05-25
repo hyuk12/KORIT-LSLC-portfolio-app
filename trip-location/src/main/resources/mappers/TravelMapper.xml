@@ -166,8 +166,15 @@
             st.schedule_date ASC
     </select>
 
-    <update id="callUpdateTravelData">
-        {CALL UpdateTravelData(#{travelId}, #{travelName}, #{addr}, #{lat}, #{lng}, #{scheduleId}, #{scheduleDate})}
+    <update id="updateTravelData">
+        update
+            location_tb
+        set
+            address = #{address},
+            location_x = #{lat},
+            location_y = #{lng}
+        where
+            location_id = #{locationId}
     </update>
 
 <!--    <select id="findTravelById" resultMap="Travel">-->
