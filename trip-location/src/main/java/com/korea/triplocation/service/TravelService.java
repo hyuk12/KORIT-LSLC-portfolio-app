@@ -1,23 +1,24 @@
 package com.korea.triplocation.service;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
 import com.korea.triplocation.api.dto.request.LocationReqDto;
 import com.korea.triplocation.api.dto.request.PartyDataReqDto;
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
-
 import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
-import com.korea.triplocation.domain.travel.entity.*;
-
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
-
 import com.korea.triplocation.api.dto.response.RegionRespDto;
 import com.korea.triplocation.domain.travel.entity.Location;
-
-
+import com.korea.triplocation.domain.travel.entity.MainImage;
+import com.korea.triplocation.domain.travel.entity.Region;
+import com.korea.triplocation.domain.travel.entity.Schedule;
+import com.korea.triplocation.domain.travel.entity.Travels;
 import com.korea.triplocation.repository.TravelRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.*;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +82,7 @@ public class TravelService {
 		return "http://localhost:8080/image/region/" + tempName;
 	}
     
-    public RegionRespDto findMainImageByTravelName(String travelName) {
+    public RegionRespDto findRegionByTravelName(String travelName) {
     	Region region = null;
     	MainImage mainImage = null;
         String imgUrl = null;
@@ -89,7 +90,7 @@ public class TravelService {
     	String[] words = travelName.split(" ");
     	for (String word : words) {
     		String comparisonWord = word.substring(0,2);
-    		region = travelRepository.findMainImageByTravelName(comparisonWord);
+    		region = travelRepository.findRegionByTravelName(comparisonWord);
     		if(region != null) {
     			break;
     		}
@@ -130,7 +131,7 @@ public class TravelService {
 
 
 
-    public void updateTravel(int travelId, TravelUpdateReqDto travelUpdateReqDto) {
+    public void updateTravel(String travelId, TravelUpdateReqDto travelUpdateReqDto) {
         Travels travels = travelRepository.findTravelByTravelId(travelId);
         if(travels != null) {
             for(Schedule schedule : travelUpdateReqDto.getSchedules()) {

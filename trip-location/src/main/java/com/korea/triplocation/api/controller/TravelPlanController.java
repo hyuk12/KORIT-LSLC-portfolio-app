@@ -34,7 +34,7 @@ public class TravelPlanController {
 
     @GetMapping("/region")
     public ResponseEntity<?> findMainImage(@RequestParam("travelName") String travelName){
-    	return ResponseEntity.ok().body(DataRespDto.of(travelService.findMainImageByTravelName(travelName)));
+    	return ResponseEntity.ok().body(DataRespDto.of(travelService.findRegionByTravelName(travelName)));
     }
 
     @GetMapping("/info")
@@ -44,7 +44,7 @@ public class TravelPlanController {
     }
 
     @PutMapping("/update/{travelId}")
-    public ResponseEntity<?> updateTravel(@PathVariable int travelId, @RequestBody TravelUpdateReqDto travelUpdateReqDto) {
+    public ResponseEntity<?> updateTravel(@PathVariable String travelId, @RequestBody TravelUpdateReqDto travelUpdateReqDto) {
         travelService.updateTravel(travelId, travelUpdateReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }

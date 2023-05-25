@@ -1,5 +1,9 @@
 package com.korea.triplocation.domain.review.entity;
 
+import java.util.List;
+
+import com.korea.triplocation.api.dto.response.ReviewListRespDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +17,32 @@ public class Review {
 	private int reviewId;
 	private int userId;
 	private int travelId;
-	private int reviewImgId;
 	private String reviewContents;
 	private int reviewRating;
+	
+	private String startDate;
+	private String endDate;
+	private List<ReviewImg> reviewImgs;
+	
+	public ReviewListRespDto toDto() {
+		
+		String firstTempName = null;
+		
+		if (reviewImgs != null && !reviewImgs.isEmpty()) {
+		    ReviewImg firstReviewImg = reviewImgs.get(0);
+		    firstTempName = firstReviewImg.getTempName();
+		} else {
+			firstTempName = null;
+		}
+		
+		return ReviewListRespDto.builder()
+				.reviewId(reviewId)
+				.userId(userId)
+				.travelId(travelId)
+				.reviewRating(reviewRating)
+				.startDate(startDate)
+				.endDate(endDate)
+
+				.build();
+	}
 }
