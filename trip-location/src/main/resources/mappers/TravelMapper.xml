@@ -97,7 +97,8 @@
 		where
 		    region_img_id = #{regionImgId}
     </select>
- 	<select id="findMainImageByTravelName" resultMap="region">
+    
+ 	<select id="findRegionByTravelName" resultMap="region">
 		select
 			rt.region_id,
 		    rt.region_name,
@@ -113,6 +114,15 @@
 		    left outer join region_img_tb rit on(rit.region_id = rt.region_id)
 		where
 		    rt.region_name like CONCAT('%',#{travelName},'%');
+	</select>
+	
+	<select id="getRegion" resultType="String">
+		SELECT 
+			region_name
+		FROM 
+			region_tb
+		WHERE 
+			region_name LIKE CONCAT('%', #{regionName}, '%');
 	</select>
 
   <select id="findTravelByTravelIdAndUserId" resultMap="travel">
@@ -176,6 +186,21 @@
         where
             location_id = #{locationId}
     </update>
+    
+    <select id="getScheduleDateByUserIdAndTravelId">
+    	select
+			tpt.travel_id,
+			MIN(st.schedule_date) AS start_date,
+		    MAX(st.schedule_date) AS end_date
+		from
+			travel_participants_tb tpt
+		    left outer join schedule_tb st on (st.travel_id = tpt.travel_id)
+		where
+			tpt.user_id = #{userId}
+		GROUP BY
+		    tpt.travel_id
+    </select>
+
 
 <!--    <select id="findTravelById" resultMap="Travel">-->
 <!--        SELECT-->

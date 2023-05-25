@@ -7,10 +7,17 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class ReviewRespDto {
+public class ReviewListRespDto {
 	
 	private int reviewId;
 	private int userId;
 	private int travelId;
+	private int reviewRating;
 	
+	private String regionName;
+	
+	private String startDate;
+	private String endDate;
+	private String reviewImgUrl;
+
 }

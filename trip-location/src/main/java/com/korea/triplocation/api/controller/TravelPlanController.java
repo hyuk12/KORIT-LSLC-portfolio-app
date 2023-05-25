@@ -33,7 +33,7 @@ public class TravelPlanController {
 
     @GetMapping("/region")
     public ResponseEntity<?> findMainImage(@RequestParam("travelName") String travelName){
-    	return ResponseEntity.ok().body(DataRespDto.of(travelService.findMainImageByTravelName(travelName)));
+    	return ResponseEntity.ok().body(DataRespDto.of(travelService.findRegionByTravelName(travelName)));
     }
 
     @GetMapping("/info")
