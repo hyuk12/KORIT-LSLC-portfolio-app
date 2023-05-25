@@ -73,13 +73,26 @@
             lt.location_id,
             lt.address,
             lt.location_x,
-            lt.location_y
+            lt.location_y,
+            
+            rt.region_id,
+		    rt.region_name,
+		    rt.region_eng_name,
+		    rt.region_description,
+		    
+		    rit.region_img_id,
+		    rit.origin_name,
+		    rit.temp_name,
+		    rit.img_size
+            
         FROM
             travels_tb tt
             LEFT OUTER JOIN travel_participants_tb tpt ON(tpt.travel_id = tt.travel_id)
             LEFT OUTER JOIN schedule_tb st ON(st.travel_id = tt.travel_id)
             LEFT OUTER JOIN travel_routes_tb trt ON(trt.schedule_id = st.schedule_id)
             LEFT OUTER JOIN location_tb lt ON(lt.location_id = trt.location_id)
+            left outer join region_tb rt on(lt.address like concat('%', rt.region_name, '%'))
+   			left outer join region_img_tb rit on (rit.region_id = rt.region_id)
         WHERE
             tpt.user_id = #{userId}
         ORDER By

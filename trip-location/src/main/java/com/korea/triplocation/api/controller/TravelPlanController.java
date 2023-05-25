@@ -25,8 +25,9 @@ public class TravelPlanController {
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
 
-    @GetMapping("/list")//principal에서 자신의 userId로 자신의 모든 여행일정을 가져옴.
+    @GetMapping("/list")//principal에서 자신의 userId로 자신의 모든 여행일정과 img가져오
     public ResponseEntity<?> view(@RequestParam("userId") int userId) {
+    	System.out.println(travelService.findTravelByUser(userId));
         return ResponseEntity.ok(travelService.findTravelByUser(userId));
     }
     

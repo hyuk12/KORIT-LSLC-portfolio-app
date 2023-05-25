@@ -76,8 +76,9 @@ public class TravelService {
         return travelRepository.findTravelAllByUser(userId);
     }
     
+    
     private String convertFilePathToUrl(String tempName) {
-		return "http://localhost:8080/image/user/" + tempName;
+		return "http://localhost:8080/image/region/" + tempName;
 	}
     
     public RegionRespDto findMainImageByTravelName(String travelName) {
