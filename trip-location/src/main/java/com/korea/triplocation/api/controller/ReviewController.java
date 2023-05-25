@@ -12,13 +12,13 @@ import com.korea.triplocation.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/review")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class ReviewController {
 
 	private final ReviewService reviewService;
 	
-	@GetMapping("/{userId}")
+	@GetMapping("/user/{userId}/review")
 	public ResponseEntity<?> getUserReviewList(@PathVariable int userId) {
 		return ResponseEntity.ok(DataRespDto.of(reviewService.getUserReviewListAll(userId)));
 	}
