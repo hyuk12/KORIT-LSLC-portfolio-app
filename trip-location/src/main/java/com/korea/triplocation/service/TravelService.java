@@ -5,14 +5,14 @@ import com.korea.triplocation.api.dto.request.PartyDataReqDto;
 import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
 
 import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
-import com.korea.triplocation.domain.travel.entity.MainImage;
-import com.korea.triplocation.domain.travel.entity.Region;
+import com.korea.triplocation.domain.travel.entity.*;
 
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
+
 import com.korea.triplocation.api.dto.response.RegionRespDto;
 import com.korea.triplocation.domain.travel.entity.Location;
 
-import com.korea.triplocation.domain.travel.entity.Travels;
+
 import com.korea.triplocation.repository.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -120,7 +120,7 @@ public class TravelService {
 
     
     public MyTravelInfoRespDto findTravelInfoByTravelId(int userId, int travelId) {
-        Travels travelByTravelId = travelRepository.findTravelByTravelId(userId, travelId);
+        Travels travelByTravelId = travelRepository.findTravelByTravelIdAndUserId(userId, travelId);
 
         return MyTravelInfoRespDto.builder()
                 .schedules(travelByTravelId.getSchedules())
@@ -128,8 +128,17 @@ public class TravelService {
     }
 
 
-    public void updateTravel(TravelUpdateReqDto travelUpdateReqDto) {
-        travelUpdateReqDto.getSchedules();
+
+    public void updateTravel(String travelId, TravelUpdateReqDto travelUpdateReqDto) {
+        Travels travels = travelRepository.findTravelByTravelId(travelId);
+        if(travelRepository.findTravelByTravelId(travelId) != null) {
+            for(Schedule schedule : travelUpdateReqDto.getSchedules()) {
+                for (Location location: schedule.getLocations()) {
+                    System.out.println(location.getAddr());
+                    travelRepository.callUpdateTravelData(travels.getTravelId(), travels.getTravelName(), location.getAddr(), location.getLat(), location.getLng(), schedule.getScheduleId(), schedule.getScheduleDate());
+                }
+            };
+        };
 
     }
 }

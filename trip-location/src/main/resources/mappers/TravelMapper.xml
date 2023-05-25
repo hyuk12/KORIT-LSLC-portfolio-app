@@ -115,7 +115,7 @@
 		    rt.region_name like CONCAT('%',#{travelName},'%');
 	</select>
 
-  <select id="findTravelByTravelId" resultMap="travel">
+  <select id="findTravelByTravelIdAndUserId" resultMap="travel">
         SELECT
             tt.travel_id,
 
@@ -141,8 +141,33 @@
             st.schedule_date ASC
    </select>
 
+    <select id="findTravelByTravelId" resultMap="travel">
+        SELECT
+            tt.travel_id,
+
+            st.schedule_id,
+            st.schedule_date,
+
+            trt.route_id,
+
+            lt.location_id,
+            lt.address,
+            lt.location_x,
+            lt.location_y
+        FROM
+            travels_tb tt
+                LEFT OUTER JOIN travel_participants_tb tpt ON(tpt.travel_id = tt.travel_id)
+                LEFT OUTER JOIN schedule_tb st ON(st.travel_id = tt.travel_id)
+                LEFT OUTER JOIN travel_routes_tb trt ON(trt.schedule_id = st.schedule_id)
+                LEFT OUTER JOIN location_tb lt ON(lt.location_id = trt.location_id)
+        WHERE
+            tpt.travel_id = #{travelId}
+        ORDER By
+            st.schedule_date ASC
+    </select>
+
     <update id="callUpdateTravelData">
-        {CALL UpdateTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{userId}, #{scheduleDate})}
+        {CALL UpdateTravelData(#{travelId}, #{travelName}, #{addr}, #{lat}, #{lng}, #{scheduleId}, #{scheduleDate})}
     </update>
 
 <!--    <select id="findTravelById" resultMap="Travel">-->
