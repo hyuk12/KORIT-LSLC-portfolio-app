@@ -33,7 +33,7 @@
         <result column="travel_name" property="travelName"/>
         <collection property="schedules" javaType="list" resultMap="schedule" />
         <collection property="participants" javaType="list" resultMap="participant" />
-
+		<collection property="regions" javaType="list" resultMap="region"/>
     </resultMap>
 	<resultMap type="com.korea.triplocation.domain.travel.entity.Region" id="region">
 		<id property="regionId" column="region_id"/>
@@ -41,6 +41,7 @@
 		<result property="regionName" column="region_name"/>
 		<result property="regionEngName" column="region_eng_name"/>
 		<result property="regionDescription" column="region_description"/>
+		<association property="mainImage" resultMap="mainImage"/>
 	</resultMap>
 	
 	<resultMap type="com.korea.triplocation.domain.travel.entity.MainImage" id="mainImage">

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.korea.triplocation.api.dto.request.MainImageSaveDto;
@@ -21,7 +20,7 @@ import com.korea.triplocation.repository.AdminRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class AdminService {
 
