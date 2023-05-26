@@ -129,7 +129,6 @@ public class TravelService {
 
         return RegionRespDto.builder()
                 .regionId(region.getRegionId())
-                .regionImgId(region.getRegionImgId())
                 .regionName(region.getRegionName())
                 .regionEngName(region.getRegionEngName())
                 .regionDescription(region.getRegionDescription())

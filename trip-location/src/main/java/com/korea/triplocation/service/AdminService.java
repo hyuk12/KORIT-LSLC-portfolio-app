@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.korea.triplocation.api.dto.request.MainImageSaveDto;
@@ -20,7 +21,7 @@ import com.korea.triplocation.repository.AdminRepository;
 
 import lombok.RequiredArgsConstructor;
 
-//@Service
+@Service
 @RequiredArgsConstructor
 public class AdminService {
 
@@ -69,28 +70,28 @@ public class AdminService {
                 .imgSize(Long.toString(file.getSize()))
                 .build();
     }
-    
+
     private String convertFilePathToUrl(String tempName) {
-		return "http://localhost:8080/image/region/" + tempName;
-	}
-    
+        return "http://localhost:8080/image/region/" + tempName;
+    }
+
     public List<RegionRespDto> getRegions() {
-    	List<Region> regions = adminRepository.getRegions();
-    	List<MainImage> mainImages = adminRepository.getMainImages();
-    	List<RegionRespDto> dtos = new ArrayList<>();
-    	
-    	String imgUrl = null;
-    	
+        List<Region> regions = adminRepository.getRegions();
+        List<MainImage> mainImages = adminRepository.getMainImages();
+        List<RegionRespDto> dtos = new ArrayList<>();
+
+        String imgUrl = null;
+
         for (Region region : regions) {
-        	for (MainImage image : mainImages) {
-        		if(region.getRegionId() == image.getRegionId()) {
-        			RegionRespDto dto = region.toDto();
-        			imgUrl = convertFilePathToUrl(image.getTempName());
-        			dto.setRegionImgUrl(imgUrl);
-        			dtos.add(dto);        			
-        		}
-        	}
+            for (MainImage image : mainImages) {
+                if(region.getRegionId() == image.getRegionId()) {
+                    RegionRespDto dto = region.toDto();
+                    imgUrl = convertFilePathToUrl(image.getTempName());
+                    dto.setRegionImgUrl(imgUrl);
+                    dtos.add(dto);
+                }
+            }
         }
-    	return dtos;
+        return dtos;
     }
 }

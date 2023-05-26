@@ -8,8 +8,9 @@ import com.korea.triplocation.api.dto.request.MainImageSaveDto;
 import com.korea.triplocation.service.AdminService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RestController;
 
-//@RestController
+@RestController
 @RequiredArgsConstructor
 public class AdminController {
 

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.korea.triplocation.domain.travel.entity.MainImage;
 import com.korea.triplocation.domain.travel.entity.Region;
 
-//@Mapper
+@Mapper
 public interface AdminRepository {
 	public int saveRegion(Region region);
 	public Region selectedRegion(String regionName);

@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 public class RegionRespDto {
 	private int regionId;
-	private int regionImgId;
 	private String regionName;
 	private String regionEngName;
 	private String regionDescription;
