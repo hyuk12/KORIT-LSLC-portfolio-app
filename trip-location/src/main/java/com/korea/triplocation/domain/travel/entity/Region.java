@@ -17,15 +17,22 @@ public class Region {
     private String regionEngName;
     private String regionDescription;
     private int regionImgId;
+    private String regionImgUrl;
+    
+    private MainImage mainImage;
+    
+    private String convertFilePathToUrl(String tempName) {
+  		return "http://localhost:8080/image/region/" + tempName;
+  	}
     
     public RegionRespDto toDto() {
-    	MainImage mainImage = new MainImage();
     	return RegionRespDto.builder()
     			.regionId(regionId)
     			.regionName(regionName)
     			.regionEngName(regionEngName)
     			.regionDescription(regionDescription)
     			.regionImgId(mainImage.getRegionImgId())
+    			.regionImgUrl(convertFilePathToUrl(mainImage.getTempName()))
     			.build();
     }
 }

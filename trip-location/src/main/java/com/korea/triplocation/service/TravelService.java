@@ -68,19 +68,37 @@ public class TravelService {
 
         }
     }
-
+    
+    private String convertFilePathToUrl(String tempName) {
+  		return "http://localhost:8080/image/region/" + tempName;
+  	}
+    
     public List<Travels> findTravelByUser(int userId) {
     	if(userId == 0) {
     		return null;
     	}
+    	List<Travels> travelsList = travelRepository.findTravelAllByUser(userId);
     	
-        return travelRepository.findTravelAllByUser(userId);
+    	for (Travels travel : travelsList) {
+    	    List<Region> regions = travel.getRegions();
+    	    for (Region region : regions) {
+    	        MainImage mainImage = null;
+    	        String imgUrl = null;
+
+    	        if (region.getRegionImgId() != -1) {
+    	            mainImage = travelRepository.getMainImgById(region.getRegionImgId());
+    	            if (mainImage != null) {
+    	                imgUrl = convertFilePathToUrl(mainImage.getTempName());
+    	                region.setRegionImgUrl(imgUrl);
+    	            }
+    	        } else {
+    	            imgUrl = convertFilePathToUrl("default.png");
+    	            region.setRegionImgUrl(imgUrl);
+    	        }
+    	    }
+    	}
+    	return travelsList;
     }
-    
-    
-    private String convertFilePathToUrl(String tempName) {
-		return "http://localhost:8080/image/region/" + tempName;
-	}
     
     public RegionRespDto findRegionByTravelName(String travelName) {
     	Region region = null;

@@ -19,5 +19,5 @@ public class Travels {
     private List<Participant> participants;
     private List<Schedule> schedules;
     
-    private Region region;
+    private List<Region> regions;
 }
