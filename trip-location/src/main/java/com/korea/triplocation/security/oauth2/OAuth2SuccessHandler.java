@@ -31,7 +31,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String provider = oAuth2User.getAttribute("provider");
         User userEntity = userRepository.searchUserByEmail(email);
 
-        System.out.println(userEntity.getProvider());
 
         if(userEntity == null) {
             String registerToken = jwtTokenProvider.generateOAuth2RegisterToken(authentication);
