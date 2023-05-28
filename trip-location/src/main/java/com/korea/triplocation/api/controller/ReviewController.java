@@ -22,4 +22,9 @@ public class ReviewController {
 	public ResponseEntity<?> getUserReviewList(@PathVariable int userId) {
 		return ResponseEntity.ok(DataRespDto.of(reviewService.getUserReviewListAll(userId)));
 	}
+
+	@GetMapping("/list")
+	public ResponseEntity<?> getReviewList() {
+		return ResponseEntity.ok(reviewService.getReviewListByRating());
+	}
 }

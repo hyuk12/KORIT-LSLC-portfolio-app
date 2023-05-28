@@ -23,7 +23,11 @@ public class Review {
 	private String startDate;
 	private String endDate;
 	private List<ReviewImg> reviewImgs;
-	
+
+	private String convertFilePathToUrl(String tempName) {
+		return "http://localhost:8080/image/review/" + tempName;
+	}
+
 	public ReviewListRespDto toDto() {
 		
 		String firstTempName = null;
@@ -40,6 +44,7 @@ public class Review {
 				.userId(userId)
 				.travelId(travelId)
 				.reviewRating(reviewRating)
+				.reviewImgUrl(convertFilePathToUrl(firstTempName))
 				.startDate(startDate)
 				.endDate(endDate)
 
