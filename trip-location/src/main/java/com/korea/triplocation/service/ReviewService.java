@@ -3,6 +3,7 @@ package com.korea.triplocation.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.korea.triplocation.api.dto.response.ReviewRespDto;
 import org.springframework.stereotype.Service;
 
 import com.korea.triplocation.api.dto.response.ReviewListRespDto;
@@ -67,6 +68,19 @@ public class ReviewService {
 		
 		return dtos;
 		
+	}
+
+	public List<ReviewListRespDto> getReviewListByRating() {
+		List<Review> reviews = reviewRepository.getReviewListByRating();
+		List<ReviewListRespDto>	reviewListRespDtos = new ArrayList<>();
+
+		for (Review review : reviews) {
+			System.out.println(review.getReviewRating());
+			reviewListRespDtos.add(review.toDto());
+		}
+
+
+		return reviewListRespDtos;
 	}
 	
 
