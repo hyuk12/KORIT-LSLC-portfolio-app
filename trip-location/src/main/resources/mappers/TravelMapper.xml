@@ -114,25 +114,6 @@
 		where
 		    region_img_id = #{regionImgId}
     </select>
-    
- <!--  	<select id="findRegionByTravelName" resultMap="region">
-		select
-			rt.region_id,
-		    rt.region_name,
-		    rt.region_eng_name,
-		    rt.region_description,
-		    
-		    rit.region_img_id,
-		    rit.origin_name,
-		    rit.temp_name,
-		    rit.img_size
-		from
-			region_tb rt
-		    left outer join region_img_tb rit on(rit.region_id = rt.region_id)
-		where
-		    rt.region_name like CONCAT('%',#{travelName},'%');
-	</select>
--->
 
   <select id="findTravelByTravelIdAndUserId" resultMap="travel">
         SELECT
