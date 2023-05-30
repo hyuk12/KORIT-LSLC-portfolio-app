@@ -13,7 +13,6 @@ public interface ReviewRepository {
 	
 	public List<Review> getReviewListByUserId(int userId);
 	public List<ReviewImg> getReviewImgListByReviewId(int reviewId);
-	public String getRegionByTravelId(int travelId);
 
 
     public List<Review> getReviewListByRating();
