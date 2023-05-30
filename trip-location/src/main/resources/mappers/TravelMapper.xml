@@ -101,6 +101,7 @@
         ORDER By
         	 tt.travel_id ASC, st.schedule_date ASC, lt.location_id ASC;
     </select>
+    
 	<select id="getMainImgById" resultMap="mainImage">
 		select
 		    region_img_id,
@@ -114,7 +115,7 @@
 		    region_img_id = #{regionImgId}
     </select>
     
- 	<select id="findRegionByTravelName" resultMap="region">
+ <!--  	<select id="findRegionByTravelName" resultMap="region">
 		select
 			rt.region_id,
 		    rt.region_name,
@@ -131,7 +132,7 @@
 		where
 		    rt.region_name like CONCAT('%',#{travelName},'%');
 	</select>
-
+-->
 
   <select id="findTravelByTravelIdAndUserId" resultMap="travel">
         SELECT

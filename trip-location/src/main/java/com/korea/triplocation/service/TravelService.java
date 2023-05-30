@@ -100,44 +100,6 @@ public class TravelService {
     	return travelsList;
     }
     
-    public RegionRespDto findRegionByTravelName(String travelName) {
-    	Region region = null;
-    	MainImage mainImage = null;
-        String imgUrl = null;
-        
-    	String[] words = travelName.split(" ");
-    	for (String word : words) {
-    		String comparisonWord = word.substring(0,2);
-    		region = travelRepository.findRegionByTravelName(comparisonWord);
-    		if(region != null) {
-    			break;
-    		}
-    	}
-    	
-        if (region == null) {
-            return null;
-        }
-        
-        if (region.getRegionImgId() != -1) {
-            mainImage = travelRepository.getMainImgById(region.getRegionImgId());
-            if (mainImage != null) {
-                imgUrl = convertFilePathToUrl(mainImage.getTempName());
-            }
-        } else {
-            imgUrl = convertFilePathToUrl("default.png");
-        }
-
-        return RegionRespDto.builder()
-                .regionId(region.getRegionId())
-                .regionName(region.getRegionName())
-                .regionEngName(region.getRegionEngName())
-                .regionDescription(region.getRegionDescription())
-                .regionImgUrl(imgUrl)
-                .build();
-    }
-
-
-    
     public MyTravelInfoRespDto findTravelInfoByTravelId(int userId, int travelId) {
         Travels travelByTravelId = travelRepository.findTravelByTravelIdAndUserId(userId, travelId);
 
