@@ -77,7 +77,7 @@
             lt.location_y,
             
             rt.region_id,
-		    rt.region_name,
+		    SUBSTRING_INDEX(SUBSTRING_INDEX(lt.address, ' ', 2), ' ', 2) AS region_name,
 		    rt.region_eng_name,
 		    rt.region_description,
 		    
@@ -96,8 +96,6 @@
    			left outer join region_img_tb rit on (rit.region_id = rt.region_id)
         WHERE
             tpt.user_id = #{userId}
-        GROUP BY
-            tt.travel_id
         ORDER By
         	 tt.travel_id ASC, st.schedule_date ASC, lt.location_id ASC;
     </select>
@@ -114,6 +112,24 @@
 		where
 		    region_img_id = #{regionImgId}
     </select>
+    
+<select id="findRegionByTravelName" resultMap="region">
+		select
+			rt.region_id,
+		    rt.region_name,
+		    rt.region_eng_name,
+		    rt.region_description,
+		    
+		    rit.region_img_id,
+		    rit.origin_name,
+		    rit.temp_name,
+		    rit.img_size
+		from
+			region_tb rt
+		    left outer join region_img_tb rit on(rit.region_id = rt.region_id)
+		where
+		    rt.region_name like CONCAT('%',#{travelName},'%');
+	</select>
 
   <select id="findTravelByTravelIdAndUserId" resultMap="travel">
         SELECT
