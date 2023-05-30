@@ -148,7 +148,7 @@ public class TravelService {
 
 
 
-    public void updateTravel(String travelId, TravelUpdateReqDto travelUpdateReqDto) {
+    public void updateTravel(int travelId, TravelUpdateReqDto travelUpdateReqDto) {
         Travels travels = travelRepository.findTravelByTravelId(travelId);
         if(travels != null) {
             for(Schedule schedule : travelUpdateReqDto.getSchedules()) {
