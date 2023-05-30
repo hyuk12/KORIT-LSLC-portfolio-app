@@ -47,7 +47,6 @@ public class Review {
 				.reviewImgUrl(convertFilePathToUrl(firstTempName))
 				.startDate(startDate)
 				.endDate(endDate)
-
 				.build();
 	}
 }

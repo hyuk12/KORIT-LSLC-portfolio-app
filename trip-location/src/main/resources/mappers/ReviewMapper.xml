@@ -52,7 +52,7 @@
 			review_tb rt
 				LEFT OUTER JOIN review_img_tb rit ON(rit.review_id = rt.review_id)
 		order by
-			review_rating DESC
+			review_rating DESC LIMIT 5
 	</select>
 	
 	<select id="getReviewImgListByReviewId" resultMap="reviewImgMap">
