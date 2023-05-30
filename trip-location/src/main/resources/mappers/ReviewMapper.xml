@@ -6,8 +6,10 @@
 		<id property="reviewId" column="review_id"/>
 		<result property="userId" column="user_id"/>
 		<result property="travelId" column="travel_id"/>
+		<result property="reviewTitle" column="review_title"/>
 		<result property="reviewContents" column="review_contents"/>
 		<result property="reviewRating" column="review_rating"/>
+		<result property="reviewCreateDate" column="review_create_date"/>
 		<result property="startDate" column="start_date"/>
 		<result property="endDate" column="end_date"/>
 		<collection property="reviewImgs" javaType="list" resultMap="reviewImgMap"/>
@@ -21,26 +23,40 @@
 		<result property="imgSize" column="img_size"/>
 	</resultMap>
 	
+	<resultMap id="schedule" type="com.korea.triplocation.domain.travel.entity.Schedule">
+		<id column="schedule_id" property="scheduleId"/>
+		<result column="travel_id" property="travelId"/>
+		<result column="schedule_date" property="scheduleDate"/>
+        <collection property="locations" ofType="Location" resultMap="location"/>
+	</resultMap>
+	
+	
 	<select id="getReviewListByUserId" resultMap="reviewMap">
 		
-		SELECT
+		select
 			rt.review_id,
 		    rt.user_id,
 		    rt.travel_id,
-		    rt.review_contents,
+		    rt.review_title,
 		    rt.review_rating,
+		    rt.review_create_date,
 		    
-		    MIN(st.schedule_date) AS start_date,
-		    MAX(st.schedule_date) AS end_date
-		FROM
-		    travel_participants_tb tpt
-		    LEFT OUTER JOIN schedule_tb st ON (st.travel_id = tpt.travel_id)
-		    LEFT OUTER JOIN review_tb rt ON (rt.travel_id = tpt.travel_id)
-		    LEFT OUTER JOIN review_img_tb rit ON (rit.review_id = rt.review_id)
-		WHERE
-		    rt.user_id = #{userId}
-		GROUP BY
-		    tpt.travel_id;
+		    rit.review_img_id,
+		    rit.temp_name,
+		    
+		    min(st.schedule_date) as start_date,
+		    max(st.schedule_date) as end_date
+		from
+			review_tb rt
+		    left outer join review_img_tb rit on (rit.review_id = rt.review_id and rit.review_img_id = (select min(review_img_id) from review_img_tb _rit where _rit.review_id = rt.review_id))
+		    left outer join schedule_tb st on (st.travel_id = rt.travel_id)
+		where
+			rt.user_id = #{userId}
+		group by
+			rt.review_id
+		order by 
+			rit.review_img_id ASC,
+			rt.review_create_date ASC;
 	
 	</select>
 
@@ -68,23 +84,6 @@
 			LEFT OUTER JOIN review_tb rt on (rt.review_id = rit.review_id)
 		WHERE
 			rt.review_id = #{reviewId};
-	
-	</select>
-	
-	<select id="getRegionByTravelId" resultType="String">
-	
-		SELECT 
-			lt.address
-		FROM 
-			schedule_tb st
-			INNER JOIN travel_routes_tb trt ON (trt.schedule_id = st.schedule_id)
-			INNER JOIN location_tb lt ON (lt.location_id = trt.location_id)
-		WHERE 
-			st.travel_id = #{travelId}
-		ORDER BY 
-			st.schedule_id, 
-		    trt.location_id
-		LIMIT 1;
 	
 	</select>
 	

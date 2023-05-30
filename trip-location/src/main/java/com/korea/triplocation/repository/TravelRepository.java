@@ -12,7 +12,6 @@ import com.korea.triplocation.domain.travel.entity.Travels;
 @Mapper
 public interface TravelRepository {
 	Region findRegionByTravelName(String travelName);
-	String getRegion(String regionName);
 
     MainImage getMainImgById(int regionImgId);
     List<Travels> findTravelAllByUser(int userId);

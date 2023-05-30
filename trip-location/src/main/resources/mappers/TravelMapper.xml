@@ -129,15 +129,7 @@
 		where
 		    rt.region_name like CONCAT('%',#{travelName},'%');
 	</select>
-	
-	<select id="getRegion" resultType="String">
-		SELECT 
-			region_name
-		FROM 
-			region_tb
-		WHERE 
-			region_name LIKE CONCAT('%', #{regionName}, '%');
-	</select>
+
 
   <select id="findTravelByTravelIdAndUserId" resultMap="travel">
         SELECT

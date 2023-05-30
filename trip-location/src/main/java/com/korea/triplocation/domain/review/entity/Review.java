@@ -1,5 +1,6 @@
 package com.korea.triplocation.domain.review.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.korea.triplocation.api.dto.response.ReviewListRespDto;
@@ -17,8 +18,11 @@ public class Review {
 	private int reviewId;
 	private int userId;
 	private int travelId;
+	private String reviewTitle;
 	private String reviewContents;
 	private int reviewRating;
+	
+	private LocalDate reviewCreateDate;
 	
 	private String startDate;
 	private String endDate;
@@ -41,10 +45,11 @@ public class Review {
 		
 		return ReviewListRespDto.builder()
 				.reviewId(reviewId)
-				.userId(userId)
 				.travelId(travelId)
+				.reviewTitle(reviewTitle)
 				.reviewRating(reviewRating)
 				.reviewImgUrl(convertFilePathToUrl(firstTempName))
+				.reviewCreateDate(reviewCreateDate)
 				.startDate(startDate)
 				.endDate(endDate)
 				.build();
