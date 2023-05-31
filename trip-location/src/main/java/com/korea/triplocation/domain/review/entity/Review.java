@@ -40,7 +40,7 @@ public class Review {
 		    ReviewImg firstReviewImg = reviewImgs.get(0);
 		    firstTempName = firstReviewImg.getTempName();
 		} else {
-			firstTempName = null;
+			firstTempName = "default.gif";
 		}
 		
 		return ReviewListRespDto.builder()
