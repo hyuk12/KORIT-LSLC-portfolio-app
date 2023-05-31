@@ -34,7 +34,6 @@ public class ReviewController {
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> saveReview(ReviewReqDto reviewReqDto) {
-		System.out.println(reviewReqDto);
-		return ResponseEntity.ok(null);
+		return ResponseEntity.ok(reviewService.saveReviews(reviewReqDto));
 	}
 }

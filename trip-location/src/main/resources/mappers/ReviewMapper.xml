@@ -86,4 +86,21 @@
 	
 	</select>
 
+	
+	<insert id="registerReviews" parameterType="com.korea.triplocation.domain.review.entity.Review"
+			useGeneratedKeys="true" keyProperty="reviewId">
+			insert into review_tb
+			values (0, #{userId}, #{travelId}, #{reviewTitle}, #{reviewContents}, now() )
+	</insert>
+	
+	<insert id="registerReviewImgs" parameterType="list">
+			insert into review_img_tb
+			values
+			<foreach collection="list" item="reviewImg" separator=",">
+				(0, #{reviewImg.reviewId}, #{reviewImg.originName}, #{reviewImg.tempName), #{reviewImg.imgSize})
+			</foreach>
+	</insert>
+	
+
+
 </mapper>
