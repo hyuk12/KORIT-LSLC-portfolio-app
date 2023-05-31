@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Builder
-@Getter
-@Setter
+@Getter @Setter
 public class RegionRespDto {
-	private int regionId;
-	private String regionName;
-	private String regionEngName;
-	private String regionDescription;
-	private String regionImgUrl;
+    private int regionId;
+    private String regionName;
+    private String regionEngName;
+    private String regionDescription;
+    private String regionImgUrl;
 }

@@ -62,7 +62,6 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 		User userEntity = userReqDto.toEntity();
 
 		authRepository.saveUser(userEntity);
-		
 		authRepository.saveAuthority(
 				Authority.builder().userId(userEntity.getUserId()).roleId(1).build());
 
@@ -158,7 +157,6 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 			userEntity.setProvider(provider);
 		}
 
-
 		return authRepository.updateProvider(userEntity);
 	}
 
@@ -166,15 +164,11 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
-
 		OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
-
 		OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, oAuth2User.getAttributes());
-
 		Map<String, Object> userAttribute = oAuth2Attribute.convertToMap();
-
 
 		return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), userAttribute, "email");
 	}

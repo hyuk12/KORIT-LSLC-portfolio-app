@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-	
 	private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
 	
@@ -38,20 +37,17 @@ public class AuthController {
     @ValidAspect
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult) {
-
         return ResponseEntity.ok(authService.signin(loginReqDto));
     }
 
     @GetMapping("/authenticated")
     public ResponseEntity<?> authenticated(@RequestHeader(value = "Authorization") String accessToken) {
-
         return ResponseEntity.ok(authService.authenticated(accessToken));
 
     }
 
     @GetMapping("/principal")
     public ResponseEntity<?> principal(String accessToken) {
-
         return ResponseEntity.ok(authService.getPrincipal(accessToken));
 
     }
@@ -61,14 +57,12 @@ public class AuthController {
             @RequestHeader(value = "registerToken") String registerToken,
             @RequestBody OAuth2RegisterReqDto oAuth2RegisterReqDto) {
 
-
         Boolean validatedToken = jwtTokenProvider.validateToken(jwtTokenProvider.getToken(registerToken));
 
         if(!validatedToken) {
             // token 이 유효하지 않음
             return ResponseEntity.badRequest().body("회원가입 요청 시간이 초과되었습니다.");
         }
-
         return ResponseEntity.ok(authService.oauth2Register(oAuth2RegisterReqDto));
     }
 

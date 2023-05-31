@@ -1,6 +1,5 @@
 package com.korea.triplocation.api.dto.request;
 
-import com.korea.triplocation.domain.user.entity.User;
 import lombok.*;
 
 import java.time.LocalDate;

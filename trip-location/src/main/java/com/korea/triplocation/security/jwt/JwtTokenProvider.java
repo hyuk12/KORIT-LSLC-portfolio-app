@@ -61,7 +61,6 @@ public class JwtTokenProvider {
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 
-		
 		return	JwtRespDto.builder().grantType("Bearer").accessToken(accessToken).build(); 
 	}
 	
@@ -126,7 +125,6 @@ public class JwtTokenProvider {
 		}
 		
 		UserDetails userDetails = new User(claims.getSubject(), "", authorities);
-		
 		authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 		
 		return authentication;
@@ -163,17 +161,14 @@ public class JwtTokenProvider {
 		if(authentication.getAuthorities() == null) {
 			throw new RuntimeException("등록된 권한이 없습니다.");
 		}
+
 		StringBuilder roles = new StringBuilder();
-
-
 		authentication.getAuthorities().forEach(authority -> {
 			roles.append(authority.getAuthority() + ",");
 		});
 
 		roles.delete(roles.length() - 1, roles.length());
 		Date tokenExpiresDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24));
-
-
 
 		String accessToken = "Bearer "+ Jwts.builder()
 							.setSubject(authentication.getName())
@@ -183,6 +178,5 @@ public class JwtTokenProvider {
 							.compact();
 
 		return accessToken;
-
 	}
 }

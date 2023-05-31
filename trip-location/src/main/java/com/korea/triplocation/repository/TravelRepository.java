@@ -11,12 +11,11 @@ import com.korea.triplocation.domain.travel.entity.Travels;
 
 @Mapper
 public interface TravelRepository {
-	Region findRegionByTravelName(String travelName);
-
-    MainImage getMainImgById(int regionImgId);
-    List<Travels> findTravelAllByUser(int userId);
-    Travels findTravelByTravelId(int travelId);
-    int callInsertTravelData(String travelName, String addr, double lat, double lng, int userId, LocalDate scheduleDate);
-    int updateTravelData(int locationId, String address, double lat, double lng);
-    Travels findTravelByTravelIdAndUserId(int userId, int travelId);
+	public Region findRegionByTravelName(String travelName);
+    public MainImage getMainImgById(int regionImgId);
+    public List<Travels> findTravelAllByUser(int userId);
+    public Travels findTravelByTravelId(int travelId);
+    public int callInsertTravelData(String travelName, String addr, double lat, double lng, int userId, LocalDate scheduleDate);
+    public int updateTravelData(int locationId, String address, double lat, double lng);
+    public Travels findTravelByTravelIdAndUserId(int userId, int travelId);
 }

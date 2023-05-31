@@ -16,7 +16,6 @@ public class Schedule {
     private int scheduleId;
     private int travelId;
     private LocalDate scheduleDate;
-
     private List<Location> locations;
 
 }

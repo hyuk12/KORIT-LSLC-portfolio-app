@@ -1,22 +1,15 @@
 package com.korea.triplocation.api.dto.request;
 
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import com.korea.triplocation.domain.user.entity.User;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -36,14 +29,6 @@ public class UserModifyReqDto {
     private String address;
     private MultipartFile profileImg;
 
-    public User toEntity() {
-        return User.builder()
-                .email(email)
-                .name(name)
-                .phone(phone)
-                .address(address)
-                .build();
 
-    }
 
 }
