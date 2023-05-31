@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.korea.triplocation.domain.review.entity.ReviewImg;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +55,6 @@ public class ReviewService {
 		List<ReviewListRespDto> reviewListRespDtos = new ArrayList<>();
 
 		for (Review review : reviews) {
-			System.out.println(review.getReviewRating());
 			reviewListRespDtos.add(review.toDto());
 		}
 

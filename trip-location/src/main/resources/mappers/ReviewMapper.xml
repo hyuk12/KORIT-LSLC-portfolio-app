@@ -67,7 +67,7 @@
 			review_tb rt
 				LEFT OUTER JOIN review_img_tb rit ON(rit.review_id = rt.review_id)
 		order by
-			review_rating DESC LIMIT 5
+			review_create_date DESC LIMIT 5
 	</select>
 	
 	<select id="getReviewImgListByReviewId" resultMap="reviewImgMap">
@@ -97,7 +97,7 @@
 			insert into review_img_tb
 			values
 			<foreach collection="list" item="reviewImg" separator=",">
-				(0, #{reviewImg.reviewId}, #{reviewImg.originName}, #{reviewImg.tempName), #{reviewImg.imgSize})
+				(0, #{reviewImg.reviewId}, #{reviewImg.originName}, #{reviewImg.tempName}, #{reviewImg.imgSize})
 			</foreach>
 	</insert>
 	
