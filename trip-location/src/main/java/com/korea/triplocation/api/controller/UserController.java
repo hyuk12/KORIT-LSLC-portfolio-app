@@ -20,14 +20,6 @@ public class UserController {
 	
 	private final UserService userService;
 
-    private final JwtTokenProvider jwtTokenProvider;
-	
-//	// MyPage 로그인된 user
-//    @GetMapping("/{userId}")
-//    public ResponseEntity<?> getUser(@PathVariable int userId) {
-//    	return ResponseEntity.ok().body(null);
-//    }
-    
     // user 전체 조회
     @GetMapping("/all")
     public ResponseEntity<?> getUserAll() {
@@ -40,14 +32,13 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<?> searchUser(@RequestParam("type") int type,
             							@RequestParam("value") String value) {
+        System.out.println(value);
     	return ResponseEntity.ok().body(DataRespDto.of(userService.searchUser(type, value)));
     }
-    
-    
+
     // user 정보 수정
     @PutMapping("/{userId}")
     public ResponseEntity<?> modifyUser(@PathVariable int userId, UserModifyReqDto userModifyReqDto) {
-
         return ResponseEntity.ok(DataRespDto.of(userService.modifyUser(userId, userModifyReqDto)));
     }
     

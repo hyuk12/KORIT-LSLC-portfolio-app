@@ -12,8 +12,5 @@ import com.korea.triplocation.domain.review.entity.ReviewImg;
 public interface ReviewRepository {
 	
 	public List<Review> getReviewListByUserId(int userId);
-	public List<ReviewImg> getReviewImgListByReviewId(int reviewId);
-
-
     public List<Review> getReviewListByRating();
 }

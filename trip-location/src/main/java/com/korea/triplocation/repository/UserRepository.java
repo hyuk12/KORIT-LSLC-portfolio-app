@@ -14,15 +14,13 @@ public interface UserRepository {
 	public List<User> getUserAll();
 	public User searchUserByEmail(String email);
 	public User searchUserByPhone(String phone);
+	public PostsImg getPostsImgById(int postsImgId);
+    public PostsImg getPostsImgByUserId(int userId);
+
 	public int modifyUser(User user);
 	public int postsImg(PostsImg postsImg);
 	public int resetPassword(User user);
+
 	public int deleteUser(int userId);
-
-
-	public PostsImg getPostsImgById(int postsImgId);
-
-    PostsImg getPostsImgByUserId(int userId);
-
-    void deletePostsImg(int postsImgId);
+    public void deletePostsImg(int postsImgId);
 }

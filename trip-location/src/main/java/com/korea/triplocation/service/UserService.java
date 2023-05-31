@@ -34,13 +34,10 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final AuthService authService;
 	private final JwtTokenProvider jwtTokenProvider;
+
 	@Value("${file.path}")
 	private String filePath;
-	
-//	public UserRespDto getUser(int userId) {
-//		return userRepository.getUser(userId).toDto();
-//	}
-	
+
 	public List<UserRespDto> getUserAll() {
 		List<UserRespDto> dtos = new ArrayList<>();
 		
@@ -95,15 +92,12 @@ public class UserService {
 		
 	}
 	
-	
 	public boolean modifyUser(int userId, UserModifyReqDto userModifyReqDto) {
-
 		User user = userRepository.getUserById(userId);
 
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
-		
         if (userModifyReqDto.getEmail() != null) {
             user.setEmail(userModifyReqDto.getEmail());
         }
@@ -120,7 +114,6 @@ public class UserService {
 			System.out.println(userId);
 			PostsImg currentPostsImg = userRepository.getPostsImgByUserId(userId);
 			// If user has a profile image, delete it
-
 			if (currentPostsImg != null) {
 				try {
 					deleteFile(currentPostsImg.getTempName());
@@ -141,13 +134,8 @@ public class UserService {
 				userRepository.postsImg(postsImg);
 				user.setPostsImgId(postsImg.getPostsImgId());
 			}
-
-			// Upload new image
-
 		}
-        
 		return userRepository.modifyUser(user) != 0;
-
 	}
 	
 
@@ -206,7 +194,6 @@ public class UserService {
 		if (resetPasswordReqDto.getPassword() != null) {
 			user.setPassword(new BCryptPasswordEncoder().encode(resetPasswordReqDto.getPassword()));
 		}
-		
 		return userRepository.resetPassword(user) != 0;
 	}
 	

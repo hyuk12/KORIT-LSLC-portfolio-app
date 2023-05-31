@@ -25,12 +25,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//        Authentication authToken = SecurityContextHolder.getContext().getAuthentication();
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getAttribute("email");
         String provider = oAuth2User.getAttribute("provider");
         User userEntity = userRepository.searchUserByEmail(email);
-
 
         if(userEntity == null) {
             String registerToken = jwtTokenProvider.generateOAuth2RegisterToken(authentication);

@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korea.triplocation.repository.AuthRepository">
 
-
 	<resultMap type="com.korea.triplocation.domain.user.entity.User" id="userMap">
 		<id property="userId" column="user_id"/>
 		<result property="email" column="email"/>
@@ -54,7 +53,6 @@
 			
 	</select>
 
-
 	<insert id="saveUser" parameterType="com.korea.triplocation.domain.user.entity.User" useGeneratedKeys="true" keyProperty="userId">
 		<choose>
 			<when test="provider != null">
@@ -81,6 +79,5 @@
 		WHERE
 			user_id = #{userId}
 	</update>
-	
 
 </mapper>

@@ -1,16 +1,14 @@
 package com.korea.triplocation.domain.user.entity;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import com.korea.triplocation.api.dto.response.UserRespDto;
 import com.korea.triplocation.security.PrincipalUser;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Data
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class User {
 	private int userId;
-//	role_id => roleId 수정
 	private String email;
 	private String password;
 	private String name;
@@ -28,7 +25,6 @@ public class User {
 	private String provider;
 
 	private LocalDate createDate;	// 계정 생성 일자
-	
 	private List<Authority> authorities;
 	
 	public PrincipalUser toPrincipal() {
@@ -53,7 +49,4 @@ public class User {
 				.postsImgId(postsImg.getPostsImgId())
 				.build();
 	}
-	
-	
-	
 }
