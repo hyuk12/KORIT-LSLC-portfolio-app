@@ -12,9 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class ResetPasswordReqDto {
-	
 	private String email;
 	private String password;
-	
 
 }

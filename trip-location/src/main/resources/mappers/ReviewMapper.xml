@@ -30,7 +30,6 @@
         <collection property="locations" ofType="Location" resultMap="location"/>
 	</resultMap>
 	
-	
 	<select id="getReviewListByUserId" resultMap="reviewMap">
 		
 		select
@@ -86,6 +85,7 @@
 			rt.review_id = #{reviewId};
 	
 	</select>
+
 	
 	<insert id="registerReviews" parameterType="com.korea.triplocation.domain.review.entity.Review"
 			useGeneratedKeys="true" keyProperty="reviewId">
@@ -101,5 +101,6 @@
 			</foreach>
 	</insert>
 	
+
 
 </mapper>

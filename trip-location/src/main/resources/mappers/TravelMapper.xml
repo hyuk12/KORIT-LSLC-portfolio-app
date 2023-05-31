@@ -35,6 +35,7 @@
         <collection property="participants" javaType="list" resultMap="participant" />
 		<collection property="regions" javaType="list" resultMap="region"/>
     </resultMap>
+
 	<resultMap type="com.korea.triplocation.domain.travel.entity.Region" id="region">
 		<id property="regionId" column="region_id"/>
 		<id property="regionImgId" column="region_img_id"/>
@@ -266,29 +267,4 @@
 		    tpt.travel_id
     </select>
 
-
-<!--    <select id="findTravelById" resultMap="Travel">-->
-<!--        SELECT-->
-<!--            t.travel_id,-->
-<!--            t.travel_name,-->
-<!--            t.start_date,-->
-<!--            t.end_date,-->
-
-<!--            p.participant_id,-->
-<!--            p.travel_id,-->
-<!--            p.user_id,-->
-
-<!--            r.route_id,-->
-<!--            r.travel_id,-->
-<!--            r.destination_name,-->
-<!--            r.location_x,-->
-<!--            r.location_y,-->
-<!--            r.visit_date-->
-<!--        FROM-->
-<!--            travel_tb t-->
-<!--            LEFT OUTER JOIN travel_participant_tb p ON (p.travel_id = t.travel_id)-->
-<!--            LEFT OUTER JOIN travel_routes_tb r ON (r.travel_id = t.travel_id)-->
-<!--        WHERE-->
-<!--            t.travel_id = #{travelId}-->
-<!--    </select>-->
 </mapper>

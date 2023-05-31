@@ -25,13 +25,10 @@ public class TimerApp {
 		
 		// 전처리
 		Object logic = joinPoint.proceed(); // proceed = 메소드 호출, 해당 매소드 실행
-//		System.out.println(logic);
+
 		// 후처리
 		
 		stopWatch.stop();
-//		System.out.println(joinPoint.getSignature().getDeclaringTypeName());
-//		System.out.println(joinPoint.getSignature().getName());
-//		System.out.println("메소스 실행 시간: " + stopWatch.getTotalTimeSeconds() + "초");
 		return logic;
 	}
 }

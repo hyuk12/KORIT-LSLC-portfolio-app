@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
 import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
+import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.UserReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
 import com.korea.triplocation.service.AuthService;
+import com.korea.triplocation.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-	
 	private final AuthService authService;
+	private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 	
 	@ValidAspect
@@ -38,20 +40,23 @@ public class AuthController {
     @ValidAspect
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto, BindingResult bindingResult) {
-
         return ResponseEntity.ok(authService.signin(loginReqDto));
     }
+    
+    @PutMapping("/password/reset")
+    public ResponseEntity<?> passwordReset(@RequestBody ResetPasswordReqDto resetPasswordReqDto) {
+    	return ResponseEntity.ok(DataRespDto.of(userService.resetPassword(resetPasswordReqDto)));
+    }
+    
 
     @GetMapping("/authenticated")
     public ResponseEntity<?> authenticated(@RequestHeader(value = "Authorization") String accessToken) {
-
         return ResponseEntity.ok(authService.authenticated(accessToken));
 
     }
 
     @GetMapping("/principal")
     public ResponseEntity<?> principal(String accessToken) {
-
         return ResponseEntity.ok(authService.getPrincipal(accessToken));
 
     }
@@ -61,14 +66,12 @@ public class AuthController {
             @RequestHeader(value = "registerToken") String registerToken,
             @RequestBody OAuth2RegisterReqDto oAuth2RegisterReqDto) {
 
-
         Boolean validatedToken = jwtTokenProvider.validateToken(jwtTokenProvider.getToken(registerToken));
 
         if(!validatedToken) {
             // token 이 유효하지 않음
             return ResponseEntity.badRequest().body("회원가입 요청 시간이 초과되었습니다.");
         }
-
         return ResponseEntity.ok(authService.oauth2Register(oAuth2RegisterReqDto));
     }
 

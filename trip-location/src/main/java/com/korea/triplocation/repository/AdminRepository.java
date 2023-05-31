@@ -12,6 +12,7 @@ public interface AdminRepository {
 	public int saveRegion(Region region);
 	public Region selectedRegion(String regionName);
 	public int saveImage(MainImage mainImage);
+
 	public List<Region> getRegions();
 	public List<MainImage> getMainImages();
 }

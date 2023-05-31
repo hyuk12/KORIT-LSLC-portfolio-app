@@ -1,7 +1,5 @@
 package com.korea.triplocation.api.dto.response;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;

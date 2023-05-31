@@ -1,5 +1,6 @@
 package com.korea.triplocation.service;
 
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,13 +14,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.korea.triplocation.api.dto.request.ReviewReqDto;
+
 import com.korea.triplocation.api.dto.response.ReviewListRespDto;
 import com.korea.triplocation.domain.review.entity.Review;
-import com.korea.triplocation.domain.review.entity.ReviewImg;
 import com.korea.triplocation.repository.ReviewRepository;
 
-import io.jsonwebtoken.io.IOException;
+
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,14 +36,15 @@ public class ReviewService {
 
 	private final ReviewRepository reviewRepository;
 
+
 	public List<ReviewListRespDto> getUserReviewListAll(int userId) {
 		List<ReviewListRespDto> dtos = new ArrayList<>();
 
 		for (Review entity : reviewRepository.getReviewListByUserId(userId)) {
 			dtos.add(entity.toDto());
 
-		}
-
+			
+	    }
 		return dtos;
 
 	}
@@ -50,6 +57,7 @@ public class ReviewService {
 			System.out.println(review.getReviewRating());
 			reviewListRespDtos.add(review.toDto());
 		}
+
 
 		return reviewListRespDtos;
 	}
