@@ -56,49 +56,108 @@
         {CALL InsertTravelData(#{travelName}, #{addr}, #{lat}, #{lng}, #{userId}, #{scheduleDate})}
     </insert>
 
-    <select id="findTravelAllByUser" resultMap="travel">
-        SELECT
-            tt.travel_id,
-            tt.travel_name,
+	<select id="findTravelAllByUser" resultMap="travel">
+	    SELECT * FROM (
+	        SELECT
+	            tt.travel_id,
+	            tt.travel_name,
+	            tpt.participant_id AS participant_id_query1,
+	            tpt.user_id,
+	            st.schedule_id AS schedule_id_query1,
+	            st.schedule_date,
+	            trt.route_id,
+	            trt.schedule_id,
+	            trt.location_id AS location_id_query1,
+	            lt.location_id,
+	            lt.address,
+	            lt.location_x,
+	            lt.location_y,
+	            rt.region_id,
+	            CASE
+	                WHEN lt.address LIKE CONCAT(rt.region_name, ' %') THEN rt.region_name
+	                WHEN lt.address LIKE CONCAT('% ', rt.region_name) THEN rt.region_name
+	                ELSE SUBSTRING_INDEX(SUBSTRING_INDEX(lt.address, ' ', 2), ' ', 2)
+	            END AS region_name,
+	            rt.region_eng_name,
+	            rt.region_description,
+	            rit.region_img_id,
+	            rit.origin_name,
+	            rit.temp_name,
+	            rit.img_size
+	        FROM
+	            travels_tb tt
+	            LEFT OUTER JOIN travel_participants_tb tpt ON (tpt.travel_id = tt.travel_id)
+	            LEFT OUTER JOIN schedule_tb st ON (st.travel_id = tt.travel_id)
+	            LEFT OUTER JOIN travel_routes_tb trt ON (trt.schedule_id = st.schedule_id)
+	            LEFT OUTER JOIN location_tb lt ON (lt.location_id = trt.location_id)
+	            LEFT OUTER JOIN region_tb rt ON (
+	                lt.address LIKE CONCAT(rt.region_name, ' %')
+	                OR lt.address LIKE CONCAT('% ', rt.region_name)
+	                OR SUBSTRING_INDEX(SUBSTRING_INDEX(lt.address, ' ', 2), ' ', 2) = rt.region_name
+	            )
+	            LEFT OUTER JOIN region_img_tb rit ON (rit.region_id = rt.region_id)
+	        WHERE
+	            tpt.user_id = #{userId} AND rt.region_id IS NOT NULL
+	        GROUP BY
+	            lt.location_id
+	        ORDER BY
+	            tt.travel_id ASC,
+	            st.schedule_date ASC,
+	            lt.location_id ASC
+	    ) AS query1
+	    UNION
+	    SELECT * FROM (
+	        SELECT
+	            tt.travel_id,
+	            tt.travel_name,
+	            tpt.participant_id AS participant_id_query2,
+	            tpt.user_id,
+	            st.schedule_id AS schedule_id_query2,
+	            st.schedule_date,
+	            trt.route_id,
+	            trt.schedule_id,
+	            trt.location_id AS location_id_query2,
+	            lt.location_id,
+	            lt.address,
+	            lt.location_x,
+	            lt.location_y,
+	            rt.region_id,
+	            CASE
+	                WHEN lt.address LIKE CONCAT(rt.region_name, ' %') THEN rt.region_name
+	                WHEN lt.address LIKE CONCAT('% ', rt.region_name) THEN rt.region_name
+	                WHEN lt.address LIKE CONCAT('%', rt.region_name, '%') THEN rt.region_name
+	                ELSE SUBSTRING_INDEX(SUBSTRING_INDEX(lt.address, ' ', 2), ' ', 2)
+	            END AS region_name,
+	            rt.region_eng_name,
+	            rt.region_description,
+	            rit.region_img_id,
+	            rit.origin_name,
+	            rit.temp_name,
+	            rit.img_size
+	        FROM
+	            travels_tb tt
+	            LEFT OUTER JOIN travel_participants_tb tpt ON (tpt.travel_id = tt.travel_id)
+	            LEFT OUTER JOIN schedule_tb st ON (st.travel_id = tt.travel_id)
+	            LEFT OUTER JOIN travel_routes_tb trt ON (trt.schedule_id = st.schedule_id)
+	            LEFT OUTER JOIN location_tb lt ON (lt.location_id = trt.location_id)
+	            LEFT OUTER JOIN region_tb rt ON (
+	                lt.address LIKE CONCAT(rt.region_name, ' %')
+	                OR lt.address LIKE CONCAT('% ', rt.region_name)
+	                OR lt.address LIKE CONCAT('%', rt.region_name, '%')
+	                OR SUBSTRING_INDEX(SUBSTRING_INDEX(lt.address, ' ', 2), ' ', 2) = rt.region_name
+	            )
+	            LEFT OUTER JOIN region_img_tb rit ON (rit.region_id = rt.region_id)
+	        WHERE
+	            tpt.user_id = #{userId} AND rt.region_id IS NOT NULL
+	        GROUP BY
+	            lt.location_id
+	        ORDER BY
+	            tt.travel_id ASC,
+	            st.schedule_date ASC,
+	            lt.location_id ASC
+	    ) AS query2;
+	</select>
 
-            tpt.participant_id,
-            tpt.user_id,
-
-            st.schedule_id,
-            st.schedule_date,
-
-            trt.route_id,
-            trt.schedule_id,
-            trt.location_id,
-
-            lt.location_id,
-            lt.address,
-            lt.location_x,
-            lt.location_y,
-            
-            rt.region_id,
-		    SUBSTRING_INDEX(SUBSTRING_INDEX(lt.address, ' ', 2), ' ', 2) AS region_name,
-		    rt.region_eng_name,
-		    rt.region_description,
-		    
-		    rit.region_img_id,
-		    rit.origin_name,
-		    rit.temp_name,
-		    rit.img_size
-            
-        FROM
-            travels_tb tt
-            LEFT OUTER JOIN travel_participants_tb tpt ON(tpt.travel_id = tt.travel_id)
-            LEFT OUTER JOIN schedule_tb st ON(st.travel_id = tt.travel_id)
-            LEFT OUTER JOIN travel_routes_tb trt ON(trt.schedule_id = st.schedule_id)
-            LEFT OUTER JOIN location_tb lt ON(lt.location_id = trt.location_id)
-            left outer join region_tb rt on(lt.address like concat('%', rt.region_name, '%'))
-   			left outer join region_img_tb rit on (rit.region_id = rt.region_id)
-        WHERE
-            tpt.user_id = #{userId}
-        ORDER By
-        	 tt.travel_id ASC, st.schedule_date ASC, lt.location_id ASC;
-    </select>
     
 	<select id="getMainImgById" resultMap="mainImage">
 		select
