@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.UserRespDto;
@@ -196,8 +197,10 @@ public class UserService {
 		return userRepository.resetPassword(user) != 0;
 	}
 	
-	public void deleteUser(int userId) {
-		userRepository.deleteUser(userId);
+	public void deleteUser(int userId, LoginReqDto loginReqDto) {
+		if(authService.signin(loginReqDto) != null) {
+			userRepository.deleteUser(userId);			
+		}
 	}
 
 }

@@ -4,6 +4,7 @@ import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
@@ -49,8 +50,8 @@ public class UserController {
     
     // user 정보 삭제
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable int userId) {
-    	userService.deleteUser(userId);
+    public ResponseEntity<?> deleteUser(@PathVariable int userId, LoginReqDto loginReqDto) {
+    	userService.deleteUser(userId, loginReqDto);
     	return ResponseEntity.ok(DataRespDto.ofDefault());
     }
 }
