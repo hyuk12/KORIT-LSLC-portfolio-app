@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
 import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
+import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.UserReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
 import com.korea.triplocation.service.AuthService;
+import com.korea.triplocation.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,7 @@ public class AuthController {
 
 	
 	private final AuthService authService;
+	private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 	
 	@ValidAspect
@@ -41,6 +44,12 @@ public class AuthController {
 
         return ResponseEntity.ok(authService.signin(loginReqDto));
     }
+    
+    @PutMapping("/password/reset")
+    public ResponseEntity<?> passwordReset(@RequestBody ResetPasswordReqDto resetPasswordReqDto) {
+    	return ResponseEntity.ok(DataRespDto.of(userService.resetPassword(resetPasswordReqDto)));
+    }
+    
 
     @GetMapping("/authenticated")
     public ResponseEntity<?> authenticated(@RequestHeader(value = "Authorization") String accessToken) {
