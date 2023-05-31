@@ -25,21 +25,14 @@ public class TravelPlanController {
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
 
-    @GetMapping("/list")//principal에서 자신의 userId로 자신의 모든 여행일정과 img가져오
+    @GetMapping("/list")//principal에서 자신의 userId로 자신의 모든 여행일정과 img가져오기
     public ResponseEntity<?> view(@RequestParam("userId") int userId) {
         return ResponseEntity.ok(travelService.findTravelByUser(userId));
-    }
-    
-
-    @GetMapping("/region")
-    public ResponseEntity<?> findMainImage(@RequestParam("travelName") String travelName){
-    	return ResponseEntity.ok().body(DataRespDto.of(travelService.findRegionByTravelName(travelName)));
     }
 
     @GetMapping("/info")
     public ResponseEntity<?> myTravelInfo(int userId, int travelId) {
         return ResponseEntity.ok(travelService.findTravelInfoByTravelId(userId, travelId));
-
     }
 
     @PutMapping("/update/{travelId}")

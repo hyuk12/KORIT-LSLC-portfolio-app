@@ -1,7 +1,6 @@
 package com.korea.triplocation.domain.travel.entity;
 
 import com.korea.triplocation.api.dto.response.RegionRespDto;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,11 +21,12 @@ public class Region {
     private MainImage mainImage;
 
     public RegionRespDto toDto() {
-    	return RegionRespDto.builder()
-    			.regionId(regionId)
-    			.regionName(regionName)
-    			.regionEngName(regionEngName)
-    			.regionDescription(regionDescription)
-    			.build();
+        return RegionRespDto.builder()
+                .regionId(regionId)
+                .regionName(regionName)
+                .regionEngName(regionEngName)
+                .regionDescription(regionDescription)
+                .build();
     }
+
 }

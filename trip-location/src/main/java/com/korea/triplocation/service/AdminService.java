@@ -61,8 +61,6 @@ public class AdminService {
             e.printStackTrace();
         }
 
-
-
         return MainImage.builder()
                 .regionId(regionId)
                 .originName(originFileName)
