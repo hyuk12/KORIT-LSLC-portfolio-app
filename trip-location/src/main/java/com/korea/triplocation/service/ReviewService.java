@@ -9,24 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.korea.triplocation.domain.review.entity.ReviewImg;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.korea.triplocation.api.dto.request.ReviewReqDto;
-
 import com.korea.triplocation.api.dto.response.ReviewListRespDto;
 import com.korea.triplocation.domain.review.entity.Review;
+import com.korea.triplocation.domain.review.entity.ReviewImg;
 import com.korea.triplocation.repository.ReviewRepository;
 
-
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
