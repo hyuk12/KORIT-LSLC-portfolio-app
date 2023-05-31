@@ -16,4 +16,7 @@ public interface ReviewRepository {
 
 
     public List<Review> getReviewListByRating();
+    
+    public int registerReviews(Review reviews);
+    public int registerReviewImgs(List<ReviewImg> reviewImgs);
 }
