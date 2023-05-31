@@ -1,12 +1,10 @@
 package com.korea.triplocation.api.dto.request;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.korea.triplocation.domain.review.entity.Review;
-import com.korea.triplocation.domain.review.entity.ReviewImg;
 
 import lombok.Data;
 
@@ -17,6 +15,7 @@ public class ReviewReqDto {
 	private String title;
 	private List<MultipartFile> imgFiles;
 	private String review;
+	private int rating;
 
 	public Review toEntity() {
 		return Review.builder()
@@ -24,6 +23,7 @@ public class ReviewReqDto {
 							.travelId(travelId)
 							.reviewTitle(title)
 							.reviewContents(review)
+							.reviewRating(rating)
 							.build();
 
 	}

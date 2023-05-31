@@ -90,7 +90,7 @@
 	<insert id="registerReviews" parameterType="com.korea.triplocation.domain.review.entity.Review"
 			useGeneratedKeys="true" keyProperty="reviewId">
 			insert into review_tb
-			values (0, #{userId}, #{travelId}, #{reviewTitle}, #{reviewContents}, now() )
+			values (0, #{userId}, #{travelId}, #{reviewTitle}, #{reviewContents}, now(), #{reviewRating} )
 	</insert>
 	
 	<insert id="registerReviewImgs" parameterType="list">
