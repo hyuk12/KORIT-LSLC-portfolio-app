@@ -25,6 +25,11 @@ public class ReviewController {
 		return ResponseEntity.ok(DataRespDto.of(reviewService.getUserReviewListAll(userId)));
 	}
 
+	@GetMapping("/list/{reviewId}")
+	public ResponseEntity<?> getReviewByReviewId(@PathVariable int reviewId) {
+		return ResponseEntity.ok(DataRespDto.of(reviewService.getReviewByReviewId(reviewId)));
+	}
+
 	@GetMapping("/list")
 	public ResponseEntity<?> getReviewList() {
 		return ResponseEntity.ok(reviewService.getReviewListByRating());
