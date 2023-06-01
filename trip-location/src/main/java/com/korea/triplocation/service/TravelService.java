@@ -99,6 +99,13 @@ public class TravelService {
                 .schedules(travelByTravelId.getSchedules())
                 .build();
     }
+    public MyTravelInfoRespDto findReviewTravelInfoByTravelIdAndReviewId(int reviewId, int travelId) {
+    	Travels travelByTravelId = travelRepository.findReviewTravelByReviewIdAndTravelId(reviewId, travelId);
+    	
+    	return MyTravelInfoRespDto.builder()
+    			.schedules(travelByTravelId.getSchedules())
+    			.build();
+    }
 
 
 

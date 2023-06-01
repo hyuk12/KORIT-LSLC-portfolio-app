@@ -34,10 +34,17 @@ public class TravelPlanController {
     public ResponseEntity<?> myTravelInfo(int userId, int travelId) {
         return ResponseEntity.ok(travelService.findTravelInfoByTravelId(userId, travelId));
     }
+    
+    @GetMapping("/info/copy")
+    public ResponseEntity<?> reviewTravelInfo(int reviewId, int travelId) {
+    	return ResponseEntity.ok(travelService.findReviewTravelInfoByTravelIdAndReviewId(reviewId, travelId));
+    }
 
     @PutMapping("/update/{travelId}")
     public ResponseEntity<?> updateTravel(@PathVariable int travelId, @RequestBody TravelUpdateReqDto travelUpdateReqDto) {
         travelService.updateTravel(travelId, travelUpdateReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
+    
+    
 }

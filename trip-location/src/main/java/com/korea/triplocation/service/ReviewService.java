@@ -50,8 +50,16 @@ public class ReviewService {
 		for (Review review : reviews) {
 			reviewListRespDtos.add(review.toDto());
 		}
-
-
+		return reviewListRespDtos;
+	}
+	
+	public List<ReviewListRespDto> getAllReviewList() {
+		List<Review> reviews = reviewRepository.getAllReviewList();
+		List<ReviewListRespDto> reviewListRespDtos = new ArrayList<>();
+		
+		for (Review review : reviews) {
+			reviewListRespDtos.add(review.toDto());
+		}
 		return reviewListRespDtos;
 	}
 
