@@ -107,7 +107,13 @@ public class TravelService {
     			.build();
     }
 
+    public MyTravelInfoRespDto findTravelByTravelId( int travelId) {
+        Travels travelByTravelId = travelRepository.findTravelByTravelId( travelId);
 
+        return MyTravelInfoRespDto.builder()
+                .schedules(travelByTravelId.getSchedules())
+                .build();
+    }
 
     public void updateTravel(int travelId, TravelUpdateReqDto travelUpdateReqDto) {
         Travels travels = travelRepository.findTravelByTravelId(travelId);

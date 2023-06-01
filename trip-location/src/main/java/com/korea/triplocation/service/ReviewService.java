@@ -37,7 +37,7 @@ public class ReviewService {
 		for (Review entity : reviewRepository.getReviewListByUserId(userId)) {
 			dtos.add(entity.toDto());
 
-			
+
 	    }
 		return dtos;
 
@@ -64,12 +64,12 @@ public class ReviewService {
 	}
 
 
-	
+
 	public int saveReviews(ReviewReqDto reviewReqDto) {
-		
+
 		Review reviews = reviewReqDto.toEntity();
 		reviewRepository.registerReviews(reviews);
-		
+
 		return reviewRepository.registerReviewImgs(
 				uploadFiles(reviews.getReviewId(), reviewReqDto.getImgFiles()));
 	}
@@ -107,5 +107,30 @@ public class ReviewService {
 
 		return reviewFiles;
 	}
+
+	private String convertFilePathToUrl(String tempName) {
+		return "http://localhost:8080/image/review/" + tempName;
+	}
+
+	public ReviewListRespDto getReviewByReviewId(int reviewId) {
+
+		List<ReviewImg> reviewImgListByReviewId = reviewRepository.getReviewImgListByReviewId(reviewId);
+		Review reviewByReviewId = reviewRepository.getReviewByReviewId(reviewId);
+		List<String> imgsList = new ArrayList<>();
+
+		for (ReviewImg reviewImg : reviewImgListByReviewId) {
+			imgsList.add(convertFilePathToUrl(reviewImg.getTempName()));
+		}
+		ReviewListRespDto reviewData = ReviewListRespDto.builder()
+				.reviewId(reviewByReviewId.getReviewId())
+				.travelId(reviewByReviewId.getTravelId())
+				.reviewTitle(reviewByReviewId.getReviewTitle())
+				.reviewContents(reviewByReviewId.getReviewContents())
+				.reviewRating(reviewByReviewId.getReviewRating())
+				.reviewCreateDate(reviewByReviewId.getReviewCreateDate())
+				.reviewImgUrls(imgsList)
+				.build();
+		return reviewData;
+	};
 
 }
