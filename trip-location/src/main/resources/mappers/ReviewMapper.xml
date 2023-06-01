@@ -27,7 +27,6 @@
 		<id column="schedule_id" property="scheduleId"/>
 		<result column="travel_id" property="travelId"/>
 		<result column="schedule_date" property="scheduleDate"/>
-        <collection property="locations" ofType="Location" resultMap="location"/>
 	</resultMap>
 	
 	<select id="getReviewListByUserId" resultMap="reviewMap">
@@ -114,7 +113,7 @@
 	<insert id="registerReviews" parameterType="com.korea.triplocation.domain.review.entity.Review"
 			useGeneratedKeys="true" keyProperty="reviewId">
 			insert into review_tb
-			values (0, #{userId}, #{travelId}, #{reviewTitle}, #{reviewContents}, now(), #{reviewRating} )
+			values (0, #{userId}, #{travelId}, #{reviewContents}, #{reviewTitle}, now(), #{reviewRating} )
 	</insert>
 	
 	<insert id="registerReviewImgs" parameterType="list">
@@ -129,6 +128,7 @@
 		update
 			review_tb
 		set
+
 		    review_title = #{reviewTitle},
 		    review_contents = #{reviewContents},
 		    review_rating = #{reviewRating},
@@ -137,12 +137,24 @@
 		    review_id = #{reviewId}
 	</update>
 
+	<update id="modifyReviewImg">
+		update
+			review_img_tb
+		set
+			origin_name = #{reviewImg.originName},
+			temp_name = #{reviewImg.tempName},
+			img_size = #{reviewImg.imgSize}
+
+		where
+			review_id = #{reviewId} AND review_img_id = #{reviewImg.reviewImgId}
+	</update>
+
 	<delete id="deleteReviewImg" parameterType="list">
 		delete
 		from
 		    review_img_tb
 		where
-		    review_id = #{reviewId}
+		    review_img_id = #{reviewImgId}
 	</delete>
 
 </mapper>

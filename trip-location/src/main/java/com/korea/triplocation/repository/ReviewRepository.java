@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.korea.triplocation.domain.review.entity.Review;
 import com.korea.triplocation.domain.review.entity.ReviewImg;
+import org.springframework.transaction.annotation.Transactional;
 
 @Mapper
 public interface ReviewRepository {
@@ -20,6 +21,8 @@ public interface ReviewRepository {
     public int registerReviewImgs(List<ReviewImg> reviewImgs);
 
     public int modifyReview(Review review);
+    public int modifyReviewImg(int reviewId, ReviewImg reviewImg);
+
 
     public void deleteReviewImg(int reviewImgId);
 }
