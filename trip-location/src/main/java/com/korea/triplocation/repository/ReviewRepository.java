@@ -18,4 +18,8 @@ public interface ReviewRepository {
     
     public int registerReviews(Review reviews);
     public int registerReviewImgs(List<ReviewImg> reviewImgs);
+
+    public int modifyReview(Review review);
+
+    public void deleteReviewImg(int reviewImgId);
 }

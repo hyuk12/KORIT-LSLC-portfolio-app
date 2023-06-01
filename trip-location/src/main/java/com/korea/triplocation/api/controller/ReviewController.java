@@ -1,11 +1,7 @@
 package com.korea.triplocation.api.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.korea.triplocation.api.dto.request.ReviewReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
@@ -34,6 +30,7 @@ public class ReviewController {
 	public ResponseEntity<?> getReviewList() {
 		return ResponseEntity.ok(reviewService.getReviewListByRating());
 	}
+
 	@GetMapping("/list/all")
 	public ResponseEntity<?> getAllReviewList() {
 		return ResponseEntity.ok(reviewService.getAllReviewList());
@@ -42,5 +39,10 @@ public class ReviewController {
 	@PostMapping("/save")
 	public ResponseEntity<?> saveReview(ReviewReqDto reviewReqDto) {
 		return ResponseEntity.ok(reviewService.saveReviews(reviewReqDto));
+	}
+
+	@PutMapping("/{reviewId}")
+	public ResponseEntity<?> updateReview(@PathVariable int reviewId, ReviewReqDto reviewReqDto) {
+		return ResponseEntity.ok(reviewService.updateReview(reviewId, reviewReqDto));
 	}
 }
