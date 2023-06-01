@@ -1,14 +1,19 @@
 package com.korea.triplocation.api.controller;
 
-import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
-import com.korea.triplocation.api.dto.response.UserRespDto;
 import com.korea.triplocation.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,8 +55,7 @@ public class UserController {
     
     // user 정보 삭제
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable int userId, LoginReqDto loginReqDto) {
-    	userService.deleteUser(userId, loginReqDto);
-    	return ResponseEntity.ok(DataRespDto.ofDefault());
+    public ResponseEntity<?> deleteUser(@PathVariable int userId, @RequestBody LoginReqDto loginReqDto) {
+    	return ResponseEntity.ok(DataRespDto.of(userService.deleteUser(userId, loginReqDto)));
     }
 }

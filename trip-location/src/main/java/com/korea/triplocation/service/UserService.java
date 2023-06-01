@@ -10,22 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.korea.triplocation.domain.user.entity.PostsImg;
-import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.UserRespDto;
+import com.korea.triplocation.domain.user.entity.PostsImg;
 import com.korea.triplocation.domain.user.entity.User;
+import com.korea.triplocation.exception.CustomException;
 import com.korea.triplocation.repository.UserRepository;
+import com.korea.triplocation.security.jwt.JwtTokenProvider;
+import com.nimbusds.openid.connect.sdk.UserInfoErrorResponse;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -197,10 +199,32 @@ public class UserService {
 		return userRepository.resetPassword(user) != 0;
 	}
 	
-	public void deleteUser(int userId, LoginReqDto loginReqDto) {
+	public boolean deleteUser(int userId, LoginReqDto loginReqDto) {
+		boolean flag = false;
+
+		// 한 번더 로그인하는 것으로 본인 확인
 		if(authService.signin(loginReqDto) != null) {
-			userRepository.deleteUser(userId);			
+			User user = userRepository.getUserById(userId);
+			int postsImgId = user.getPostsImgId();
+			
+			if (postsImgId != -1) {
+				PostsImg currentPostsImg = userRepository.getPostsImgById(postsImgId);
+				
+				if (currentPostsImg != null) {
+					try {
+						deleteFile(currentPostsImg.getTempName());
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}	
+			userRepository.deleteUser(userId);
+			flag = true;
+		} else {
+			throw new CustomException("이메일 또는 비밀번호를 확인해주세요");
 		}
+			
+		return flag;
 	}
 
 }

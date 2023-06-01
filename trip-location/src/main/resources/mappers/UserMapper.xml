@@ -153,11 +153,11 @@
 	
 	<delete id="deleteUser" parameterType="int">
 	
-		delete
-		from 
-			user_tb
-		where
-			user_id = #{user_id}
+		DELETE ut, at, pit
+		FROM user_tb ut
+		JOIN authority_tb at ON at.user_id = ut.user_id
+		LEFT JOIN posts_img_tb pit ON pit.user_id = ut.user_id
+		WHERE ut.user_id = #{userId} AND (pit.posts_img_id != -1 OR pit.posts_img_id IS NULL);
 			
 	</delete>
 
