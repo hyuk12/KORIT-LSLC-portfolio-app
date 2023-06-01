@@ -34,6 +34,10 @@ public class ReviewController {
 	public ResponseEntity<?> getReviewList() {
 		return ResponseEntity.ok(reviewService.getReviewListByRating());
 	}
+	@GetMapping("/list/all")
+	public ResponseEntity<?> getAllReviewList() {
+		return ResponseEntity.ok(reviewService.getAllReviewList());
+	}
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> saveReview(ReviewReqDto reviewReqDto) {

@@ -80,6 +80,21 @@
 		    review_id = #{reviewId}
 	</select>
 	
+	<select id="getAllReviewList" resultMap="reviewMap">
+
+		SELECT
+			*
+		FROM
+			review_tb rt
+				LEFT OUTER JOIN review_img_tb rit ON(rit.review_id = rt.review_id)
+		group by
+			rt.review_id
+		order by
+			rt.review_id DESC 
+	</select>
+	
+	
+	
 	<select id="getReviewImgListByReviewId" resultMap="reviewImgMap">
 	
 		SELECT
