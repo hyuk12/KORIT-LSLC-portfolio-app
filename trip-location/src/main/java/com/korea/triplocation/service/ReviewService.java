@@ -14,6 +14,7 @@ import java.util.UUID;
 import com.korea.triplocation.exception.CustomException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.korea.triplocation.api.dto.request.ReviewReqDto;
@@ -137,6 +138,7 @@ public class ReviewService {
 		return reviewData;
 	};
 
+	@Transactional
 	public int updateReview(int reviewId, ReviewReqDto reviewReqDto) {
 		Review reviewByReviewId = reviewRepository.getReviewByReviewId(reviewId);
 		if(reviewByReviewId == null) {
@@ -144,25 +146,31 @@ public class ReviewService {
 		}
 
 		if (reviewReqDto.getTitle() != null ) {
-			reviewByReviewId.setReviewTitle(reviewByReviewId.getReviewTitle());
+			reviewByReviewId.setReviewTitle(reviewReqDto.getTitle());
 		}
 		if (reviewReqDto.getReview() != null ) {
-			reviewByReviewId.setReviewContents(reviewByReviewId.getReviewContents());
+			reviewByReviewId.setReviewContents(reviewReqDto.getReview());
 		}
+		if (reviewReqDto.getRating() != 0 ) {
+			reviewByReviewId.setReviewRating(reviewReqDto.getRating());
+		}
+
 		if (reviewReqDto.getImgFiles() != null) {
 			List<ReviewImg> reviewImgListByReviewId = reviewRepository.getReviewImgListByReviewId(reviewId);
 			if(reviewImgListByReviewId != null) {
 				try {
 					for (ReviewImg reviewImg: reviewImgListByReviewId) {
-						deleteFile(reviewImg.getTempName());
 						reviewRepository.deleteReviewImg(reviewImg.getReviewImgId());
+						deleteFile(reviewImg.getTempName());
 					}
 				}catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 				List<ReviewImg> reviewImgs = uploadFiles(reviewId, reviewReqDto.getImgFiles());
-				reviewByReviewId.setReviewImgs(reviewImgs);
-
+				reviewRepository.registerReviewImgs(reviewImgs);
+			}else {
+				List<ReviewImg> reviewImgs = uploadFiles(reviewId, reviewReqDto.getImgFiles());
+				reviewRepository.registerReviewImgs(reviewImgs);
 			}
 		}
 		return reviewRepository.modifyReview(reviewByReviewId);
