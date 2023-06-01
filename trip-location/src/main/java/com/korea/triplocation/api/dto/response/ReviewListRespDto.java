@@ -14,6 +14,7 @@ public class ReviewListRespDto {
 	
 	private int reviewId;
 	private int travelId;
+	private int userId;
 	private String reviewTitle;
 	private String reviewContents;
 	private int reviewRating;

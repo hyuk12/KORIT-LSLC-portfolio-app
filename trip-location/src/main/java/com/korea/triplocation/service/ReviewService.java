@@ -2,6 +2,8 @@ package com.korea.triplocation.service;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.korea.triplocation.exception.CustomException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -124,6 +127,7 @@ public class ReviewService {
 		ReviewListRespDto reviewData = ReviewListRespDto.builder()
 				.reviewId(reviewByReviewId.getReviewId())
 				.travelId(reviewByReviewId.getTravelId())
+				.userId(reviewByReviewId.getUserId())
 				.reviewTitle(reviewByReviewId.getReviewTitle())
 				.reviewContents(reviewByReviewId.getReviewContents())
 				.reviewRating(reviewByReviewId.getReviewRating())
@@ -132,5 +136,51 @@ public class ReviewService {
 				.build();
 		return reviewData;
 	};
+
+	public int updateReview(int reviewId, ReviewReqDto reviewReqDto) {
+		Review reviewByReviewId = reviewRepository.getReviewByReviewId(reviewId);
+		if(reviewByReviewId == null) {
+			throw new CustomException("리뷰가 없어요");
+		}
+
+		if (reviewReqDto.getTitle() != null ) {
+			reviewByReviewId.setReviewTitle(reviewByReviewId.getReviewTitle());
+		}
+		if (reviewReqDto.getReview() != null ) {
+			reviewByReviewId.setReviewContents(reviewByReviewId.getReviewContents());
+		}
+		if (reviewReqDto.getImgFiles() != null) {
+			List<ReviewImg> reviewImgListByReviewId = reviewRepository.getReviewImgListByReviewId(reviewId);
+			if(reviewImgListByReviewId != null) {
+				try {
+					for (ReviewImg reviewImg: reviewImgListByReviewId) {
+						deleteFile(reviewImg.getTempName());
+						reviewRepository.deleteReviewImg(reviewImg.getReviewImgId());
+					}
+				}catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				List<ReviewImg> reviewImgs = uploadFiles(reviewId, reviewReqDto.getImgFiles());
+				reviewByReviewId.setReviewImgs(reviewImgs);
+
+			}
+		}
+		return reviewRepository.modifyReview(reviewByReviewId);
+	}
+
+	private void deleteFile(String filename) throws IOException {
+		Path uploadPath = Paths.get(filePath + "review/" + filename);
+
+		if (Files.exists(uploadPath)) {
+			try {
+				System.out.println(uploadPath);
+				Files.delete(uploadPath);
+			} catch (IOException e) {
+				throw new IOException("Failed to delete file: " + uploadPath, e);
+			}
+		} else {
+			throw new FileNotFoundException("File not found: " + uploadPath);
+		}
+	}
 
 }

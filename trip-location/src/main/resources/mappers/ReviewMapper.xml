@@ -124,7 +124,25 @@
 				(0, #{reviewImg.reviewId}, #{reviewImg.originName}, #{reviewImg.tempName}, #{reviewImg.imgSize})
 			</foreach>
 	</insert>
-	
 
+	<update id="modifyReview">
+		update
+			review_tb
+		set
+		    review_title = #{reviewTitle},
+		    review_contents = #{reviewContents},
+		    review_rating = #{reviewRating},
+		    review_create_date = now()
+		where
+		    review_id = #{reviewId}
+	</update>
+
+	<delete id="deleteReviewImg" parameterType="list">
+		delete
+		from
+		    review_img_tb
+		where
+		    review_id = #{reviewId}
+	</delete>
 
 </mapper>
