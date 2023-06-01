@@ -36,7 +36,7 @@ public class TravelPlanController {
     }
     
     @GetMapping("/info/copy")
-    public ResponseEntity<?> reviewTravelInfo(int reviewId, int travelId) {
+    public ResponseEntity<?> reviewTravelInfo(@RequestParam("reviewId") int reviewId,@RequestParam("travelId") int travelId) {
     	return ResponseEntity.ok(travelService.findReviewTravelInfoByTravelIdAndReviewId(reviewId, travelId));
     }
 

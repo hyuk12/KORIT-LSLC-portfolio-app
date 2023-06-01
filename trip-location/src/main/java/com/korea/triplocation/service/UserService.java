@@ -54,45 +54,58 @@ public class UserService {
 	}
 	
 	public UserRespDto searchUser(int type, String value) {
-		
-		User user = null;
-		PostsImg postsImg = null;
-		String imgUrl = null;
-		
-		if (type == 1) {
-			user = userRepository.searchUserByEmail(value);
-			if(user.getPostsImgId() != -1) {
-				postsImg = userRepository.getPostsImgById(user.getPostsImgId());
-				imgUrl = convertFilePathToUrl(postsImg.getTempName());
-			}else {
-				imgUrl = convertFilePathToUrl("default.png");
-			}
-		} else if (type == 2) {
-			user = userRepository.searchUserByPhone(value);
-			if(user.getPostsImgId() != -1) {
-				postsImg = userRepository.getPostsImgById(user.getPostsImgId());
-				imgUrl = convertFilePathToUrl(postsImg.getTempName());
-			}else {
-				imgUrl = convertFilePathToUrl("default.png");
-			}
-		} else {
-			throw new IllegalArgumentException("Invalid type");
-		}
-		
-		if(user == null) {
-			return null;
-		}
-		
-		return UserRespDto.builder()
-				.userId(user.getUserId())
-				.postsImgId(user.getPostsImgId())
-				.email(user.getEmail())
-				.name(user.getName())
-				.phone(user.getPhone())
-				.postsImgUrl(imgUrl)
-				.build();
-		
+	    User user = null;
+	    PostsImg postsImg = null;
+	    String imgUrl = null;
+	    int postsImgId = 0;
+	    if (type == 1) {
+	        user = userRepository.searchUserByEmail(value);
+	        if (user != null) {
+	            postsImgId = user.getPostsImgId();
+	            if (postsImgId != -1) {
+	                postsImg = userRepository.getPostsImgById(postsImgId);
+	                if (postsImg != null) {
+	                    imgUrl = convertFilePathToUrl(postsImg.getTempName());
+	                } else {
+	                    imgUrl = convertFilePathToUrl("default.png");
+	                }
+	            } else {
+	                imgUrl = convertFilePathToUrl("default.png");
+	            }
+	        }
+	    } else if (type == 2) {
+	        user = userRepository.searchUserByPhone(value);
+	        if (user != null) {
+	            postsImgId = user.getPostsImgId();
+	            if (postsImgId != -1) {
+	                postsImg = userRepository.getPostsImgById(postsImgId);
+	                if (postsImg != null) {
+	                    imgUrl = convertFilePathToUrl(postsImg.getTempName());
+	                } else {
+	                    imgUrl = convertFilePathToUrl("default.png");
+	                }
+	            } else {
+	                imgUrl = convertFilePathToUrl("default.png");
+	            }
+	        }
+	    } else {
+	        throw new IllegalArgumentException("Invalid type");
+	    }
+	    
+	    if (user == null) {
+	        return null;
+	    }
+	    
+	    return UserRespDto.builder()
+	            .userId(user.getUserId())
+	            .postsImgId(user.getPostsImgId())
+	            .email(user.getEmail())
+	            .name(user.getName())
+	            .phone(user.getPhone())
+	            .postsImgUrl(imgUrl)
+	            .build();
 	}
+
 	
 	public boolean modifyUser(int userId, UserModifyReqDto userModifyReqDto) {
 		User user = userRepository.getUserById(userId);
