@@ -80,19 +80,15 @@ public class ReviewService {
 
 			Path uploadPath = Paths.get(filePath + "review/" + tempFileName);
 
-			File f = new File(filePath + "post");
+			File f = new File(filePath + "review");
 			if (!f.exists()) {
 				f.mkdirs();
 			}
-
-		
 				try {
 					Files.write(uploadPath, file.getBytes());
 				} catch (java.io.IOException e) {
 					e.printStackTrace();
 				}
-
-			
 			reviewFiles.add(ReviewImg.builder()
 					   .reviewId(reviewId)
 					   .originName(originFileName)
