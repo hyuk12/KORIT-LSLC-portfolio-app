@@ -25,4 +25,7 @@ public interface ReviewRepository {
 
 
     public void deleteReviewImg(int reviewImgId);
+
+    public int deleteReview(int reviewId);
+    public int deleteReviewImages(int reviewId);
 }

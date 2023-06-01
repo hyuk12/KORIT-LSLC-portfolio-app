@@ -191,4 +191,20 @@ public class ReviewService {
 		}
 	}
 
+	@Transactional
+	public int deleteReview(int reviewId) {
+		List<ReviewImg> reviewImgListByReviewId = reviewRepository.getReviewImgListByReviewId(reviewId);
+		if (reviewImgListByReviewId != null) {
+			try {
+				for (ReviewImg reviewImg : reviewImgListByReviewId) {
+					reviewRepository.deleteReviewImages(reviewImg.getReviewImgId());
+					deleteFile(reviewImg.getTempName());
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		int deleteReview = reviewRepository.deleteReview(reviewId);
+		return deleteReview ;
+	}
 }
