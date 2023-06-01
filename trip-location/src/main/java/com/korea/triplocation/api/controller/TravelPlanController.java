@@ -35,6 +35,11 @@ public class TravelPlanController {
         return ResponseEntity.ok(travelService.findTravelInfoByTravelId(userId, travelId));
     }
 
+    @GetMapping("/info/review")
+    public ResponseEntity<?> myTravelInfoReview(int travelId) {
+        return ResponseEntity.ok(travelService.findTravelByTravelId(travelId));
+    }
+
     @PutMapping("/update/{travelId}")
     public ResponseEntity<?> updateTravel(@PathVariable int travelId, @RequestBody TravelUpdateReqDto travelUpdateReqDto) {
         travelService.updateTravel(travelId, travelUpdateReqDto);
