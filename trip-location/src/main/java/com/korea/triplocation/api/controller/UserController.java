@@ -37,7 +37,6 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<?> searchUser(@RequestParam("type") int type,
             							@RequestParam("value") String value) {
-        System.out.println(value);
     	return ResponseEntity.ok().body(DataRespDto.of(userService.searchUser(type, value)));
     }
 
