@@ -126,7 +126,7 @@ public class UserService {
             user.setAddress(userModifyReqDto.getAddress());
         }
 		if (userModifyReqDto.getProfileImg() != null) {
-			System.out.println(userId);
+//			System.out.println(userId);
 			PostsImg currentPostsImg = userRepository.getPostsImgByUserId(userId);
 			// If user has a profile image, delete it
 			if (currentPostsImg != null) {
