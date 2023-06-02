@@ -1,6 +1,18 @@
 package com.korea.triplocation.service;
 
 
+import com.korea.triplocation.api.dto.request.ReviewReqDto;
+import com.korea.triplocation.api.dto.response.ReviewListRespDto;
+import com.korea.triplocation.domain.review.entity.Review;
+import com.korea.triplocation.domain.review.entity.ReviewImg;
+import com.korea.triplocation.exception.CustomException;
+import com.korea.triplocation.repository.ReviewRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,20 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.korea.triplocation.exception.CustomException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.korea.triplocation.api.dto.request.ReviewReqDto;
-import com.korea.triplocation.api.dto.response.ReviewListRespDto;
-import com.korea.triplocation.domain.review.entity.Review;
-import com.korea.triplocation.domain.review.entity.ReviewImg;
-import com.korea.triplocation.repository.ReviewRepository;
-
-import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -33,6 +31,7 @@ public class ReviewService {
 	private String filePath;
 
 	private final ReviewRepository reviewRepository;
+	private final TravelService travelService;
 
 
 	public List<ReviewListRespDto> getUserReviewListAll(int userId) {
@@ -181,7 +180,6 @@ public class ReviewService {
 
 		if (Files.exists(uploadPath)) {
 			try {
-				System.out.println(uploadPath);
 				Files.delete(uploadPath);
 			} catch (IOException e) {
 				throw new IOException("Failed to delete file: " + uploadPath, e);
@@ -204,7 +202,9 @@ public class ReviewService {
 				throw new RuntimeException(e);
 			}
 		}
+		Review reviewByReviewId = reviewRepository.getReviewByReviewId(reviewId);
 		int deleteReview = reviewRepository.deleteReview(reviewId);
+		travelService.deleteTravelPlan(reviewByReviewId.getTravelId());
 		return deleteReview ;
 	}
 }

@@ -6,6 +6,5 @@ import lombok.Data;
 @Builder
 @Data
 public class JwtRespDto {
-	private String grantType;
 	private String accessToken;
 }

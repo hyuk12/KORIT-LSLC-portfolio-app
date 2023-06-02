@@ -100,7 +100,7 @@ public class JwtTokenProvider {
 		if(userEntity != null) {
 
 			PrincipalUser principalUser = userEntity.toPrincipal();
-			System.out.println(principalUser);
+
 			authentication = new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
 		} else {
 			throw new UsernameNotFoundException("User not found with email: " + email);
@@ -124,13 +124,12 @@ public class JwtTokenProvider {
 
 	}
 
-	public JwtRespDto generateAccessToken(Authentication authentication) {
+	public String generateAccessToken(Authentication authentication) {
 		String email = null;
 		if(authentication.getPrincipal().getClass() == PrincipalUser.class) {
 			//PrincipalUser
 			PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 			email = principalUser.getEmail();
-			System.out.println(principalUser.getEmail());
 		}else {
 			//OAuth2User
 			OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -150,13 +149,13 @@ public class JwtTokenProvider {
 		roles.delete(roles.length() - 1, roles.length());
 
 		Date tokenExpiresDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24));
-		String accessToken = Jwts.builder()
+		String accessToken = "Bearer " + Jwts.builder()
 				.setSubject("AccessToken")
 				.claim("email", email)
 				.claim("auth", roles)
 				.setExpiration(tokenExpiresDate)
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
-		return JwtRespDto.builder().grantType("Bearer").accessToken(accessToken).build();
+		return accessToken;
 	}
 }
