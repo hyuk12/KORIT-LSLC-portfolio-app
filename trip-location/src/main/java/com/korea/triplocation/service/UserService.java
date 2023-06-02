@@ -195,7 +195,6 @@ public class UserService {
 
 		if (Files.exists(uploadPath)) {
 			try {
-				System.out.println(uploadPath);
 				Files.delete(uploadPath);
 			} catch (IOException e) {
 				throw new IOException("Failed to delete file: " + uploadPath, e);

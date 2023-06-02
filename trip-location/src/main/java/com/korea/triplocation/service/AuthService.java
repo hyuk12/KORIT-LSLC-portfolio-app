@@ -75,7 +75,7 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 		Authentication authentication = 
 				authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-		return jwtTokenProvider.generateAccessToken(authentication);
+		return JwtRespDto.builder().accessToken(jwtTokenProvider.generateAccessToken(authentication)).build();
 		
 	}
 

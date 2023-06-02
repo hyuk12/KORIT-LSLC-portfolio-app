@@ -137,13 +137,14 @@ public class TravelService {
 
         for (Travels travels : travelAllByUser) {
             for (Participant participant: travels.getParticipants()) {
-                System.out.println(participant.getParticipantId());
-                System.out.println("participant.getTravelId() == travelId" + (participant.getTravelId() == travelId));
-                System.out.println("participant.getUserId() == principal.getUserId()" + (participant.getUserId() == principal.getUserId()));
+
                 if(participant.getTravelId() == travelId && participant.getUserId() == principal.getUserId()) {
-                    System.out.println("party" + participant.getParticipantId());
-                    travelRepository.deleteTravelPlanByParty(participant.getUserId());
-                    return 1;
+                    Participant participantIdByUserIdAndTravelId = travelRepository.findParticipantIdByUserIdAndTravelId(principal.getUserId(), travelId);
+                    if (participantIdByUserIdAndTravelId != null) {
+
+                        travelRepository.deleteTravelPlanByParty(participantIdByUserIdAndTravelId.getParticipantId());
+                        return 1;
+                    }
                 }
             }
         }

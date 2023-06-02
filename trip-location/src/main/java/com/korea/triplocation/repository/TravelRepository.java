@@ -3,12 +3,8 @@ package com.korea.triplocation.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.korea.triplocation.domain.travel.entity.*;
 import org.apache.ibatis.annotations.Mapper;
-
-import com.korea.triplocation.domain.travel.entity.Location;
-import com.korea.triplocation.domain.travel.entity.MainImage;
-import com.korea.triplocation.domain.travel.entity.Region;
-import com.korea.triplocation.domain.travel.entity.Travels;
 
 @Mapper
 public interface TravelRepository {
@@ -21,5 +17,6 @@ public interface TravelRepository {
     public Travels findTravelByTravelIdAndUserId(int userId, int travelId);
     public Travels findReviewTravelByReviewIdAndTravelId(int reviewId, int travelId);
 
-    public void deleteTravelPlanByParty(int userId);
+    public Participant findParticipantIdByUserIdAndTravelId(int userId, int travelId);
+    public void deleteTravelPlanByParty(int participantId);
 }
