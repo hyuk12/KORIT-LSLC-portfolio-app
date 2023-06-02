@@ -57,4 +57,9 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable int userId, @RequestBody LoginReqDto loginReqDto) {
     	return ResponseEntity.ok(DataRespDto.of(userService.deleteUser(userId, loginReqDto)));
     }
+
+    @GetMapping("/principal")
+    public ResponseEntity<?> principal() {
+        return ResponseEntity.ok(userService.getPrincipal());
+    }
 }

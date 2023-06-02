@@ -75,14 +75,14 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 		Authentication authentication = 
 				authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-		return jwtTokenProvider.generateToken(authentication);
+		return jwtTokenProvider.generateAccessToken(authentication);
 		
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException{
 		User userEntity = authRepository.findUserByEmail(username);
-		
+
 		if(userEntity == null) {
 			throw new CustomException("로그인 실패",
 					ErrorMap.builder()
@@ -93,37 +93,12 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 		System.out.println("loadUserByUsername returns: " + principalUser.getClass().getName());
 		return principalUser;
 	}
-	
+
 	public boolean authenticated(String accessToken) {
 		return jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken));
 	}
 	
-	public PrincipalRespDto getPrincipal(String accessToken) {
-		Claims claims = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken));
 
-		User userEntity = authRepository.findUserByEmail(claims.get("email").toString());
-		String imageUrl = null;
-
-		if(userEntity.getPostsImgId() != -1) {
-			PostsImg postsImg = userRepository.getPostsImgById(userEntity.getPostsImgId());
-			imageUrl = convertFilePathToUrl(postsImg.getTempName());
-		}else {
-			imageUrl = convertFilePathToUrl("default.png");
-		}
-
-		return PrincipalRespDto.builder()
-				.userId(userEntity.getUserId())
-				.email(userEntity.getEmail())
-				.name(userEntity.getName())
-				.phone(userEntity.getPhone())
-				.address(userEntity.getAddress())
-				.postsImgId(userEntity.getPostsImgId())
-				.postsImgUrl(imageUrl)
-				.authorities((String) claims.get("auth"))
-				.provider(userEntity.getProvider())
-				.build();
-		
-	}
 
 	private String convertFilePathToUrl(String tempName) {
 		return "http://localhost:8080/image/user/" + tempName;

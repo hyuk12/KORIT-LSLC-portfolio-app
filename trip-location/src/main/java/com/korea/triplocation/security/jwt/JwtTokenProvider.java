@@ -39,29 +39,7 @@ public class JwtTokenProvider {
 	public JwtTokenProvider(@Value("${jwt.secret}")  String secretKey) {
 		key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
 	}
-	
-	public JwtRespDto generateToken(Authentication authentication) {
-		
-		StringBuilder builder = new StringBuilder();
-		
-		authentication.getAuthorities().forEach(authority -> {
-			builder.append(authority.getAuthority() + ",");
-		});
-		builder.delete(builder.length() - 1 , builder.length());
-		
-		String authorities = builder.toString();
-		
-		Date tokenExpireDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24));		//프로젝트 완성후 만료시간 수정하기
-		
-		String accessToken = Jwts.builder()
-				.setSubject(authentication.getName())
-				.claim("auth", authorities)
-				.setExpiration(tokenExpireDate)
-				.signWith(key, SignatureAlgorithm.HS256)
-				.compact();
 
-		return	JwtRespDto.builder().grantType("Bearer").accessToken(accessToken).build(); 
-	}
 	
 	public boolean validateToken(String token) {
 		
@@ -122,12 +100,11 @@ public class JwtTokenProvider {
 		if(userEntity != null) {
 
 			PrincipalUser principalUser = userEntity.toPrincipal();
+			System.out.println(principalUser);
 			authentication = new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
 		} else {
 			throw new UsernameNotFoundException("User not found with email: " + email);
 		}
-
-
 
 		return authentication;
 	}
@@ -147,13 +124,13 @@ public class JwtTokenProvider {
 
 	}
 
-	public String generateAccessToken(Authentication authentication) {
+	public JwtRespDto generateAccessToken(Authentication authentication) {
 		String email = null;
-
-		if(authentication.getPrincipal().getClass() == UserDetails.class) {
+		if(authentication.getPrincipal().getClass() == PrincipalUser.class) {
 			//PrincipalUser
 			PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 			email = principalUser.getEmail();
+			System.out.println(principalUser.getEmail());
 		}else {
 			//OAuth2User
 			OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -173,13 +150,13 @@ public class JwtTokenProvider {
 		roles.delete(roles.length() - 1, roles.length());
 
 		Date tokenExpiresDate = new Date(new Date().getTime() + (1000 * 60 * 60 * 24));
-
-		return "Bearer " + Jwts.builder()
+		String accessToken = Jwts.builder()
 				.setSubject("AccessToken")
 				.claim("email", email)
 				.claim("auth", roles)
 				.setExpiration(tokenExpiresDate)
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
+		return JwtRespDto.builder().grantType("Bearer").accessToken(accessToken).build();
 	}
 }

@@ -55,11 +55,7 @@ public class AuthController {
 
     }
 
-    @GetMapping("/principal")
-    public ResponseEntity<?> principal(String accessToken) {
-        return ResponseEntity.ok(authService.getPrincipal(accessToken));
 
-    }
 
     @PostMapping("/oauth2/register")
     public ResponseEntity<?> oauth2Register(
