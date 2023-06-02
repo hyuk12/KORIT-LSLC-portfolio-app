@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.korea.triplocation.api.dto.response.PrincipalRespDto;
+import com.korea.triplocation.security.PrincipalUser;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -240,4 +244,27 @@ public class UserService {
 		return flag;
 	}
 
+	public PrincipalRespDto getPrincipal() {
+		PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User userEntity = userRepository.getUserById(principalUser.getUserId());
+		PostsImg imageUrl = userRepository.getPostsImgByUserId(principalUser.getUserId());
+		StringBuilder roles = new StringBuilder();
+		principalUser.getAuthorities().forEach(authority -> {
+			roles.append(authority.getAuthority() + ",");
+		});
+		roles.delete(roles.length() - 1, roles.length());
+
+		return PrincipalRespDto.builder()
+				.userId(userEntity.getUserId())
+				.email(userEntity.getEmail())
+				.name(userEntity.getName())
+				.phone(userEntity.getPhone())
+				.address(userEntity.getAddress())
+				.postsImgId(userEntity.getPostsImgId())
+				.postsImgUrl(convertFilePathToUrl(imageUrl.getTempName()))
+				.authorities(roles.toString())
+				.provider(userEntity.getProvider())
+				.build();
+
+	}
 }
