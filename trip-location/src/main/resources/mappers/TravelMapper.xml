@@ -293,4 +293,12 @@
 		    tpt.travel_id
     </select>
 
+	<delete id="deleteTravelPlanByParty">
+		delete
+		from
+			travel_participants_tb
+		where
+			user_id = #{userId}
+	</delete>
+
 </mapper>

@@ -50,6 +50,12 @@ public class TravelPlanController {
         travelService.updateTravel(travelId, travelUpdateReqDto);
         return ResponseEntity.ok(DataRespDto.ofDefault());
     }
+
+    @DeleteMapping("/{travelId}")
+    public ResponseEntity<?> deleteTravel(@PathVariable int travelId) {
+        System.out.println(travelId);
+        return ResponseEntity.ok(travelService.deleteTravelPlan(travelId));
+    }
     
     
 }
