@@ -20,4 +20,6 @@ public interface TravelRepository {
     public int updateTravelData(int locationId, String address, double lat, double lng);
     public Travels findTravelByTravelIdAndUserId(int userId, int travelId);
     public Travels findReviewTravelByReviewIdAndTravelId(int reviewId, int travelId);
+
+    public void deleteTravelPlanByParty(int userId);
 }

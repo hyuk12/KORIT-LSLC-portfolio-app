@@ -6,8 +6,12 @@ import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
 import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
 import com.korea.triplocation.domain.travel.entity.*;
+import com.korea.triplocation.domain.user.entity.User;
 import com.korea.triplocation.repository.TravelRepository;
+import com.korea.triplocation.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +35,6 @@ public class TravelService {
                     for (int i = 0; i < locations.size(); i++) {
                         LocationReqDto locationReqDto = locations.get(i);
                         for (PartyDataReqDto partyDataReqDto : partyData) {
-                            System.out.println(partyDataReqDto.getUserId());
 
                             if (i == 0 && travelId == null) {
                                 // Save the travel with the first location and first participant and get the travel ID
@@ -120,11 +123,31 @@ public class TravelService {
         if(travels != null) {
             for(Schedule schedule : travelUpdateReqDto.getSchedules()) {
                 for (Location location: schedule.getLocations()) {
-                    System.out.println(location.getAddr());
                     travelRepository.updateTravelData(location.getLocationId(), location.getAddr(), location.getLat(), location.getLng());
                 }
             };
         };
 
+    }
+
+    public int deleteTravelPlan(int travelId) {
+        PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+        List<Travels> travelAllByUser = travelRepository.findTravelAllByUser(principal.getUserId());
+
+        for (Travels travels : travelAllByUser) {
+            for (Participant participant: travels.getParticipants()) {
+                System.out.println(participant.getParticipantId());
+                System.out.println("participant.getTravelId() == travelId" + (participant.getTravelId() == travelId));
+                System.out.println("participant.getUserId() == principal.getUserId()" + (participant.getUserId() == principal.getUserId()));
+                if(participant.getTravelId() == travelId && participant.getUserId() == principal.getUserId()) {
+                    System.out.println("party" + participant.getParticipantId());
+                    travelRepository.deleteTravelPlanByParty(participant.getUserId());
+                    return 1;
+                }
+            }
+        }
+        return -1;
     }
 }

@@ -4,6 +4,7 @@ import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
 import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
 import com.korea.triplocation.domain.user.entity.PostsImg;
 import com.korea.triplocation.repository.UserRepository;
+import com.korea.triplocation.security.PrincipalUser;
 import com.korea.triplocation.security.oauth2.OAuth2Attribute;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -88,8 +89,9 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 					.put("email", "사용자 정보를 확인하세요.")
 					.build());
 		}
-		
-		return userEntity.toPrincipal();
+		PrincipalUser principalUser = userEntity.toPrincipal();
+		System.out.println("loadUserByUsername returns: " + principalUser.getClass().getName());
+		return principalUser;
 	}
 	
 	public boolean authenticated(String accessToken) {
@@ -99,7 +101,7 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 	public PrincipalRespDto getPrincipal(String accessToken) {
 		Claims claims = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken));
 
-		User userEntity = authRepository.findUserByEmail(claims.getSubject());
+		User userEntity = authRepository.findUserByEmail(claims.get("email").toString());
 		String imageUrl = null;
 
 		if(userEntity.getPostsImgId() != -1) {
