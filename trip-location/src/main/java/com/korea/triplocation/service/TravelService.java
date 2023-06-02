@@ -133,7 +133,6 @@ public class TravelService {
     public int deleteTravelPlan(int travelId) {
         PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-
         List<Travels> travelAllByUser = travelRepository.findTravelAllByUser(principal.getUserId());
 
         for (Travels travels : travelAllByUser) {
