@@ -24,6 +24,7 @@ import com.korea.triplocation.api.dto.request.LoginReqDto;
 import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
 import com.korea.triplocation.api.dto.request.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.UserRespDto;
+import com.korea.triplocation.domain.travel.entity.MainImage;
 import com.korea.triplocation.domain.user.entity.PostsImg;
 import com.korea.triplocation.domain.user.entity.User;
 import com.korea.triplocation.exception.CustomException;
@@ -247,7 +248,20 @@ public class UserService {
 	public PrincipalRespDto getPrincipal() {
 		PrincipalUser principalUser = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User userEntity = userRepository.getUserById(principalUser.getUserId());
-		PostsImg imageUrl = userRepository.getPostsImgByUserId(principalUser.getUserId());
+		PostsImg postsImage = null;
+		String imageUrl = null;
+		
+		if(userEntity.getPostsImgId() != -1) {
+			postsImage = userRepository.getPostsImgByUserId(userEntity.getUserId());
+			if(postsImage != null) {
+				imageUrl = convertFilePathToUrl(postsImage.getTempName());
+			}else {
+				imageUrl = convertFilePathToUrl("default.png");
+			}
+		}else {
+			imageUrl = convertFilePathToUrl("default.png");
+		}
+
 		StringBuilder roles = new StringBuilder();
 		principalUser.getAuthorities().forEach(authority -> {
 			roles.append(authority.getAuthority() + ",");
@@ -261,7 +275,7 @@ public class UserService {
 				.phone(userEntity.getPhone())
 				.address(userEntity.getAddress())
 				.postsImgId(userEntity.getPostsImgId())
-				.postsImgUrl(convertFilePathToUrl(imageUrl.getTempName()))
+				.postsImgUrl(imageUrl)
 				.authorities(roles.toString())
 				.provider(userEntity.getProvider())
 				.build();
