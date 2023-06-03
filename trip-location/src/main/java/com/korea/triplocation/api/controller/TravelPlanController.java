@@ -27,17 +27,17 @@ public class TravelPlanController {
     }
 
     @GetMapping("/list")//principal에서 자신의 userId로 자신의 모든 여행일정과 img가져오기
-    public ResponseEntity<?> view(@RequestParam("userId") int userId) {
-        return ResponseEntity.ok(travelService.findTravelByUser(userId));
+    public ResponseEntity<?> view() {
+        return ResponseEntity.ok(travelService.findTravelByUser());
     }
 
     @GetMapping("/info")
-    public ResponseEntity<?> myTravelInfo(int userId, int travelId) {
-        return ResponseEntity.ok(travelService.findTravelInfoByTravelId(userId, travelId));
+    public ResponseEntity<?> myTravelInfo(int travelId) {
+        return ResponseEntity.ok(travelService.findTravelInfoByTravelId(travelId));
     }
     
     @GetMapping("/info/copy")
-    public ResponseEntity<?> reviewTravelInfo(@RequestParam("reviewId") int reviewId,@RequestParam("travelId") int travelId) {
+    public ResponseEntity<?> reviewTravelInfo(@RequestParam("reviewId") int reviewId, @RequestParam("travelId") int travelId) {
     	return ResponseEntity.ok(travelService.findReviewTravelInfoByTravelIdAndReviewId(reviewId, travelId));
     }
 

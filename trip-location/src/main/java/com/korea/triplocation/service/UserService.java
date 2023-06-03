@@ -112,8 +112,9 @@ public class UserService {
 	}
 
 	
-	public boolean modifyUser(int userId, UserModifyReqDto userModifyReqDto) {
-		User user = userRepository.getUserById(userId);
+	public boolean modifyUser(UserModifyReqDto userModifyReqDto) {
+		PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userRepository.getUserById(principal.getUserId());
 
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
@@ -132,7 +133,7 @@ public class UserService {
         }
 		if (userModifyReqDto.getProfileImg() != null) {
 //			System.out.println(userId);
-			PostsImg currentPostsImg = userRepository.getPostsImgByUserId(userId);
+			PostsImg currentPostsImg = userRepository.getPostsImgByUserId(principal.getUserId());
 			// If user has a profile image, delete it
 			if (currentPostsImg != null) {
 				try {
@@ -144,13 +145,13 @@ public class UserService {
 
 				userRepository.deletePostsImg(currentPostsImg.getPostsImgId());
 
-				PostsImg postsImg = uploadFile(userId, userModifyReqDto.getProfileImg());
+				PostsImg postsImg = uploadFile(principal.getUserId(), userModifyReqDto.getProfileImg());
 				userRepository.postsImg(postsImg);
 				user.setPostsImgId(postsImg.getPostsImgId());
 			}
 
 			if (currentPostsImg == null && user.getPostsImgId() == -1) {
-				PostsImg postsImg = uploadFile(userId, userModifyReqDto.getProfileImg());
+				PostsImg postsImg = uploadFile(principal.getUserId(), userModifyReqDto.getProfileImg());
 				userRepository.postsImg(postsImg);
 				user.setPostsImgId(postsImg.getPostsImgId());
 			}
@@ -216,12 +217,13 @@ public class UserService {
 		return userRepository.resetPassword(user) != 0;
 	}
 	
-	public boolean deleteUser(int userId, LoginReqDto loginReqDto) {
+	public boolean deleteUser( LoginReqDto loginReqDto) {
 		boolean flag = false;
 
 		// 한 번더 로그인하는 것으로 본인 확인
 		if(authService.signin(loginReqDto) != null) {
-			User user = userRepository.getUserById(userId);
+			PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			User user = userRepository.getUserById(principal.getUserId());
 			int postsImgId = user.getPostsImgId();
 			
 			if (postsImgId != -1) {
@@ -235,7 +237,7 @@ public class UserService {
 					}
 				}
 			}	
-			userRepository.deleteUser(userId);
+			userRepository.deleteUser(principal.getUserId());
 			flag = true;
 		} else {
 			throw new CustomException("이메일 또는 비밀번호를 확인해주세요");
