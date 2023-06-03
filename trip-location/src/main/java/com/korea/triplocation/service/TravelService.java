@@ -68,12 +68,13 @@ public class TravelService {
   		return "http://localhost:8080/image/region/" + tempName;
   	}
     
-    public List<Travels> findTravelByUser(int userId) {
-    	if(userId == 0) {
+    public List<Travels> findTravelByUser() {
+        PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal.getUserId() == 0) {
     		return null;
     	}
 
-    	List<Travels> travelsList = travelRepository.findTravelAllByUser(userId);
+    	List<Travels> travelsList = travelRepository.findTravelAllByUser(principal.getUserId());
     	for (Travels travel : travelsList) {
     	    List<Region> regions = travel.getRegions();
     	    for (Region region : regions) {
@@ -95,8 +96,9 @@ public class TravelService {
     	return travelsList;
     }
 
-    public MyTravelInfoRespDto findTravelInfoByTravelId(int userId, int travelId) {
-        Travels travelByTravelId = travelRepository.findTravelByTravelIdAndUserId(userId, travelId);
+    public MyTravelInfoRespDto findTravelInfoByTravelId(int travelId) {
+        PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Travels travelByTravelId = travelRepository.findTravelByTravelIdAndUserId(principal.getUserId(), travelId);
 
         return MyTravelInfoRespDto.builder()
                 .schedules(travelByTravelId.getSchedules())

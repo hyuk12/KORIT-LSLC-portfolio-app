@@ -16,9 +16,9 @@ public class ReviewController {
 
 	private final ReviewService reviewService;
 	
-	@GetMapping("/{userId}")
-	public ResponseEntity<?> getUserReviewList(@PathVariable int userId) {
-		return ResponseEntity.ok(DataRespDto.of(reviewService.getUserReviewListAll(userId)));
+	@GetMapping("/mylist")
+	public ResponseEntity<?> getUserReviewList() {
+		return ResponseEntity.ok(DataRespDto.of(reviewService.getUserReviewListAll()));
 	}
 
 	@GetMapping("/list/{reviewId}")

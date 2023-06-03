@@ -42,8 +42,8 @@ public class UserController {
 
     // user 정보 수정
     @PutMapping("/{userId}")
-    public ResponseEntity<?> modifyUser(@PathVariable int userId, UserModifyReqDto userModifyReqDto) {
-        return ResponseEntity.ok(DataRespDto.of(userService.modifyUser(userId, userModifyReqDto)));
+    public ResponseEntity<?> modifyUser(UserModifyReqDto userModifyReqDto) {
+        return ResponseEntity.ok(DataRespDto.of(userService.modifyUser(userModifyReqDto)));
     }
     
     // user 비밀번호 수정
@@ -54,8 +54,8 @@ public class UserController {
     
     // user 정보 삭제
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable int userId, @RequestBody LoginReqDto loginReqDto) {
-    	return ResponseEntity.ok(DataRespDto.of(userService.deleteUser(userId, loginReqDto)));
+    public ResponseEntity<?> deleteUser(@RequestBody LoginReqDto loginReqDto) {
+    	return ResponseEntity.ok(DataRespDto.of(userService.deleteUser(loginReqDto)));
     }
 
     @GetMapping("/principal")

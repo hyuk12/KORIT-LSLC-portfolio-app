@@ -7,8 +7,10 @@ import com.korea.triplocation.domain.review.entity.Review;
 import com.korea.triplocation.domain.review.entity.ReviewImg;
 import com.korea.triplocation.exception.CustomException;
 import com.korea.triplocation.repository.ReviewRepository;
+import com.korea.triplocation.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,13 +36,12 @@ public class ReviewService {
 	private final TravelService travelService;
 
 
-	public List<ReviewListRespDto> getUserReviewListAll(int userId) {
+	public List<ReviewListRespDto> getUserReviewListAll() {
+		PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<ReviewListRespDto> dtos = new ArrayList<>();
 
-		for (Review entity : reviewRepository.getReviewListByUserId(userId)) {
+		for (Review entity : reviewRepository.getReviewListByUserId(principal.getUserId())) {
 			dtos.add(entity.toDto());
-
-
 	    }
 		return dtos;
 

@@ -55,8 +55,6 @@ public class AuthController {
 
     }
 
-
-
     @PostMapping("/oauth2/register")
     public ResponseEntity<?> oauth2Register(
             @RequestHeader(value = "registerToken") String registerToken,
