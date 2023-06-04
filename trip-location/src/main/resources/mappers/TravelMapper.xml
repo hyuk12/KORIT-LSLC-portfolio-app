@@ -156,7 +156,9 @@
 	            tt.travel_id ASC,
 	            st.schedule_date ASC,
 	            lt.location_id ASC
-	    ) AS query2;
+	    ) AS query2
+	    ORDER BY
+          travel_id DESC, schedule_date ;
 	</select>
 
     
