@@ -27,7 +27,7 @@ spring:
             client-authentication-method: POST
             client-name: Kakao
             scope:
-              - profile
+              - profile_nickname
               - account_email
           naver:
             client-id: qz7c3rpgyf_pcchPO8_j
