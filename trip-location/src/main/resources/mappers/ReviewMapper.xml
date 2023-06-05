@@ -36,6 +36,7 @@
 		    rt.user_id,
 		    rt.travel_id,
 		    rt.review_title,
+		    rt.review_contents,
 		    rt.review_rating,
 		    rt.review_create_date,
 		    
