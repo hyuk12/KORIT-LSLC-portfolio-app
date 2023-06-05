@@ -46,6 +46,7 @@ public class Review {
 		return ReviewListRespDto.builder()
 				.reviewId(reviewId)
 				.travelId(travelId)
+				.userId(userId)
 				.reviewTitle(reviewTitle)
 				.reviewRating(reviewRating)
 				.reviewContents(reviewContents) 
