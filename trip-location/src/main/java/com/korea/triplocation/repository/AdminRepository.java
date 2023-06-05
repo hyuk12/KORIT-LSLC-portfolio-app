@@ -2,6 +2,7 @@ package com.korea.triplocation.repository;
 
 import java.util.List;
 
+import com.korea.triplocation.api.dto.response.PopularLocationsRespDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.korea.triplocation.domain.travel.entity.MainImage;
@@ -15,4 +16,6 @@ public interface AdminRepository {
 
 	public List<Region> getRegions();
 	public List<MainImage> getMainImages();
+
+    public List<PopularLocationsRespDto> findAllPopularLocations();
 }

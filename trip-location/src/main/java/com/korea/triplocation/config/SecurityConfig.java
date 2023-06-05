@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin().disable();
 
         http.authorizeRequests()
-                .antMatchers("/api/v1/auth/**", "/image/**", "/post/**", "/api/v1/review/list/**", "/api/v1/user/search", "/api/v1/travel/plan/info/review")
+                .antMatchers("/api/v1/auth/**", "/image/**", "/post/**", "/api/v1/review/list/**", "/api/v1/user/search", "/api/v1/travel/plan/info/review", "/locations/popular")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
