@@ -48,6 +48,7 @@ public class Review {
 				.travelId(travelId)
 				.reviewTitle(reviewTitle)
 				.reviewRating(reviewRating)
+				.reviewContents(reviewContents) 
 				.reviewImgUrl(convertFilePathToUrl(firstTempName))
 				.reviewCreateDate(reviewCreateDate)
 				.startDate(startDate)
