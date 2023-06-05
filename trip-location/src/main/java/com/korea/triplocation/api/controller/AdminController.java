@@ -25,4 +25,9 @@ public class AdminController {
     public ResponseEntity<?> getRegions(){
     	return ResponseEntity.ok(adminService.getRegions());
     }
+
+    @GetMapping("/locations/popular")
+    public ResponseEntity<?> getPopularLocations() {
+        return ResponseEntity.ok(adminService.getPopularLocations());
+    }
 }

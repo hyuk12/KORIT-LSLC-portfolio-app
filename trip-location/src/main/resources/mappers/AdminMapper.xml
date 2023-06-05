@@ -17,6 +17,11 @@
 		<result property="imgSize" column="img_size" />
     </resultMap>
 
+    <resultMap id="popularLocationsMap" type="com.korea.triplocation.api.dto.response.PopularLocationsRespDto">
+        <result property="regionName" column="region_name" />
+        <result property="travelCount" column="travel_count" />
+    </resultMap>
+
     <insert id="saveRegion" parameterType="com.korea.triplocation.domain.travel.entity.Region" useGeneratedKeys="true" keyProperty="regionId">
         insert into region_tb
         values (0, #{regionName}, #{regionEngName}, #{regionDescription})
@@ -48,6 +53,16 @@
     		*
     	from
     		region_img_tb
+    </select>
+
+    <select id="findAllPopularLocations" resultMap="popularLocationsMap">
+        SELECT r.region_name, COUNT(*) AS travel_count
+        FROM location_tb l
+            JOIN region_tb r ON l.address LIKE CONCAT('%', r.region_name, '%')
+        GROUP BY r.region_name
+        HAVING COUNT(DISTINCT l.location_id) > 0
+        ORDER BY travel_count DESC
+        LIMIT 9;
     </select>
 
 

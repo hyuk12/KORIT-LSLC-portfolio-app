@@ -203,9 +203,7 @@ public class ReviewService {
 				throw new RuntimeException(e);
 			}
 		}
-		Review reviewByReviewId = reviewRepository.getReviewByReviewId(reviewId);
 		int deleteReview = reviewRepository.deleteReview(reviewId);
-		travelService.deleteTravelPlan(reviewByReviewId.getTravelId());
 		return deleteReview ;
 	}
 }

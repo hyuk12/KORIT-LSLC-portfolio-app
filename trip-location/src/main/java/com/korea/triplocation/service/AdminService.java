@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.korea.triplocation.api.dto.response.PopularLocationsRespDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,5 +92,10 @@ public class AdminService {
             }
         }
         return dtos;
+    }
+
+    public List<PopularLocationsRespDto> getPopularLocations() {
+
+        return adminRepository.findAllPopularLocations();
     }
 }
