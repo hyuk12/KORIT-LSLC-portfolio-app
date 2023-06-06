@@ -1,4 +1,4 @@
-package com.korea.triplocation.api.dto.request;
+package com.korea.triplocation.api.dto.request.user;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;

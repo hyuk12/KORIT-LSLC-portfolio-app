@@ -3,7 +3,7 @@ package com.korea.triplocation.api.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.korea.triplocation.api.dto.request.ReviewReqDto;
+import com.korea.triplocation.api.dto.request.review.ReviewReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
 import com.korea.triplocation.service.ReviewService;
 

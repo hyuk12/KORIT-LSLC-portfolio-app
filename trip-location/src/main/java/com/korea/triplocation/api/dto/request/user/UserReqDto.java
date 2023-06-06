@@ -1,4 +1,4 @@
-package com.korea.triplocation.api.dto.request;
+package com.korea.triplocation.api.dto.request.user;
 
 import com.korea.triplocation.domain.user.entity.User;
 import lombok.*;

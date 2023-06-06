@@ -2,17 +2,17 @@ package com.korea.triplocation.api.controller;
 
 import javax.validation.Valid;
 
-import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
-import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
-import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
+import com.korea.triplocation.api.dto.request.login.OAuth2ProviderMergeReqDto;
+import com.korea.triplocation.api.dto.request.login.OAuth2RegisterReqDto;
+import com.korea.triplocation.api.dto.request.user.ResetPasswordReqDto;
 import com.korea.triplocation.security.jwt.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.korea.triplocation.aop.annotation.ValidAspect;
-import com.korea.triplocation.api.dto.request.LoginReqDto;
-import com.korea.triplocation.api.dto.request.UserReqDto;
+import com.korea.triplocation.api.dto.request.login.LoginReqDto;
+import com.korea.triplocation.api.dto.request.user.UserReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
 import com.korea.triplocation.service.AuthService;
 import com.korea.triplocation.service.UserService;

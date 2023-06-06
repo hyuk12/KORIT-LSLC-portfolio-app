@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import com.korea.triplocation.api.dto.response.PrincipalRespDto;
 import com.korea.triplocation.security.PrincipalUser;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,17 +19,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.korea.triplocation.api.dto.request.LoginReqDto;
-import com.korea.triplocation.api.dto.request.ResetPasswordReqDto;
-import com.korea.triplocation.api.dto.request.UserModifyReqDto;
+import com.korea.triplocation.api.dto.request.login.LoginReqDto;
+import com.korea.triplocation.api.dto.request.user.ResetPasswordReqDto;
+import com.korea.triplocation.api.dto.request.user.UserModifyReqDto;
 import com.korea.triplocation.api.dto.response.UserRespDto;
-import com.korea.triplocation.domain.travel.entity.MainImage;
 import com.korea.triplocation.domain.user.entity.PostsImg;
 import com.korea.triplocation.domain.user.entity.User;
 import com.korea.triplocation.exception.CustomException;
 import com.korea.triplocation.repository.UserRepository;
 import com.korea.triplocation.security.jwt.JwtTokenProvider;
-import com.nimbusds.openid.connect.sdk.UserInfoErrorResponse;
 
 import lombok.RequiredArgsConstructor;
 

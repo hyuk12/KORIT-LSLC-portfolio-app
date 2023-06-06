@@ -2,11 +2,11 @@ package com.korea.triplocation.api.controller;
 
 import java.util.List;
 
-import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
+import com.korea.triplocation.api.dto.request.travel.TravelUpdateReqDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
+import com.korea.triplocation.api.dto.request.travel.TravelPlanReqDto;
 import com.korea.triplocation.api.dto.response.DataRespDto;
 import com.korea.triplocation.service.TravelService;
 

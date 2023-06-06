@@ -1,4 +1,4 @@
-package com.korea.triplocation.api.dto.request;
+package com.korea.triplocation.api.dto.request.review;
 
 import java.util.List;
 
