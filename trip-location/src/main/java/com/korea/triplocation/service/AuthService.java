@@ -1,8 +1,7 @@
 package com.korea.triplocation.service;
 
-import com.korea.triplocation.api.dto.request.OAuth2ProviderMergeReqDto;
-import com.korea.triplocation.api.dto.request.OAuth2RegisterReqDto;
-import com.korea.triplocation.domain.user.entity.PostsImg;
+import com.korea.triplocation.api.dto.request.login.OAuth2ProviderMergeReqDto;
+import com.korea.triplocation.api.dto.request.login.OAuth2RegisterReqDto;
 import com.korea.triplocation.repository.UserRepository;
 import com.korea.triplocation.security.PrincipalUser;
 import com.korea.triplocation.security.oauth2.OAuth2Attribute;
@@ -22,10 +21,9 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.korea.triplocation.api.dto.request.LoginReqDto;
-import com.korea.triplocation.api.dto.request.UserReqDto;
+import com.korea.triplocation.api.dto.request.login.LoginReqDto;
+import com.korea.triplocation.api.dto.request.user.UserReqDto;
 import com.korea.triplocation.api.dto.response.JwtRespDto;
-import com.korea.triplocation.api.dto.response.PrincipalRespDto;
 import com.korea.triplocation.domain.user.entity.Authority;
 import com.korea.triplocation.domain.user.entity.User;
 import com.korea.triplocation.exception.CustomException;
@@ -33,7 +31,6 @@ import com.korea.triplocation.exception.ErrorMap;
 import com.korea.triplocation.repository.AuthRepository;
 import com.korea.triplocation.security.jwt.JwtTokenProvider;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
@@ -45,7 +42,6 @@ import java.util.Map;
 public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 	
 	private final AuthRepository authRepository;
-	private final UserRepository userRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
 	
@@ -90,18 +86,11 @@ public class AuthService implements UserDetailsService, OAuth2UserService<OAuth2
 					.build());
 		}
 		PrincipalUser principalUser = userEntity.toPrincipal();
-		System.out.println("loadUserByUsername returns: " + principalUser.getClass().getName());
 		return principalUser;
 	}
 
 	public boolean authenticated(String accessToken) {
 		return jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken));
-	}
-	
-
-
-	private String convertFilePathToUrl(String tempName) {
-		return "http://localhost:8080/image/user/" + tempName;
 	}
 
 	public int oauth2Register(OAuth2RegisterReqDto oAuth2RegisterReqDto) {

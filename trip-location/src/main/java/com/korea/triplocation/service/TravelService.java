@@ -1,16 +1,14 @@
 package com.korea.triplocation.service;
 
-import com.korea.triplocation.api.dto.request.LocationReqDto;
-import com.korea.triplocation.api.dto.request.PartyDataReqDto;
-import com.korea.triplocation.api.dto.request.TravelPlanReqDto;
-import com.korea.triplocation.api.dto.request.TravelUpdateReqDto;
+import com.korea.triplocation.api.dto.request.travel.LocationReqDto;
+import com.korea.triplocation.api.dto.request.travel.PartyDataReqDto;
+import com.korea.triplocation.api.dto.request.travel.TravelPlanReqDto;
+import com.korea.triplocation.api.dto.request.travel.TravelUpdateReqDto;
 import com.korea.triplocation.api.dto.response.MyTravelInfoRespDto;
 import com.korea.triplocation.domain.travel.entity.*;
-import com.korea.triplocation.domain.user.entity.User;
 import com.korea.triplocation.repository.TravelRepository;
 import com.korea.triplocation.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -20,136 +18,129 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class TravelService {
+    private static final String IMAGE_URL = "http://localhost:8080/image/region/";
+
     private final TravelRepository travelRepository;
 
     public void travelSave(List<TravelPlanReqDto> travels) {
-        if (travels != null && !travels.isEmpty()) {
-            String travelName = UUID.randomUUID().toString();
-            Integer travelId = null;
+        String travelName = UUID.randomUUID().toString();
+        Integer travelId = null;
 
-            for (TravelPlanReqDto dto : travels) {
-                if (dto != null && dto.getLocation() != null && !dto.getPartyData().isEmpty()) {
-                    List<LocationReqDto> locations = dto.getLocation();
-                    List<PartyDataReqDto> partyData = dto.getPartyData();
+        for (TravelPlanReqDto dto : travels) {
+            if (dto == null || dto.getLocation() == null || dto.getPartyData().isEmpty()) continue;
 
-                    for (int i = 0; i < locations.size(); i++) {
-                        LocationReqDto locationReqDto = locations.get(i);
-                        for (PartyDataReqDto partyDataReqDto : partyData) {
-
-                            if (i == 0 && travelId == null) {
-                                // Save the travel with the first location and first participant and get the travel ID
-                                travelId = travelRepository.callInsertTravelData(
-                                        travelName,
-                                        locationReqDto.getAddr(),
-                                        locationReqDto.getLat(),
-                                        locationReqDto.getLng(),
-                                        partyDataReqDto.getUserId(),
-                                        dto.getDate() // Visit date
-                                );
-                            } else {
-                                // Save the other locations with the same travel ID and all participants
-                                travelRepository.callInsertTravelData(
-                                        null,
-                                        locationReqDto.getAddr(),
-                                        locationReqDto.getLat(),
-                                        locationReqDto.getLng(),
-                                        partyDataReqDto.getUserId(),
-                                        dto.getDate() // Visit date
-                                );
-                            }
-                        }
-                    }
-                }
-            }
+            travelId = saveTravelData(travelName, travelId, dto);
         }
     }
-    
+
+    private Integer saveTravelData(String travelName, Integer travelId, TravelPlanReqDto dto){
+        for (LocationReqDto location : dto.getLocation()) {
+            for (PartyDataReqDto party : dto.getPartyData()) {
+                travelId = travelRepository.callInsertTravelData(
+                        (travelId == null) ? travelName : null,
+                        location.getAddr(),
+                        location.getLat(),
+                        location.getLng(),
+                        party.getUserId(),
+                        dto.getDate()
+                );
+            }
+        }
+        return travelId;
+    }
+
     private String convertFilePathToUrl(String tempName) {
-  		return "http://localhost:8080/image/region/" + tempName;
-  	}
-    
+        return IMAGE_URL + tempName;
+    }
+
     public List<Travels> findTravelByUser() {
         PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal.getUserId() == 0) {
-    		return null;
-    	}
+        if(principal.getUserId() == 0) return null;
 
-    	List<Travels> travelsList = travelRepository.findTravelAllByUser(principal.getUserId());
-    	for (Travels travel : travelsList) {
-    	    List<Region> regions = travel.getRegions();
-    	    for (Region region : regions) {
-    	        MainImage mainImage = null;
-    	        String imgUrl = null;
+        return setTravelImages(travelRepository.findTravelAllByUser(principal.getUserId()));
+    }
 
-    	        if (region.getRegionImgId() != -1) {
-    	            mainImage = travelRepository.getMainImgById(region.getRegionImgId());
-    	            if (mainImage != null) {
-    	                imgUrl = convertFilePathToUrl(mainImage.getTempName());
-    	                region.setRegionImgUrl(imgUrl);
-    	            }
-    	        } else {
-    	            imgUrl = convertFilePathToUrl("default.png");
-    	            region.setRegionImgUrl(imgUrl);
-    	        }
-    	    }
-    	}
-    	return travelsList;
+    private List<Travels> setTravelImages(List<Travels> travels){
+        for (Travels travel : travels) {
+            for (Region region : travel.getRegions()) {
+                region.setRegionImgUrl(getImgUrl(region));
+            }
+        }
+        return travels;
+    }
+
+    private String getImgUrl(Region region){
+        MainImage mainImage = null;
+        String imgUrl = null;
+
+        if (region.getRegionImgId() != -1) {
+            mainImage = travelRepository.getMainImgById(region.getRegionImgId());
+            if (mainImage != null) {
+                imgUrl = convertFilePathToUrl(mainImage.getTempName());
+            }
+        } else {
+            imgUrl = convertFilePathToUrl("default.png");
+        }
+
+        return imgUrl;
+    }
+
+    private MyTravelInfoRespDto getTravelInfo(Travels travels){
+        return MyTravelInfoRespDto.builder()
+                .schedules(travels.getSchedules())
+                .build();
     }
 
     public MyTravelInfoRespDto findTravelInfoByTravelId(int travelId) {
         PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Travels travelByTravelId = travelRepository.findTravelByTravelIdAndUserId(principal.getUserId(), travelId);
-
-        return MyTravelInfoRespDto.builder()
-                .schedules(travelByTravelId.getSchedules())
-                .build();
+        return getTravelInfo(travelRepository.findTravelByTravelIdAndUserId(principal.getUserId(), travelId));
     }
+
     public MyTravelInfoRespDto findReviewTravelInfoByTravelIdAndReviewId(int reviewId, int travelId) {
-    	Travels travelByTravelId = travelRepository.findReviewTravelByReviewIdAndTravelId(reviewId, travelId);
-    	
-    	return MyTravelInfoRespDto.builder()
-    			.schedules(travelByTravelId.getSchedules())
-    			.build();
+        return getTravelInfo(travelRepository.findReviewTravelByReviewIdAndTravelId(reviewId, travelId));
     }
 
-    public MyTravelInfoRespDto findTravelByTravelId( int travelId) {
-        Travels travelByTravelId = travelRepository.findTravelByTravelId( travelId);
-
-        return MyTravelInfoRespDto.builder()
-                .schedules(travelByTravelId.getSchedules())
-                .build();
+    public MyTravelInfoRespDto findTravelByTravelId(int travelId) {
+        return getTravelInfo(travelRepository.findTravelByTravelId(travelId));
     }
 
     public void updateTravel(int travelId, TravelUpdateReqDto travelUpdateReqDto) {
         Travels travels = travelRepository.findTravelByTravelId(travelId);
-        if(travels != null) {
-            for(Schedule schedule : travelUpdateReqDto.getSchedules()) {
-                for (Location location: schedule.getLocations()) {
-                    travelRepository.updateTravelData(location.getLocationId(), location.getAddr(), location.getLat(), location.getLng());
-                }
-            };
-        };
+        if(travels == null) return;
 
+        updateTravelData(travelUpdateReqDto);
+    }
+
+    private void updateTravelData(TravelUpdateReqDto travelUpdateReqDto){
+        for(Schedule schedule : travelUpdateReqDto.getSchedules()) {
+            for (Location location: schedule.getLocations()) {
+                travelRepository.updateTravelData(location.getLocationId(), location.getAddr(), location.getLat(), location.getLng());
+            }
+        }
     }
 
     public int deleteTravelPlan(int travelId) {
         PrincipalUser principal = (PrincipalUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return deleteTravelPlanForUser(principal, travelId);
+    }
 
-        List<Travels> travelAllByUser = travelRepository.findTravelAllByUser(principal.getUserId());
+    private int deleteTravelPlanForUser(PrincipalUser principal, int travelId){
+        for (Travels travels : travelRepository.findTravelAllByUser(principal.getUserId())) {
+            if(deleteTravelPlanForParticipant(travels, principal, travelId)) return 1;
+        }
+        return -1;
+    }
 
-        for (Travels travels : travelAllByUser) {
-            for (Participant participant: travels.getParticipants()) {
-
-                if(participant.getTravelId() == travelId && participant.getUserId() == principal.getUserId()) {
-                    Participant participantIdByUserIdAndTravelId = travelRepository.findParticipantIdByUserIdAndTravelId(principal.getUserId(), travelId);
-                    if (participantIdByUserIdAndTravelId != null) {
-
-                        travelRepository.deleteTravelPlanByParty(participantIdByUserIdAndTravelId.getParticipantId());
-                        return 1;
-                    }
+    private boolean deleteTravelPlanForParticipant(Travels travels, PrincipalUser principal, int travelId){
+        for (Participant participant: travels.getParticipants()) {
+            if(participant.getTravelId() == travelId && participant.getUserId() == principal.getUserId()) {
+                Participant participantIdByUserIdAndTravelId = travelRepository.findParticipantIdByUserIdAndTravelId(principal.getUserId(), travelId);
+                if (participantIdByUserIdAndTravelId != null) {
+                    travelRepository.deleteTravelPlanByParty(participantIdByUserIdAndTravelId.getParticipantId());
+                    return true;
                 }
             }
         }
-        return -1;
+        return false;
     }
 }

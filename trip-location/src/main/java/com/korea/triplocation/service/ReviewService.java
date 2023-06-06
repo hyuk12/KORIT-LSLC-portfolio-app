@@ -1,7 +1,7 @@
 package com.korea.triplocation.service;
 
 
-import com.korea.triplocation.api.dto.request.ReviewReqDto;
+import com.korea.triplocation.api.dto.request.review.ReviewReqDto;
 import com.korea.triplocation.api.dto.response.ReviewListRespDto;
 import com.korea.triplocation.domain.review.entity.Review;
 import com.korea.triplocation.domain.review.entity.ReviewImg;
@@ -33,7 +33,6 @@ public class ReviewService {
 	private String filePath;
 
 	private final ReviewRepository reviewRepository;
-	private final TravelService travelService;
 
 
 	public List<ReviewListRespDto> getUserReviewListAll() {
@@ -125,6 +124,7 @@ public class ReviewService {
 		for (ReviewImg reviewImg : reviewImgListByReviewId) {
 			imgsList.add(convertFilePathToUrl(reviewImg.getTempName()));
 		}
+
 		ReviewListRespDto reviewData = ReviewListRespDto.builder()
 				.reviewId(reviewByReviewId.getReviewId())
 				.travelId(reviewByReviewId.getTravelId())
