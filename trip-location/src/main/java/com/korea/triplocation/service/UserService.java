@@ -52,7 +52,7 @@ public class UserService {
 	}
 	
 	private String convertFilePathToUrl(String tempName) {
-		return "http://localhost:8080/image/user/" + tempName;
+		return "http://43.202.21.26/image/user/" + tempName;
 	}
 	
 	public UserRespDto searchUser(int type, String value) {

@@ -20,7 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("*");
+                .allowedMethods("http://hyuk12.s3-website.ap-northeast-2.amazonaws.com");
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class TravelService {
-    private static final String IMAGE_URL = "http://localhost:8080/image/region/";
+    private static final String IMAGE_URL = "http://43.202.21.26/image/region/";
 
     private final TravelRepository travelRepository;
 
