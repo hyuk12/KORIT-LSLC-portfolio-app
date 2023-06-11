@@ -47,19 +47,19 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 if (!userEntity.getProvider().contains(provider)) {
                     // 로그인된 oauth2 의 provider 는 들고있지 않은 상태
                     response.sendRedirect(
-                            "http://localhost:3000/auth/oauth2/merge"
+                            "http://hyuk12.s3-website.ap-northeast-2.amazonaws.com/auth/oauth2/merge"
                                     + "?provider=" + provider
                                     + "&email=" + email
 
                     );
                     return;
                 }
-                response.sendRedirect("http://localhost:3000/auth/oauth2/login"
+                response.sendRedirect("http://hyuk12.s3-website.ap-northeast-2.amazonaws.com/auth/oauth2/login"
                         + "?accessToken=" + jwtTokenProvider.generateAccessToken(authentication));
             }else {
                 // 자체 회원가입으로 가입하여 provider 가 없는 상태
                 response.sendRedirect(
-                        "http://localhost:3000/auth/oauth2/merge"
+                        "http://hyuk12.s3-website.ap-northeast-2.amazonaws.com/auth/oauth2/merge"
                                 + "?provider=" + provider
                                 + "&email=" + email
                 );
