@@ -58,5 +58,5 @@ jwt:
   secret: 5jvk3bQ0WwrChdr9u1aJajI8vydU4RG5auz9VOsEekT1zvljnfIigblVXXypuU82
 
 file:
-  path: /home/ubuntu/upload/
+  path: /app/upload/
 #  path: C:/aws_project/workspace/KORIT-LSLC-portfolio-app/upload/
