@@ -29,7 +29,7 @@ public class Review {
 	private List<ReviewImg> reviewImgs;
 
 	private String convertFilePathToUrl(String tempName) {
-		return "http://43.202.21.26/image/review/" + tempName;
+		return "http://ec2-43-202-21-26.ap-northeast-2.compute.amazonaws.com/image/review/" + tempName;
 	}
 
 	public ReviewListRespDto toDto() {

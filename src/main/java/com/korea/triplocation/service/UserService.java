@@ -52,7 +52,7 @@ public class UserService {
 	}
 	
 	private String convertFilePathToUrl(String tempName) {
-		return "http://43.202.21.26/image/user/" + tempName;
+		return "http://ec2-43-202-21-26.ap-northeast-2.compute.amazonaws.com/image/user/" + tempName;
 	}
 	
 	public UserRespDto searchUser(int type, String value) {

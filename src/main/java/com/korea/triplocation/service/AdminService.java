@@ -71,7 +71,7 @@ public class AdminService {
     }
 
     private String convertFilePathToUrl(String tempName) {
-        return "http://43.202.21.26/image/region/" + tempName;
+        return "http://ec2-43-202-21-26.ap-northeast-2.compute.amazonaws.com/image/region/" + tempName;
     }
 
     public List<RegionRespDto> getRegions() {
